@@ -1,0 +1,11 @@
+{
+  "name": "activesupport",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:homebound-team/activesupport.git",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.1",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
