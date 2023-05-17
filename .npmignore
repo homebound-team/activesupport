@@ -1,0 +1,6 @@
+.idea
+.github
+.circleci
+.husky
+.yarn
+*.test.ts
