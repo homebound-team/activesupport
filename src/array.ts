@@ -1,4 +1,4 @@
-import type { KeysOfType } from "src/utils";
+import type { KeysOfType } from "./utils";
 
 declare global {
   interface Array<T> {

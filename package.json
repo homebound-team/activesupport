@@ -1,11 +1,18 @@
 {
   "name": "activesupport",
   "version": "1.0.0",
-  "main": "index.js",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
   "repository": "git@github.com:homebound-team/activesupport.git",
   "license": "MIT",
   "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "build": "tsup"
+  },
   "devDependencies": {
+    "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   }
 }
