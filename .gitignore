@@ -13,7 +13,7 @@
 # Jest
 !jest.config.js
 .jest-cache
-/test-results
+/junit-reports
 
 # Logs
 logs
