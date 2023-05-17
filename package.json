@@ -1,5 +1,5 @@
 {
-  "name": "activesupport",
+  "name": "@homebound/activesupport",
   "version": "1.0.0",
   "exports": {
     "require": "./dist/index.js",
