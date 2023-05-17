@@ -10,11 +10,15 @@
   "packageManager": "yarn@3.5.1",
   "scripts": {
     "build": "tsup",
+    "lint": "eslint --ext js,ts,tsx src",
+    "lint:fix": "eslint --ext js,ts,tsx --fix src",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
   "devDependencies": {
+    "@homebound/eslint-config": "^1.6.1",
+    "eslint": "^8.40.0",
     "husky": ">=6",
     "lint-staged": ">=10",
     "pinst": ">=2",
@@ -24,6 +28,7 @@
     "typescript": "^5.0.4"
   },
   "lint-staged": {
-    "*.{js,ts,css,md}": "prettier --write"
+    "*.{js,ts,css,md}": "prettier --write",
+    "*.{js,ts,tsx}": "eslint --fix"
   }
 }
