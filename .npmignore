@@ -4,3 +4,12 @@
 .husky
 .yarn
 *.test.ts
+.jest-cache
+junit-reports
+.nvmrc
+.prettierrc.cjs
+.yarnrc.yml
+jest.config.ts
+release.config.js
+tsconfig.json
+tsup.config.ts
