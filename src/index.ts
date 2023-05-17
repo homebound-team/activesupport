@@ -1,3 +1,3 @@
-export * from './utils'
-export * from './object'
-export * from './array'
+export * from "./array";
+export * from "./object";
+export * from "./utils";

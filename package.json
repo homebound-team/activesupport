@@ -9,10 +9,21 @@
   "license": "MIT",
   "packageManager": "yarn@3.5.1",
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "devDependencies": {
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "pinst": ">=2",
+    "prettier": "^2.8.8",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,css,md}": "prettier --write"
   }
 }
