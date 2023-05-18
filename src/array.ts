@@ -3,6 +3,7 @@ import type { KeysOfType } from "./utils";
 declare global {
   interface Array<T> {
     unique(): Array<T>;
+    uniqueObjectsByKey(key: string): Array<T>;
     compact(): Array<NonNullable<T>>;
     isEmpty: boolean;
     nonEmpty: boolean;
@@ -142,6 +143,16 @@ function isDefined<T extends any>(param: T | undefined | null): param is T {
 
 Array.prototype.unique = function () {
   return [...new Set(this)];
+};
+
+/** Would be cool to allow an array of keys to make the criteria of "unique" more flexible */
+Array.prototype.uniqueObjectsByKey = function <T>(key: string) {
+  const result: T[] = [];
+  const group = this.groupBy((item) => item[key]);
+  Object.keys(group).forEach((gKey) => {
+    result.push(group[gKey].first);
+  });
+  return result;
 };
 
 Array.prototype.compact = function () {
