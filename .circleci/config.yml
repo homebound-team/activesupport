@@ -1,0 +1,58 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.1
+  jest: blimmer/jest@1.1.1
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build:
+          context: npm-readonly
+      - jest/test:
+          name: test
+          context: npm-readonly
+          setup-steps:
+            - run:
+                name: Login in NPM
+                command: 'echo "npmAuthToken: $NPM_TOKEN" >> ${HOME}/.yarnrc.yml'
+          test-result-path: ./junit-reports
+          package-manager: yarn-berry
+      - publish:
+          requires:
+            - build
+            - test
+          context:
+            - npm-publish
+            - github
+          filters:
+            branches:
+              only:
+                - main
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.20.0
+    steps:
+      - checkout
+      - run:
+          name: Login in NPM
+          command: 'echo "npmAuthToken: $NPM_TOKEN" >> ${HOME}/.yarnrc.yml'
+      - node/install-packages:
+          pkg-manager: yarn-berry
+      - run: yarn lint
+      - run: yarn build
+  publish:
+    docker:
+      - image: cimg/node:16.20.0
+    steps:
+      - checkout
+      - run:
+          name: Login in NPM
+          command: 'echo "npmAuthToken: $NPM_TOKEN" >> ${HOME}/.yarnrc.yml'
+      - node/install-packages:
+          pkg-manager: yarn-berry
+      - run: yarn build
+      - run: yarn semantic-release
