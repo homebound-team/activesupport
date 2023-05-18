@@ -19,6 +19,7 @@
   "devDependencies": {
     "@homebound/eslint-config": "^1.6.1",
     "@types/jest": "^29.5.1",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "eslint": "^8.40.0",
     "husky": ">=6",
     "jest": "^29.5.0",
