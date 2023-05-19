@@ -3,7 +3,7 @@ import type { KeysOfType } from "./utils";
 declare global {
   interface Array<T> {
     unique(): Array<T>;
-    uniqueObjectsByKey(key: string): Array<T>;
+    uniqueByKey(key: keyof T): Array<T>;
     compact(): Array<NonNullable<T>>;
     isEmpty: boolean;
     nonEmpty: boolean;
@@ -146,7 +146,7 @@ Array.prototype.unique = function () {
 };
 
 /** Would be cool to allow an array of keys to make the criteria of "unique" more flexible */
-Array.prototype.uniqueObjectsByKey = function <T>(key: string) {
+Array.prototype.uniqueByKey = function <T>(key: keyof T): T[] {
   const result: T[] = [];
   const group = this.groupBy((item) => item[key]);
   Object.keys(group).forEach((gKey) => {
