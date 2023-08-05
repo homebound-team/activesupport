@@ -7,7 +7,7 @@ declare global {
 }
 
 Map.prototype.getOrCreate = function <K, V>(this: Map<K, V>, key: K, create: () => V): V {
-  const maybeResult = this.get(key) ?? create();
-  this.set(key, maybeResult);
-  return maybeResult;
+  const result = this.get(key) ?? create();
+  this.has(key) || this.set(key, result);
+  return result;
 };
