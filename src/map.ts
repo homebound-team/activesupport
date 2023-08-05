@@ -1,4 +1,4 @@
-export {};
+export {}; // needed for TS to realize this file can be imported
 
 declare global {
   interface Map<K, V> {
