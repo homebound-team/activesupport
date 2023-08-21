@@ -65,6 +65,7 @@ declare global {
     min(this: number[] | Date[]): T;
     min<R extends number | Date>(this: Array<T>, f: (el: T, index: number, array: Array<T>) => R): R;
     count(f: (el: T, index: number, array: T[]) => boolean): number;
+    unanimous(f: (el: T) => unknown): boolean;
   }
 
   interface ReadonlyArray<T> {
@@ -132,6 +133,7 @@ declare global {
     min(this: readonly number[] | readonly Date[]): T;
     min<R extends number | Date>(f: (el: T, index: number, array: readonly T[]) => R): R;
     count(f: (el: T, index: number, array: readonly T[]) => boolean): number;
+    unanimous(f: (el: T) => unknown): boolean;
   }
 }
 
@@ -399,6 +401,12 @@ Array.prototype.min = function <T, R extends number | Date>(
 
 Array.prototype.count = function <T>(this: T[], f: (el: T, index: number, array: T[]) => boolean): number {
   return this.reduce((count, ...args) => (f(...args) ? count + 1 : count), 0);
+};
+
+Array.prototype.unanimous = function <T>(this: T[], f: (el: T) => unknown): boolean {
+  const [first, ...rest] = this;
+  const comparator = f(first);
+  return rest.every((el) => f(el) === comparator);
 };
 
 Object.defineProperty(Array.prototype, "isEmpty", {

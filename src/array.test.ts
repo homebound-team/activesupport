@@ -96,4 +96,41 @@ describe("array", () => {
       expect(result).toEqual([{ foo: 1, bar: 2 }, { foo: 2 }]);
     });
   });
+
+  describe("unanimous", () => {
+    it("returns true if all elements match", () => {
+      // given everything has the same 'name' property
+      const a = [{ name: "Homebound" }, { name: "Homebound" }, { name: "Homebound" }];
+      // then expect them to unanimously match
+      expect(a.unanimous((el) => el.name)).toBe(true);
+    });
+
+    it("returns false if elements don't match", () => {
+      // given 1 item has a different name
+      const a = [{ name: "Homebound" }, { name: "Homebound" }, { name: "Nikki" }];
+      // then expect them NOT to be unanimous
+      expect(a.unanimous((el) => el.name)).toBe(false);
+    });
+
+    it("works for simple data", () => {
+      // given even numbers
+      const a = [0, 2, 4, 6, 8];
+      // then a check against each of them is unanimous
+      expect(a.unanimous((el) => el % 2 === 0)).toBe(true);
+    });
+
+    it("returns true for arrays-of-1", () => {
+      // given 1 item
+      const a = [1];
+      // then it is unanimous with itself
+      expect(a.unanimous((el) => el)).toBe(true);
+    });
+
+    it("returns true for empty array", () => {
+      // given an empty array
+      const a = [];
+      // then it's unanimously silent
+      expect(a.unanimous((el) => el)).toBe(true);
+    });
+  });
 });
