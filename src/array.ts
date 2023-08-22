@@ -65,6 +65,10 @@ declare global {
     min(this: number[] | Date[]): T;
     min<R extends number | Date>(this: Array<T>, f: (el: T, index: number, array: Array<T>) => R): R;
     count(f: (el: T, index: number, array: T[]) => boolean): number;
+    /**
+     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
+     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
+     */
     unanimous(f: (el: T) => unknown): boolean;
   }
 
@@ -133,6 +137,10 @@ declare global {
     min(this: readonly number[] | readonly Date[]): T;
     min<R extends number | Date>(f: (el: T, index: number, array: readonly T[]) => R): R;
     count(f: (el: T, index: number, array: readonly T[]) => boolean): number;
+    /**
+     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
+     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
+     */
     unanimous(f: (el: T) => unknown): boolean;
   }
 }
