@@ -6,7 +6,8 @@
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "noImplicitAny": false
   },
   "exclude": ["dist", "node_modules"]
 }
