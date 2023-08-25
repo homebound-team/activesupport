@@ -69,7 +69,7 @@ declare global {
      * Compares every element in the array to each other and returns true if they all match `fn(el)` and
      * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
      */
-    unanimous(f: (el: T) => unknown): boolean;
+    unanimous(fn: (el: T) => unknown): boolean;
   }
 
   interface ReadonlyArray<T> {
@@ -141,7 +141,7 @@ declare global {
      * Compares every element in the array to each other and returns true if they all match `fn(el)` and
      * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
      */
-    unanimous(f: (el: T) => unknown): boolean;
+    unanimous(fn: (el: T) => unknown): boolean;
   }
 }
 
@@ -411,10 +411,9 @@ Array.prototype.count = function <T>(this: T[], f: (el: T, index: number, array:
   return this.reduce((count, ...args) => (f(...args) ? count + 1 : count), 0);
 };
 
-Array.prototype.unanimous = function <T>(this: T[], f: (el: T) => unknown): boolean {
-  const [first, ...rest] = this;
-  const comparator = f(first);
-  return rest.every((el) => f(el) === comparator);
+Array.prototype.unanimous = function <T>(this: T[], fn: (el: T) => unknown): boolean {
+  let cached: unknown;
+  return this.every((el, _, [first]) => fn(el) === (cached ??= fn(first)));
 };
 
 Object.defineProperty(Array.prototype, "isEmpty", {

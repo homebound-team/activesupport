@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "exclude": ["dist", "node_modules"]
 }
