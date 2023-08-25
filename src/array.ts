@@ -65,6 +65,11 @@ declare global {
     min(this: number[] | Date[]): T;
     min<R extends number | Date>(this: Array<T>, f: (el: T, index: number, array: Array<T>) => R): R;
     count(f: (el: T, index: number, array: T[]) => boolean): number;
+    /**
+     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
+     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
+     */
+    everyHasSame(fn: (el: T) => unknown): boolean;
   }
 
   interface ReadonlyArray<T> {
@@ -132,6 +137,11 @@ declare global {
     min(this: readonly number[] | readonly Date[]): T;
     min<R extends number | Date>(f: (el: T, index: number, array: readonly T[]) => R): R;
     count(f: (el: T, index: number, array: readonly T[]) => boolean): number;
+    /**
+     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
+     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some.id === first.some.id)`
+     */
+    everyHasSame(fn: (el: T) => unknown): boolean;
   }
 }
 
@@ -399,6 +409,11 @@ Array.prototype.min = function <T, R extends number | Date>(
 
 Array.prototype.count = function <T>(this: T[], f: (el: T, index: number, array: T[]) => boolean): number {
   return this.reduce((count, ...args) => (f(...args) ? count + 1 : count), 0);
+};
+
+Array.prototype.everyHasSame = function <T>(this: T[], fn: (el: T) => unknown): boolean {
+  let cached: unknown;
+  return this.every((el, _, [first]) => fn(el) === (cached ??= fn(first)));
 };
 
 Object.defineProperty(Array.prototype, "isEmpty", {
