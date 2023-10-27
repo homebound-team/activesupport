@@ -34,7 +34,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.9.0
     steps:
       - checkout
       - run:
@@ -46,7 +46,7 @@ jobs:
       - run: yarn build
   publish:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.9.0
     steps:
       - checkout
       - run:
