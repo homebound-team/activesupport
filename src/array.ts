@@ -145,7 +145,7 @@ declare global {
   }
 }
 
-export type Sortable = string | number | Date;
+export type Sortable = string | number | Date | bigint;
 
 function isDefined<T extends any>(param: T | undefined | null): param is T {
   return param !== null && param !== undefined;
@@ -177,6 +177,8 @@ Array.prototype.sortBy = function <T, K extends Sortable>(this: Array<T>, f: (el
       return !av && !bv ? 0 : !av ? 1 : -1;
     } else if (typeof av === "number" && typeof bv === "number") {
       return av - bv;
+    } else if (typeof av === "bigint" && typeof bv === "bigint") {
+      return av < bv ? -1 : av > bv ? 1 : 0;
     } else if (typeof av === "string" && typeof bv === "string") {
       return av.localeCompare(bv);
     } else if (av instanceof Date && bv instanceof Date) {
