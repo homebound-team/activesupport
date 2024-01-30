@@ -228,20 +228,10 @@ Array.prototype.asyncSome = async function <T>(
   const asyncResults: Promise<boolean>[] = [];
   for (const el of this) {
     const result = predicate(el);
-    if (typeof result === "boolean") {
-      if (result) {
-        return true;
-      }
-    } else {
-      asyncResults.push(result);
-    }
+    if (result === true) return true;
+    if (result instanceof Promise) asyncResults.push(result.then((r) => r || Promise.reject()));
   }
-  for (const result of asyncResults) {
-    if (await result) {
-      return true;
-    }
-  }
-  return false;
+  return await Promise.any(asyncResults).catch(() => false);
 };
 
 Array.prototype.asyncMap = async function <T, V>(
