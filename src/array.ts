@@ -29,6 +29,7 @@ declare global {
     each(f: (el: T, index: number, array: T[]) => any): T[];
     /** Helper for filtering arrays on async predicates. */
     asyncFilter(predicate: (v: T) => Promise<boolean>): Promise<Array<T>>;
+    asyncSome(predicate: (v: T) => boolean | Promise<boolean>): Promise<boolean>;
     asyncMap<V>(f: (el: T, index: number, array: T[]) => Promise<V>): Promise<V[]>;
     asyncForEach(f: (el: T, index: number, array: T[]) => Promise<any>): Promise<void>;
     sum(this: Array<number | undefined>): number;
@@ -97,6 +98,7 @@ declare global {
     each(f: (el: T, index: number, array: T[]) => any): T[];
     /** Helper for filtering arrays on async predicates. */
     asyncFilter(predicate: (v: T) => Promise<boolean>): Promise<Array<T>>;
+    asyncSome(predicate: (v: T) => boolean | Promise<boolean>): Promise<boolean>;
     asyncMap<V>(f: (el: T, index: number, array: T[]) => Promise<V>): Promise<V[]>;
     asyncForEach(f: (el: T, index: number, array: T[]) => Promise<any>): Promise<void>;
     sum(this: ReadonlyArray<number | undefined>): number;
@@ -217,6 +219,14 @@ Array.prototype.asyncFilter = async function <T>(
 ): Promise<Array<T>> {
   const results = await this.asyncMap(predicate);
   return this.filter((_v, index) => results[index]);
+};
+
+Array.prototype.asyncSome = async function <T>(
+  this: Array<T>,
+  predicate: (v: T) => Promise<boolean>,
+): Promise<boolean> {
+  const asyncResults = this.map((el) => predicate(el).then((result) => result || Promise.reject()));
+  return await Promise.any(asyncResults).catch(() => false);
 };
 
 Array.prototype.asyncMap = async function <T, V>(
