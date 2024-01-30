@@ -223,14 +223,9 @@ Array.prototype.asyncFilter = async function <T>(
 
 Array.prototype.asyncSome = async function <T>(
   this: Array<T>,
-  predicate: (v: T) => boolean | Promise<boolean>,
+  predicate: (v: T) => Promise<boolean>,
 ): Promise<boolean> {
-  const asyncResults: Promise<boolean>[] = [];
-  for (const el of this) {
-    const result = predicate(el);
-    if (result === true) return true;
-    if (result instanceof Promise) asyncResults.push(result.then((r) => r || Promise.reject()));
-  }
+  const asyncResults = this.map((el) => predicate(el).then((result) => result || Promise.reject()));
   return await Promise.any(asyncResults).catch(() => false);
 };
 
