@@ -2011,6 +2011,7 @@ __metadata:
     "@homebound/eslint-config": ^1.10.0
     "@types/jest": ^29.5.1
     conventional-changelog-conventionalcommits: ^5.0.0
+    date-fns: ^3.5.0
     eslint: ^8.52.0
     husky: ">=6"
     jest: ^29.5.0
@@ -4847,6 +4848,13 @@ __metadata:
   version: 2.2.2
   resolution: "dataloader@npm:2.2.2"
   checksum: 4dabd247089c29f194e94d5434d504f99156c5c214a03463c20f3f17f40398d7e179edee69a27c16e315519ac8739042a810090087ae26449a0e685156a02c65
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "date-fns@npm:3.5.0"
+  checksum: 0f326b72aff0a10b5a7a253d7790462263ee3c79b4283fdbb423c3159017f7ddb7cfd8e509ce94c652825232e9aa84278143f333ddb357bc6b03bd39eebd6f5d
   languageName: node
   linkType: hard
 
