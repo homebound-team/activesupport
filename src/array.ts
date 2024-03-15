@@ -4,6 +4,7 @@ declare global {
   interface Array<T> {
     unique(): Array<T>;
     uniqueByKey(key: keyof T): Array<T>;
+    uniqueBy(f: (el: T, index: number, array: T[]) => PropertyKey): Array<T>;
     compact(): Array<NonNullable<T>>;
     isEmpty: boolean;
     nonEmpty: boolean;
@@ -31,6 +32,7 @@ declare global {
     asyncFilter(predicate: (v: T) => Promise<boolean>): Promise<Array<T>>;
     asyncSome(predicate: (v: T) => boolean | Promise<boolean>): Promise<boolean>;
     asyncMap<V>(f: (el: T, index: number, array: T[]) => Promise<V>): Promise<V[]>;
+    asyncFlatMap<V>(f: (el: T, index: number, array: T[]) => Promise<V | V[]>): Promise<V[]>;
     asyncForEach(f: (el: T, index: number, array: T[]) => Promise<any>): Promise<void>;
     sum(this: Array<number | undefined>): number;
     sum(f: (el: T, index: number, array: T[]) => number | undefined): number;
@@ -74,6 +76,9 @@ declare global {
   }
 
   interface ReadonlyArray<T> {
+    unique(): Array<T>;
+    uniqueByKey(key: keyof T): Array<T>;
+    uniqueBy(f: (el: T, index: number, array: T[]) => PropertyKey): Array<T>;
     compact(): Array<NonNullable<T>>;
     isEmpty: boolean;
     nonEmpty: boolean;
@@ -100,6 +105,7 @@ declare global {
     asyncFilter(predicate: (v: T) => Promise<boolean>): Promise<Array<T>>;
     asyncSome(predicate: (v: T) => boolean | Promise<boolean>): Promise<boolean>;
     asyncMap<V>(f: (el: T, index: number, array: T[]) => Promise<V>): Promise<V[]>;
+    asyncFlatMap<V>(f: (el: T, index: number, array: T[]) => Promise<V | V[]>): Promise<V[]>;
     asyncForEach(f: (el: T, index: number, array: T[]) => Promise<any>): Promise<void>;
     sum(this: ReadonlyArray<number | undefined>): number;
     sum(f: (el: T, index: number, array: ReadonlyArray<T>) => number | undefined): number;
@@ -158,13 +164,21 @@ Array.prototype.unique = function () {
 };
 
 /** Would be cool to allow an array of keys to make the criteria of "unique" more flexible */
-Array.prototype.uniqueByKey = function <T>(key: keyof T): T[] {
+Array.prototype.uniqueBy = function <T>(f: (el: T, index: number, array: T[]) => PropertyKey): T[] {
   const result: T[] = [];
-  const group = this.groupBy((item) => item[key]);
-  Object.keys(group).forEach((gKey) => {
-    result.push(group[gKey].first);
-  });
+  const set = new Set<PropertyKey>();
+  for (let i = 0; i < this.length; i++) {
+    const key = f(this[i], i, this);
+    if (!set.has(key)) {
+      result.push(this[i]);
+      set.add(key);
+    }
+  }
   return result;
+};
+
+Array.prototype.uniqueByKey = function <T>(key: keyof T): T[] {
+  return this.uniqueBy((el) => el[key]);
 };
 
 Array.prototype.compact = function () {
@@ -234,6 +248,13 @@ Array.prototype.asyncMap = async function <T, V>(
   f: (el: T, index: number, array: T[]) => Promise<V>,
 ): Promise<Array<V>> {
   return Promise.all(this.map(f));
+};
+
+Array.prototype.asyncFlatMap = async function <T, V>(
+  this: Array<T>,
+  f: (el: T, index: number, array: T[]) => Promise<V | V[]>,
+): Promise<V[]> {
+  return Promise.all(this.map(f)).then((result) => result.flat(1) as V[]);
 };
 
 Array.prototype.asyncForEach = async function <T>(
