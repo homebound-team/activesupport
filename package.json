@@ -37,5 +37,8 @@
   "lint-staged": {
     "*.{js,ts,css,md}": "prettier --write",
     "*.{js,ts,tsx}": "eslint --fix"
+  },
+  "dependencies": {
+    "date-fns": "^3.5.0"
   }
 }
