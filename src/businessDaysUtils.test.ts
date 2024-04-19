@@ -1,4 +1,4 @@
-import subBusinessDays, { addBusinessDays, differenceInBusinessDays } from "./businessDaysUtils";
+import { addBusinessDays, differenceInBusinessDays, subBusinessDays } from "./businessDaysUtils";
 
 describe("businessDaysUtils", () => {
   describe("addBusinessDays", () => {
