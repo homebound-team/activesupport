@@ -8,8 +8,9 @@ export function newPD(date: string): Temporal.PlainDate {
   return Temporal.PlainDate.from(date);
 }
 
-export function newZDT(datetime: string, tzLike: Temporal.TimeZoneLike = "UTC"): Temporal.ZonedDateTime {
-  return Temporal.Instant.from(datetime).toZonedDateTimeISO(tzLike);
+export function newZDT(datetime: string): Temporal.ZonedDateTime {
+  if (datetime.endsWith("Z")) datetime = datetime.slice(0, -1).concat(`+00:00[UTC]`);
+  return Temporal.ZonedDateTime.from(datetime);
 }
 
 export function newPDInterval(start: string, end: string): Temporal.Interval<Temporal.PlainDate> {

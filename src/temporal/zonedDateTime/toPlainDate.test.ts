@@ -3,7 +3,7 @@ import "./index";
 
 describe("toPlainDate", () => {
   it("generates a plain date from the zoned date using the UTC timezone", () => {
-    const zdt = newZDT("2024-05-02T00:00:00.000+0900", "Asia/Kolkata");
+    const zdt = newZDT("2024-05-02T00:00:00.000+09:00[Asia/Tokyo]");
     const result = zdt.toPlainDateUTC();
     expect(result).toEqual(newPD("2024-05-01"));
   });
