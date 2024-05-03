@@ -39,6 +39,6 @@
     "*.{js,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
-    "date-fns": "^3.5.0"
+    "temporal-polyfill": "^0.2.4"
   }
 }

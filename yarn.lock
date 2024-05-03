@@ -2011,7 +2011,6 @@ __metadata:
     "@homebound/eslint-config": ^1.10.0
     "@types/jest": ^29.5.1
     conventional-changelog-conventionalcommits: ^5.0.0
-    date-fns: ^3.5.0
     eslint: ^8.52.0
     husky: ">=6"
     jest: ^29.5.0
@@ -2021,6 +2020,7 @@ __metadata:
     prettier: ^2.8.8
     prettier-plugin-organize-imports: ^3.2.2
     semantic-release: ^21.0.2
+    temporal-polyfill: ^0.2.4
     ts-jest: ^29.1.0
     ts-node: ^10.9.1
     tsup: ^6.7.0
@@ -4848,13 +4848,6 @@ __metadata:
   version: 2.2.2
   resolution: "dataloader@npm:2.2.2"
   checksum: 4dabd247089c29f194e94d5434d504f99156c5c214a03463c20f3f17f40398d7e179edee69a27c16e315519ac8739042a810090087ae26449a0e685156a02c65
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "date-fns@npm:3.5.0"
-  checksum: 0f326b72aff0a10b5a7a253d7790462263ee3c79b4283fdbb423c3159017f7ddb7cfd8e509ce94c652825232e9aa84278143f333ddb357bc6b03bd39eebd6f5d
   languageName: node
   linkType: hard
 
@@ -11070,6 +11063,22 @@ __metadata:
   version: 2.0.0
   resolution: "temp-dir@npm:2.0.0"
   checksum: cc4f0404bf8d6ae1a166e0e64f3f409b423f4d1274d8c02814a59a5529f07db6cd070a749664141b992b2c1af337fa9bb451a460a43bb9bcddc49f235d3115aa
+  languageName: node
+  linkType: hard
+
+"temporal-polyfill@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "temporal-polyfill@npm:0.2.4"
+  dependencies:
+    temporal-spec: ^0.2.4
+  checksum: a384a097aa77441236981efc422d1f66d56bae74a1646e018cc171eeffff68b9bf927e44dd5eae39aca5a995f75e6f624c9b25253b3ab31d9734b19670e7955f
+  languageName: node
+  linkType: hard
+
+"temporal-spec@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "temporal-spec@npm:0.2.4"
+  checksum: a458f44ac3c81b9a7225d72616b4f14419e5a7c4a2bce4a8fda0ff1d93a32dfba5bd74f51a756fba7ddd5d9cc7acecf5b62af72f218dcf115c31ceda93d30dd9
   languageName: node
   linkType: hard
 
