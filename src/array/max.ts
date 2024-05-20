@@ -15,8 +15,9 @@ declare global {
 
 Array.prototype.max = function <T, R extends Comparable>(this: ToArray<Comparable> | T[], fn?: CallbackFn<T, R>): R {
   const values = fn ? ((this as T[]).map(fn) as R[]) : (this as R[]);
-  let max = values.shift();
-  for (const value of values) {
+  let max = values.first;
+  for (let i = 1; i < values.length; i++) {
+    const value = values[i];
     if (compare(value, max!) > 0) max = value;
   }
   return max!;
