@@ -54,6 +54,15 @@ describe("sum", () => {
     // Then we get back the sum of the numbers
     expect(result).toBe(18);
   });
+
+  it("works for bigints", () => {
+    // Given an array of bigints and undefined values
+    const a = [5n, undefined, 6n, 7n];
+    // When we call sum
+    const result = a.sum();
+    // Then we get back the sum of the bigints as a bigint
+    expect(result).toBe(18n);
+  });
 });
 
 describe("maybeSum", () => {
@@ -109,5 +118,14 @@ describe("maybeSum", () => {
     const result = await a.maybeSum((v) => Promise.resolve(parseInt(v)));
     // Then we get back the maybeSum of the numbers
     expect(result).toBe(18);
+  });
+
+  it("works for bigints", () => {
+    // Given an array of bigints and undefined values
+    const a = [5n, undefined, 6n, 7n];
+    // When we call maybeSum
+    const result = a.maybeSum();
+    // Then we get back the sum of the bigints as a bigint
+    expect(result).toBe(18n);
   });
 });
