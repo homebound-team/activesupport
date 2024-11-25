@@ -14,13 +14,11 @@ declare global {
   }
 }
 
-Array.prototype.keyBy = function <
-  T,
-  K extends PropertyKey,
-  TK extends keyof T,
-  TKK extends T[TK] extends K ? TK : never,
-  Y = T,
->(this: T[], fnOrKey: CallbackFn<T, K> | TKK, valueFn?: CallbackFn<T, Y>) {
+Array.prototype.keyBy = function <T, K extends PropertyKey, Y = T>(
+  this: T[],
+  fnOrKey: CallbackFn<T, K> | keyof T[][number],
+  valueFn?: CallbackFn<T, Y>,
+) {
   const result = {} as Record<K, Y>;
   const fn = typeof fnOrKey === "function" ? fnOrKey : (x: T) => x[fnOrKey] as K;
   this.forEach((e, i, a) => {
