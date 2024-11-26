@@ -20,6 +20,18 @@ describe("sortBy", () => {
     ]);
   });
 
+  it("sorts by multiple values must be fixed array", () => {
+    const foos: { foo: number; bar: number }[] = [
+      { foo: 3, bar: 2 },
+      { foo: 1, bar: 0 },
+    ];
+    expect(() => {
+      foos.sortBy((f) => {
+        return f.foo === 3 ? [f.foo] : [f.foo, f.bar];
+      });
+    }).toThrow("cannot compare arrays of different lengths");
+  });
+
   it("works for bigint fields", () => {
     // Using `any` here as an easy case for the compiler not being able to catch the error
     const foos: { foo: bigint }[] = [{ foo: 3n }, { foo: -1n }, { foo: 2n }];
