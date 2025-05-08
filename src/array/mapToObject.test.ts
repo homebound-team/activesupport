@@ -9,4 +9,9 @@ describe("mapToObject", () => {
     // then we get an object with those keys and values
     expect(result).toEqual({ a: 0, b: 1, c: 2 });
   });
+
+  it("type checks with as const", () => {
+    // We can call `mapToObject` and use `as const` as a modifier
+    ["a", "b", "c"].mapToObject((el, i) => [el, i] as const);
+  });
 });
