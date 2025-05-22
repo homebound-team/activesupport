@@ -3,7 +3,7 @@ import { newPD, newZDT } from "../temporal/setupTests";
 import "./index";
 
 describe("min", () => {
-  it("returns the smallest highest sorting string from an array", () => {
+  it("returns the smallest sorting string from an array", () => {
     // Given an array of strings
     const a = ["-11", "-22", "-222"];
     // When we call min
