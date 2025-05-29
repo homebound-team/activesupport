@@ -60,3 +60,28 @@ export function compare<T extends Comparable>(a: T, b: T): number {
     throw new Error(`Unsupported compare ${a}, ${b}`);
   }
 }
+
+export function assertNever(x: never): never {
+  throw new Error(`Unexpected value ${x}`);
+}
+
+interface ErrorClass<T extends Error> {
+  new (...args: any[]): T;
+}
+
+export function fail(): never;
+export function fail(message: string): never;
+export function fail(error: Error): never;
+export function fail<T extends Error>(errorClass: ErrorClass<T>, ...args: any[]): never;
+export function fail<T extends Error>(messageOrErrorOrClass?: string | Error | ErrorClass<T>, ...args: any[]): never {
+  if (!isDefined(messageOrErrorOrClass)) {
+    throw new Error("Failed");
+  } else if (typeof messageOrErrorOrClass === "string") {
+    throw new Error(messageOrErrorOrClass);
+  } else if (messageOrErrorOrClass instanceof Error) {
+    throw messageOrErrorOrClass;
+  } else {
+    args = args.length === 0 ? ["Failed"] : args;
+    throw new messageOrErrorOrClass(...args);
+  }
+}
