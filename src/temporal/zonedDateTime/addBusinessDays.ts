@@ -35,5 +35,5 @@ Temporal.ZonedDateTime.prototype.addBusinessDays = function (
   // Convert to a plain date then add our business days
   const result = this.toPlainDate().addBusinessDays(amount, options);
   // Restore our time zone and wall clock time (ignore DST adjustments)
-  return result.toZonedDateTime({ timeZone: this.getTimeZone(), plainTime: this.toPlainTime() });
+  return result.toZonedDateTime({ timeZone: this, plainTime: this });
 };
