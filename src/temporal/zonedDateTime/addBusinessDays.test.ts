@@ -22,6 +22,16 @@ describe("addBusinessDays", () => {
       });
       expect(result).toEqual(newZDT("2022-01-17T00:00:00.000Z"));
     });
+
+    it("should preserve wall clock time", () => {
+      const result = newZDT("2022-01-07T05:35:24.971Z").addBusinessDays(2);
+      expect(result).toEqual(newZDT("2022-01-11T05:35:24.971Z"));
+    });
+
+    it("should preserve time zone", () => {
+      const result = newZDT("2022-01-07T00:00:00.000[America/Los_Angeles]").addBusinessDays(2);
+      expect(result).toEqual(newZDT("2022-01-11T00:00:00.000[America/Los_Angeles]"));
+    });
   });
 
   describe("exceptions", () => {
