@@ -31,6 +31,7 @@ import "./sortBy";
 import "./sum";
 import "./toObject";
 import "./unique";
+import "./without";
 import "./xor";
 
 export type CallbackFn<T, R = any> = (element: T, index: number, array: T[]) => R;
