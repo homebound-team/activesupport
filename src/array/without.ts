@@ -11,5 +11,7 @@ declare global {
 }
 
 Array.prototype.without = function (element) {
-  return this.filter((e) => e !== element);
+  const result = [...this];
+  result.remove(element);
+  return result;
 };
