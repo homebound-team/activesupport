@@ -14,8 +14,6 @@ declare global {
 
 Array.prototype.without = function <T>(this: T[], ...elements: T[]): Array<T> {
   const result = [...this];
-  for (const element of elements) {
-    result.remove(element);
-  }
+  result.remove(...elements);
   return result;
 };
