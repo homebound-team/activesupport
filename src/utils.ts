@@ -39,7 +39,7 @@ export function isDefined<T extends any>(param: T | undefined | null): param is 
   return param !== null && param !== undefined;
 }
 
-export type Comparable = string | number | bigint | Date | Temporal.PlainDate | Temporal.ZonedDateTime;
+export type Comparable = string | number | bigint | Date | Temporal.PlainDate | Temporal.ZonedDateTime | undefined;
 
 export function compare<T extends Comparable>(a: T, b: T): number {
   if (!isDefined(a) || !isDefined(b)) {
