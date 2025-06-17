@@ -11,4 +11,16 @@ describe("partition", () => {
       [1, 3, 5],
     ]);
   });
+
+  it("returns the partition mapped by the value callback", () => {
+    expect(
+      [1, 2, 3, 4, 5, 6].partition(
+        (f: number) => f % 2 === 0,
+        (v) => v * 2,
+      ),
+    ).toEqual([
+      [4, 8, 12],
+      [2, 6, 10],
+    ]);
+  });
 });
