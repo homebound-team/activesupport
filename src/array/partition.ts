@@ -5,7 +5,7 @@ declare global {
     /**
      * Splits `array` into two: one array with elements that satisfy `f`, and one with elements that do not.
      *
-     * partition(["foo1", "bar", "foo2"], (s: string) => s.startsWith("foo"))
+     * ["foo1", "bar", "foo2"].partition((s: string) => s.startsWith("foo"))
      * => [["foo1", "foo2"], ["bar"]]
      */
     partition(fn: CallbackFn<T, boolean>): [T[], T[]];
@@ -16,7 +16,7 @@ declare global {
     /**
      * Splits `array` into two: one array with elements that satisfy `f`, and one with elements that do not.
      *
-     * partition(["foo1", "bar", "foo2"], (s: string) => s.startsWith("foo"))
+     * ["foo1", "bar", "foo2"].partition((s: string) => s.startsWith("foo"))
      * => [["foo1", "foo2"], ["bar"]]
      */
     partition(fn: CallbackFnRO<T, boolean>): [T[], T[]];
