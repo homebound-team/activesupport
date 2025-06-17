@@ -2,6 +2,7 @@ import "./asyncFilter";
 import "./asyncFlatMap";
 import "./asyncForEach";
 import "./asyncMap";
+import "./asyncPartition";
 import "./asyncSome";
 import "./batched";
 import "./compact";
