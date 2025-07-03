@@ -8,7 +8,7 @@ declare global {
      * @returns Array containing elements present in either array but not in both
      * @example [1, 2, 3].xor([2, 3, 4]) //=> [1, 4]
      */
-    xor(other: T[]): T[];
+    xor(other: readonly T[]): T[];
   }
 
   interface ReadonlyArray<T> {
@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-Array.prototype.xor = function <T>(this: T[], other: T[]): T[] {
+Array.prototype.xor = function <T>(this: T[], other: readonly T[]): T[] {
   const a = new Set(this);
   const b = new Set(other);
   return [...a.difference(b), ...b.difference(a)];

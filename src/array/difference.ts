@@ -8,7 +8,7 @@ declare global {
      * @returns A new array containing elements that exist only in the current array
      * @example [1, 2, 3].difference([2, 3, 4]) //=> [1]
      */
-    difference(other: T[]): T[];
+    difference(other: readonly T[]): T[];
   }
 
   interface ReadonlyArray<T> {
