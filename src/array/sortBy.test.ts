@@ -18,6 +18,13 @@ describe("sortBy", () => {
       { foo: 3, bar: 1 },
       { foo: 3, bar: 2 },
     ]);
+    // And the types work for readonly arrays
+    expect((foos as Readonly<typeof foos>).sortBy((f) => [f.foo, f.bar])).toEqual([
+      { foo: 1, bar: 0 },
+      { foo: 2, bar: 0 },
+      { foo: 3, bar: 1 },
+      { foo: 3, bar: 2 },
+    ]);
   });
 
   it("sorts by multiple values must be fixed array", () => {
