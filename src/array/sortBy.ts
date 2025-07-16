@@ -10,7 +10,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /** Array is returned in ascending order. */
-    sortBy<K extends Comparable>(fn: (el: T) => K): T[];
+    sortBy<K extends Comparable>(fn: (el: T) => K | K[]): T[];
     /** Array is returned in ascending order. */
     sortByKey<K extends KeysOfType<T, Comparable>>(key: K): T[];
   }
