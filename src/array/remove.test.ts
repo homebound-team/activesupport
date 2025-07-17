@@ -10,7 +10,7 @@ describe("remove", () => {
     expect(a).toEqual(["a", "c"]);
   });
 
-  it("removes multiiple elements from an array", () => {
+  it("removes multiple elements from an array", () => {
     // Given an array of strings
     const a = ["a", "b", "c", "d", "e"];
     // When we remove an element
