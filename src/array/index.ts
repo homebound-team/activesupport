@@ -17,6 +17,7 @@ import "./findFirst";
 import "./first";
 import "./groupBy";
 import "./hasSameElements";
+import "./indexBy";
 import "./intersection";
 import "./isEmpty";
 import "./keyBy";
