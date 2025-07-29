@@ -13,6 +13,7 @@ import "./everyHasSame";
 import "./findAfter";
 import "./findAndRemove";
 import "./findBefore";
+import "./findFirst";
 import "./first";
 import "./groupBy";
 import "./hasSameElements";
