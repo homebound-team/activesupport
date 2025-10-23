@@ -13,10 +13,10 @@ declare module "temporal-polyfill" {
        *
        * @param other - The date to compare with
        *
-       * @returns The first date is after the second date
+       * @returns The first date is before the second date
        *
        * @example
-       * // Is 11 February 1987 after 10 July 1989?
+       * // Is 11 February 1987 before 10 July 1989?
        * const result = Temporal.ZonedDateTime.from("1987-02-11").isBefore(Temporal.ZonedDateTime.from("1989-07-10"))
        * //=> true
        */
