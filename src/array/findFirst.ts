@@ -4,7 +4,7 @@ declare global {
   interface Array<T> {
     /**
      * Iterates through the array and returns the first defined result from the callback function.
-     * Stops iteration as soon as a defined value is found. Useful for finding and transforming in a single pass.
+     * Stops iteration as soon as a defined value is found.
      * @param fn A function that returns a value or undefined for each element
      * @returns The first defined result from the callback, or undefined if none found
      * @example ["", "hello", "world"].findFirst(s => s || undefined) //=> "hello"
@@ -17,7 +17,7 @@ declare global {
   interface ReadonlyArray<T> {
     /**
      * Iterates through the array and returns the first defined result from the callback function.
-     * Stops iteration as soon as a defined value is found. Useful for finding and transforming in a single pass.
+     * Stops iteration as soon as a defined value is found.
      * @param fn A function that returns a value or undefined for each element
      * @returns The first defined result from the callback, or undefined if none found
      * @example ["", "hello", "world"].findFirst(s => s || undefined) //=> "hello"
