@@ -4,12 +4,19 @@ import { CallbackFn, CallbackFnRO } from "./index";
 declare global {
   interface Array<T> {
     /**
-     * Splits `array` into two: one array with elements that satisfy `f`, and one with elements that do not.
-     *
-     * await ["foo1", "bar", "foo2"].asyncPartition((s: string) => s.startsWith("foo"))
-     * => [["foo1", "foo2"], ["bar"]]
+     * Splits the array into two using an async predicate: elements that satisfy it and elements that don't.
+     * @param fn An async function to test each element
+     * @returns A promise resolving to a tuple of [matches, non-matches]
+     * @example await ["foo1", "bar", "foo2"].asyncPartition(async s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
+     * @example await [].asyncPartition(async () => true) //=> [[], []]
      */
     asyncPartition(fn: CallbackFn<T, Promise<boolean>>): Promise<[T[], T[]]>;
+    /**
+     * Splits the array into two using an async predicate, transforming elements with valueFn.
+     * @param fn An async function to test each element
+     * @param valueFn A function to transform each element before adding to result
+     * @returns A promise resolving to a tuple of [transformed matches, transformed non-matches]
+     */
     asyncPartition<U>(
       fn: CallbackFn<T, Promise<boolean>>,
       valueFn: CallbackFn<T, MaybePromise<U>>,
@@ -18,12 +25,19 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Splits `array` into two: one array with elements that satisfy `f`, and one with elements that do not.
-     *
-     * await ["foo1", "bar", "foo2"].asyncPartition((s: string) => s.startsWith("foo"))
-     * => [["foo1", "foo2"], ["bar"]]
+     * Splits the array into two using an async predicate: elements that satisfy it and elements that don't.
+     * @param fn An async function to test each element
+     * @returns A promise resolving to a tuple of [matches, non-matches]
+     * @example await ["foo1", "bar", "foo2"].asyncPartition(async s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
+     * @example await [].asyncPartition(async () => true) //=> [[], []]
      */
     asyncPartition(fn: CallbackFnRO<T, Promise<boolean>>): Promise<[T[], T[]]>;
+    /**
+     * Splits the array into two using an async predicate, transforming elements with valueFn.
+     * @param fn An async function to test each element
+     * @param valueFn A function to transform each element before adding to result
+     * @returns A promise resolving to a tuple of [transformed matches, transformed non-matches]
+     */
     asyncPartition<U>(
       fn: CallbackFnRO<T, Promise<boolean>>,
       valueFn: CallbackFnRO<T, MaybePromise<U>>,

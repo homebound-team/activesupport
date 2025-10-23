@@ -7,6 +7,8 @@ declare global {
      * @param other The array to compare against
      * @returns A new array containing elements that exist only in the current array
      * @example [1, 2, 3].difference([2, 3, 4]) //=> [1]
+     * @example [1, 2].difference([3, 4]) //=> [1, 2]
+     * @example [].difference([1, 2]) //=> []
      */
     difference(other: readonly T[]): T[];
   }
@@ -17,6 +19,8 @@ declare global {
      * @param other The array to compare against
      * @returns A new array containing elements that exist only in the current array
      * @example [1, 2, 3].difference([2, 3, 4]) //=> [1]
+     * @example [1, 2].difference([3, 4]) //=> [1, 2]
+     * @example [].difference([1, 2]) //=> []
      */
     difference(other: readonly T[]): readonly T[];
   }

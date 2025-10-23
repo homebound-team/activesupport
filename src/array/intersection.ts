@@ -3,20 +3,24 @@ export {}; // needed for TS to realize this file can be imported
 declare global {
   interface Array<T> {
     /**
-     * Returns a new array containing elements present in both arrays
+     * Returns a new array containing elements present in both arrays.
      * @param other The array to compare against
      * @returns Array containing elements present in both arrays
      * @example [1, 2, 3, 4].intersection([3, 4, 5, 6]) //=> [3, 4]
+     * @example [1, 2].intersection([3, 4]) //=> []
+     * @example [].intersection([1, 2]) //=> []
      */
     intersection(other: T[]): T[];
   }
 
   interface ReadonlyArray<T> {
     /**
-     * Returns a new array containing elements present in both arrays
+     * Returns a new array containing elements present in both arrays.
      * @param other The array to compare against
      * @returns Array containing elements present in both arrays
      * @example [1, 2, 3, 4].intersection([3, 4, 5, 6]) //=> [3, 4]
+     * @example [1, 2].intersection([3, 4]) //=> []
+     * @example [].intersection([1, 2]) //=> []
      */
     intersection(other: readonly T[]): readonly T[];
   }
