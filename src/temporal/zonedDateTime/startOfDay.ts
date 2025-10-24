@@ -14,11 +14,11 @@ declare module "temporal-polyfill" {
        * @returns The start of a day
        *
        * @example
-       * // The end of a day for 2 September 2014 11:55:00 UTC:
+       * // The start of a day for 2 September 2014 11:55:00 UTC:
        * const result = Temporal.ZonedDateTime.from("2024-09-02T11:55:00.000+00:00[UTC]").startOfDay()
        * //=> Tue Sep 02 2014 00:00:00.000
        */
-      endOfDay(): Temporal.ZonedDateTime;
+      startOfDay(): Temporal.ZonedDateTime;
     }
   }
 }

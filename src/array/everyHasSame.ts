@@ -3,16 +3,24 @@ import { CallbackFn, CallbackFnRO } from "./index";
 declare global {
   interface Array<T> {
     /**
-     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
-     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some === first.some)`
+     * Returns true if all elements produce the same value when passed through the callback.
+     * @param fn A function that extracts a value to compare from each element
+     * @returns True if all elements produce the same value
+     * @example [{status: "done"}, {status: "done"}].everyHasSame(o => o.status) //=> true
+     * @example [{status: "done"}, {status: "pending"}].everyHasSame(o => o.status) //=> false
+     * @example [].everyHasSame(o => o.value) //=> true
      */
     everyHasSame(fn: CallbackFn<T, unknown>): boolean;
   }
 
   interface ReadonlyArray<T> {
     /**
-     * Compares every element in the array to each other and returns true if they all match `fn(el)` and
-     * false otherwise. Shorthand for `array.every((el, _, [first]) => el.some === first.some)`
+     * Returns true if all elements produce the same value when passed through the callback.
+     * @param fn A function that extracts a value to compare from each element
+     * @returns True if all elements produce the same value
+     * @example [{status: "done"}, {status: "done"}].everyHasSame(o => o.status) //=> true
+     * @example [{status: "done"}, {status: "pending"}].everyHasSame(o => o.status) //=> false
+     * @example [].everyHasSame(o => o.value) //=> true
      */
     everyHasSame(fn: CallbackFnRO<T, unknown>): boolean;
   }

@@ -4,20 +4,24 @@ import { CallbackFn, CallbackFnRO } from "./index";
 declare global {
   interface Array<T> {
     /**
-     * Returns the maximum value based on a callback function
-     * @param fn The callback function to calculate values to compare
-     * @returns The maximum value
-     * @example [{ foo: 1 }, { foo: 2 }, { foo: 3 }].maxBy((v) => v.foo) //=> { foo: 3 }
+     * Returns the element with the maximum value as determined by the callback function.
+     * @param fn A function that returns a comparable value for each element
+     * @returns The element with the largest value
+     * @example [{foo: 1}, {foo: 2}, {foo: 3}].maxBy(v => v.foo) //=> {foo: 3}
+     * @example ["a", "abc", "ab"].maxBy(s => s.length) //=> "abc"
+     * @example [].maxBy(x => x) //=> undefined
      */
     maxBy<R extends Comparable>(fn: CallbackFn<T, R>): T;
   }
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the maximum value based on a callback function
-     * @param fn The callback function to calculate values to compare
-     * @returns The maximum value
-     * @example [{ foo: 1 }, { foo: 2 }, { foo: 3 }].maxBy((v) => v.foo) //=> { foo: 3 }
+     * Returns the element with the maximum value as determined by the callback function.
+     * @param fn A function that returns a comparable value for each element
+     * @returns The element with the largest value
+     * @example [{foo: 1}, {foo: 2}, {foo: 3}].maxBy(v => v.foo) //=> {foo: 3}
+     * @example ["a", "abc", "ab"].maxBy(s => s.length) //=> "abc"
+     * @example [].maxBy(x => x) //=> undefined
      */
     maxBy<R extends Comparable>(fn: CallbackFnRO<T, R>): T;
   }

@@ -3,14 +3,50 @@ import { Comparable, KeysOfType } from "../utils";
 
 declare global {
   interface Array<T> {
+    /**
+     * Returns a new array with duplicate elements removed.
+     * @returns A new array containing only unique elements
+     * @example [1, 2, 2, 3, 3, 3].unique() //=> [1, 2, 3]
+     * @example [].unique() //=> []
+     */
     unique(): T[];
+    /**
+     * Returns a new array with duplicates removed based on a specific object key.
+     * @param key The key to use for uniqueness comparison
+     * @returns A new array containing elements with unique key values
+     * @example [{id: 1, name: "a"}, {id: 1, name: "b"}].uniqueByKey("id") //=> [{id: 1, name: "a"}]
+     */
     uniqueByKey(key: keyof T): T[];
+    /**
+     * Returns a new array with duplicates removed based on the value returned by the callback.
+     * @param f A function that returns the value to use for uniqueness comparison
+     * @returns A new array containing elements with unique callback values
+     * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
+     */
     uniqueBy(f: (el: T, index: number, array: T[]) => unknown): T[];
   }
 
   interface ReadonlyArray<T> {
+    /**
+     * Returns a new array with duplicate elements removed.
+     * @returns A new array containing only unique elements
+     * @example [1, 2, 2, 3, 3, 3].unique() //=> [1, 2, 3]
+     * @example [].unique() //=> []
+     */
     unique(): T[];
+    /**
+     * Returns a new array with duplicates removed based on a specific object key.
+     * @param key The key to use for uniqueness comparison
+     * @returns A new array containing elements with unique key values
+     * @example [{id: 1, name: "a"}, {id: 1, name: "b"}].uniqueByKey("id") //=> [{id: 1, name: "a"}]
+     */
     uniqueByKey(key: keyof T): T[];
+    /**
+     * Returns a new array with duplicates removed based on the value returned by the callback.
+     * @param f A function that returns the value to use for uniqueness comparison
+     * @returns A new array containing elements with unique callback values
+     * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
+     */
     uniqueBy(f: (el: T, index: number, array: readonly T[]) => unknown): T[];
   }
 }

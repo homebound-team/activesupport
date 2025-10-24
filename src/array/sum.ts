@@ -3,19 +3,53 @@ import { CallbackFn, CallbackFnRO } from "./index";
 
 declare global {
   interface Array<T> {
+    /**
+     * Sums all numbers in the array, treating `undefined` as 0. Returns 0 for empty arrays.
+     * @returns The sum of all numbers
+     * @example [1, 2, 3].sum() //=> 6
+     * @example [1, undefined, 3].sum() //=> 4
+     * @example [].sum() //=> 0
+     */
     sum(this: (number | undefined)[]): number;
+    /**
+     * Sums values extracted by a callback, treating `undefined` as 0. Returns 0 for empty arrays.
+     * @param f A function that returns a number for each element
+     * @returns The sum of all returned numbers
+     * @example [{x: 1}, {x: 2}].sum(o => o.x) //=> 3
+     */
     sum(f: CallbackFn<T, number | undefined>): number;
+    /**
+     * Sums values extracted by an async callback, treating `undefined` as 0.
+     * @param f An async function that returns a number for each element
+     * @returns A promise resolving to the sum of all returned numbers
+     * @example await [{x: 1}, {x: 2}].sum(async o => o.x) //=> 3
+     */
     sum(f: CallbackFn<T, Promise<number | undefined>>): Promise<number>;
+    /**
+     * Sums all bigints in the array, treating `undefined` as 0n. Returns 0n for empty arrays.
+     * @returns The sum of all bigints
+     * @example [1n, 2n, 3n].sum() //=> 6n
+     */
     sum(this: (bigint | undefined)[]): bigint;
+    /**
+     * Sums bigint values extracted by a callback, treating `undefined` as 0n.
+     * @param f A function that returns a bigint for each element
+     * @returns The sum of all returned bigints
+     */
     sum(f: CallbackFn<T, bigint | undefined>): bigint;
+    /**
+     * Sums bigint values extracted by an async callback, treating `undefined` as 0n.
+     * @param f An async function that returns a bigint for each element
+     * @returns A promise resolving to the sum of all returned bigints
+     */
     sum(f: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
     /**
-     * Sums numbers but will return `undefined` if either a) there are no numbers or b) they are all
-     * `null` or `undefined`.
-     *
-     * This is to mitigate the "tables of meaningless zeros" that our team experienced in CoConstruct,
-     * i.e. not being able to tell "is this zero b/c someone typed zero in?" vs. "is this zero b/c it
-     * just doesn't have a value yet"?
+     * Sums numbers but returns `undefined` if the array is empty or contains only `null`/`undefined` values.
+     * This helps distinguish between "sum is zero" vs "no values to sum".
+     * @returns The sum of all numbers, or undefined if there are no defined values
+     * @example [1, 2, 3].maybeSum() //=> 6
+     * @example [undefined, null].maybeSum() //=> undefined
+     * @example [].maybeSum() //=> undefined
      */
     maybeSum(this: (number | undefined)[]): number | undefined;
     maybeSum(f: CallbackFn<T, number | undefined>): number | undefined;
@@ -26,19 +60,53 @@ declare global {
   }
 
   interface ReadonlyArray<T> {
+    /**
+     * Sums all numbers in the array, treating `undefined` as 0. Returns 0 for empty arrays.
+     * @returns The sum of all numbers
+     * @example [1, 2, 3].sum() //=> 6
+     * @example [1, undefined, 3].sum() //=> 4
+     * @example [].sum() //=> 0
+     */
     sum(this: readonly (number | undefined)[]): number;
+    /**
+     * Sums values extracted by a callback, treating `undefined` as 0. Returns 0 for empty arrays.
+     * @param f A function that returns a number for each element
+     * @returns The sum of all returned numbers
+     * @example [{x: 1}, {x: 2}].sum(o => o.x) //=> 3
+     */
     sum(f: CallbackFnRO<T, number | undefined>): number;
+    /**
+     * Sums values extracted by an async callback, treating `undefined` as 0.
+     * @param f An async function that returns a number for each element
+     * @returns A promise resolving to the sum of all returned numbers
+     * @example await [{x: 1}, {x: 2}].sum(async o => o.x) //=> 3
+     */
     sum(f: CallbackFnRO<T, Promise<number | undefined>>): Promise<number>;
+    /**
+     * Sums all bigints in the array, treating `undefined` as 0n. Returns 0n for empty arrays.
+     * @returns The sum of all bigints
+     * @example [1n, 2n, 3n].sum() //=> 6n
+     */
     sum(this: (bigint | undefined)[]): bigint;
+    /**
+     * Sums bigint values extracted by a callback, treating `undefined` as 0n.
+     * @param f A function that returns a bigint for each element
+     * @returns The sum of all returned bigints
+     */
     sum(f: CallbackFn<T, bigint | undefined>): bigint;
+    /**
+     * Sums bigint values extracted by an async callback, treating `undefined` as 0n.
+     * @param f An async function that returns a bigint for each element
+     * @returns A promise resolving to the sum of all returned bigints
+     */
     sum(f: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
     /**
-     * Sums numbers but will return `undefined` if either a) there are no numbers or b) they are all
-     * `null` or `undefined`.
-     *
-     * This is to mitigate the "tables of meaningless zeros" that our team experienced in CoConstruct,
-     * i.e. not being able to tell "is this zero b/c someone typed zero in?" vs. "is this zero b/c it
-     * just doesn't have a value yet"?
+     * Sums numbers but returns `undefined` if the array is empty or contains only `null`/`undefined` values.
+     * This helps distinguish between "sum is zero" vs "no values to sum".
+     * @returns The sum of all numbers, or undefined if there are no defined values
+     * @example [1, 2, 3].maybeSum() //=> 6
+     * @example [undefined, null].maybeSum() //=> undefined
+     * @example [].maybeSum() //=> undefined
      */
     maybeSum(this: readonly (number | undefined)[]): number | undefined;
     maybeSum(f: CallbackFnRO<T, number | undefined>): number | undefined;
