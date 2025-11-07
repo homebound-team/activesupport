@@ -121,7 +121,7 @@ export function compare<T extends Comparable>(a: T, b: T): number {
   if (!isDefined(a) || !isDefined(b)) {
     return !a && !b ? 0 : !a ? 1 : -1;
   } else if (typeof a === "number" && typeof b === "number") {
-    return a - b;
+    return compareNumbers(a, b);
   } else if (typeof a === "bigint" && typeof b === "bigint") {
     return a < b ? -1 : a > b ? 1 : 0;
   } else if (typeof a === "string" && typeof b === "string") {
@@ -135,6 +135,17 @@ export function compare<T extends Comparable>(a: T, b: T): number {
   } else {
     throw new Error(`Unsupported compare ${a}, ${b}`);
   }
+}
+
+function compareNumbers(a: number, b: number): number {
+  const aIsNaN = isNaN(a);
+  const bIsNaN = isNaN(b);
+  if (aIsNaN && bIsNaN) return 0;
+  if (aIsNaN) return 1; // NaN sorts to end (like undefined)
+  if (bIsNaN) return -1;
+  const diff = a - b;
+  // Watch out for Infinity-Infinity=NaN
+  return isNaN(diff) ? 0 : diff;
 }
 
 /**
