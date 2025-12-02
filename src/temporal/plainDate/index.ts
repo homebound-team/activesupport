@@ -13,4 +13,5 @@ import "./startOfWeek";
 import "./startOfYear";
 import "./toInterval";
 import "./toLegacyDate";
+import "./toString";
 import "./toZonedDateTime";
