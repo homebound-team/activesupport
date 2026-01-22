@@ -31,6 +31,22 @@ describe("keyBy", () => {
     expect(result).toThrow("a already had a value assigned");
   });
 
+  it("does not throw when duplicate keys are generated for the same value", () => {
+    // Given an array of structs with colliding elements
+    const a = [
+      { foo: "a", bar: 1 },
+      { foo: "b", bar: 2 },
+      { foo: "a", bar: 1 },
+    ];
+    // When we call keyBy with a callback that collides but produces the same values
+    const result = a.keyBy(
+      (el) => el.foo,
+      (el) => el.bar,
+    );
+    // Then we get back a record with unique key/value pairs
+    expect(result).toEqual({ a: 1, b: 2 });
+  });
+
   it("returns a record keyed by the result of the callback", () => {
     // Given an array of structs
     const a = [
@@ -82,6 +98,28 @@ describe("keyByObject", () => {
     const result = () => a.keyByObject((el) => el.foo);
     // Then we get an error
     expect(result).toThrow("already had a value assigned");
+  });
+
+  it("does not throw when duplicate keys are generated for the same value", () => {
+    // Given an array of structs with colliding elements
+    const duplicateFoo = { a: 5 };
+    const a = [
+      { foo: duplicateFoo, bar: 1 },
+      { foo: "b", bar: 2 },
+      { foo: duplicateFoo, bar: 1 },
+    ];
+    // When we call keyByObject with a callback that collides but produces the same values
+    const result = a.keyByObject(
+      (el) => el.foo,
+      (el) => el.bar,
+    );
+    // Then we get a map with unique key/value pairs
+    expect(result).toEqual(
+      new Map<any, number>([
+        [{ a: 5 }, 1],
+        ["b", 2],
+      ]),
+    );
   });
 
   it("returns a map keyed by the result of the callback", () => {

@@ -4,15 +4,15 @@ declare global {
   interface Array<T> {
     /**
      * Creates a record indexed by a field value from each element.
-     * Throws an error if duplicate keys are found.
+     * Throws an error if duplicate keys are found for different elements.  Use `groupBy` to allow duplicates.
      * @param field The field name to use as the key
      * @returns A record mapping field values to elements
      * @example [{name: "Alice", age: 25}].keyBy("name") //=> {Alice: {name: "Alice", age: 25}}
      */
     keyBy<K extends keyof T>(field: T[K] extends PropertyKey ? T[K] : never): Record<PropertyKey, T>;
     /**
-     * Creates a record indexed by a key extracted from each element.
-     * Throws an error if duplicate keys are found. Use `groupBy` if you want to allow duplicates.
+     * Creates a record indexed by a field value from each element.
+     * Throws an error if duplicate keys are found for different elements.  Use `groupBy` to allow duplicates.
      * @param fn A function that returns the key for each element
      * @param valueFn Optional function to transform each element before storing
      * @returns A record mapping keys to values
@@ -23,7 +23,8 @@ declare global {
     keyBy<K extends PropertyKey, Y = T>(fn: CallbackFn<T, K>, valueFn?: CallbackFn<T, Y>): Record<K, Y>;
     /**
      * Creates a Map indexed by any object key (not limited to property keys).
-     * Throws an error if duplicate keys are found. Useful when keys are objects or complex types.
+     * Throws an error if duplicate keys are found for different elements.
+     * Useful when keys are objects or complex types.
      * @param fn A function that returns the key (can be any object) for each element
      * @param valueFn Optional function to transform each element before storing
      * @returns A Map from keys to values
@@ -35,15 +36,15 @@ declare global {
   interface ReadonlyArray<T> {
     /**
      * Creates a record indexed by a field value from each element.
-     * Throws an error if duplicate keys are found.
+     * Throws an error if duplicate keys are found for different elements.  Use `groupBy` to allow duplicates.
      * @param field The field name to use as the key
      * @returns A record mapping field values to elements
      * @example [{name: "Alice", age: 25}].keyBy("name") //=> {Alice: {name: "Alice", age: 25}}
      */
     keyBy<K extends keyof T>(field: T[K] extends PropertyKey ? T[K] : never): Record<PropertyKey, T>;
     /**
-     * Creates a record indexed by a key extracted from each element.
-     * Throws an error if duplicate keys are found. Use `groupBy` if you want to allow duplicates.
+     * Creates a record indexed by a field value from each element.
+     * Throws an error if duplicate keys are found for different elements.  Use `groupBy` to allow duplicates.
      * @param fn A function that returns the key for each element
      * @param valueFn Optional function to transform each element before storing
      * @returns A record mapping keys to values
@@ -54,7 +55,8 @@ declare global {
     keyBy<K extends PropertyKey, Y = T>(fn: CallbackFnRO<T, K>, valueFn?: CallbackFnRO<T, Y>): Record<K, Y>;
     /**
      * Creates a Map indexed by any object key (not limited to property keys).
-     * Throws an error if duplicate keys are found. Useful when keys are objects or complex types.
+     * Throws an error if duplicate keys are found for different elements.
+     * Useful when keys are objects or complex types.
      * @param fn A function that returns the key (can be any object) for each element
      * @param valueFn Optional function to transform each element before storing
      * @returns A Map from keys to values
@@ -72,13 +74,16 @@ Array.prototype.keyBy = function <
   Y = T,
 >(this: T[], fnOrKey: CallbackFn<T, K> | TKK, valueFn?: CallbackFn<T, Y>) {
   const result = {} as Record<K, Y>;
-  const fn = typeof fnOrKey === "function" ? fnOrKey : (x: T) => x[fnOrKey] as K;
+  const fn = typeof fnOrKey === "function" ? fnOrKey : undefined;
+  const key = typeof fnOrKey === "function" ? undefined : fnOrKey;
   this.forEach((e, i, a) => {
-    const group = fn(e, i, a);
-    if (result[group] !== undefined) {
-      throw new Error(`${String(group)} already had a value assigned`);
+    const group = fn ? fn(e, i, a) : (e[key as TKK] as K);
+    const value = valueFn ? valueFn(e, i, a) : (e as any as Y);
+    if (group in result) {
+      if (result[group] !== value) throw new Error(`${String(group)} already had a value assigned`);
+    } else {
+      result[group] = value;
     }
-    result[group] = valueFn ? valueFn(e, i, a) : (e as any as Y);
   });
   return result;
 };
@@ -87,10 +92,12 @@ Array.prototype.keyByObject = function <O, T, Y = T>(this: T[], fn: CallbackFn<T
   const result = new Map<O, Y>();
   this.forEach((e, i, a) => {
     const group = fn(e, i, a);
+    const value = valueFn ? valueFn(e, i, a) : (e as any as Y);
     if (result.has(group)) {
-      throw new Error(`${String(group)} already had a value assigned`);
+      if (result.get(group) !== value) throw new Error(`${String(group)} already had a value assigned`);
+    } else {
+      result.set(group, value);
     }
-    result.set(group, valueFn ? valueFn(e, i, a) : (e as any as Y));
   });
   return result;
 };
