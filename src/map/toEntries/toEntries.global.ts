@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { toEntriesImpl } from "src/map/toEntries/toEntries.impl";
 
 declare global {
   interface Map<K, V> {
@@ -14,6 +14,4 @@ declare global {
   }
 }
 
-Map.prototype.toEntries = function <K, V>(this: Map<K, V>): [K, V][] {
-  return this.entries().toArray();
-};
+Map.prototype.toEntries = toEntriesImpl;

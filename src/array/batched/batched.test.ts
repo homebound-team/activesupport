@@ -1,4 +1,4 @@
-import "./index";
+import "./batched.global";
 
 describe("batched", () => {
   it("returns an array of arrays where each sub array's length matches the batch size", async () => {

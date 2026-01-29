@@ -1,5 +1,6 @@
+import { asyncSomeImpl } from "src/array/asyncSome/asyncSome.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
-import { MaybePromise, maybePromiseThen } from "src/utils";
+import { MaybePromise } from "src/utils";
 
 declare global {
   interface Array<T> {
@@ -29,12 +30,4 @@ declare global {
   }
 }
 
-Array.prototype.asyncSome = async function <T>(
-  this: T[],
-  predicate: CallbackFn<T, MaybePromise<boolean>>,
-): Promise<boolean> {
-  const asyncResults = this.map((e, i, a) =>
-    maybePromiseThen(predicate(e, i, a), (result) => result || Promise.reject()),
-  );
-  return Promise.any(asyncResults).catch(() => false);
-};
+Array.prototype.asyncSome = asyncSomeImpl;

@@ -1,4 +1,4 @@
-import "./index";
+import "./findAfter.global";
 
 describe("findAfter", () => {
   it("returns the element that follows the matched element in the array", async () => {

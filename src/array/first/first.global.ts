@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { firstImpl } from "src/array/first/first.impl";
 
 declare global {
   interface Array<T> {
@@ -22,7 +22,5 @@ declare global {
 
 Object.defineProperty(Array.prototype, "first", {
   enumerable: false,
-  get: function () {
-    return this.isEmpty ? undefined : this[0];
-  },
+  get: firstImpl,
 });

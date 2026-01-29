@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { removeImpl } from "src/array/remove/remove.impl";
 
 declare global {
   interface Array<T> {
@@ -21,6 +21,4 @@ declare global {
   }
 }
 
-Array.prototype.remove = function <T>(this: T[], ...elements: readonly T[]) {
-  this.removeAll(elements);
-};
+Array.prototype.remove = removeImpl;

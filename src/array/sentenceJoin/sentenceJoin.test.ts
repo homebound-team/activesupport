@@ -1,4 +1,4 @@
-import "./index";
+import "./sentenceJoin.global";
 
 describe("sentenceJoin", () => {
   it("returns just the element as a string for a single element array", () => {

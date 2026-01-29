@@ -1,4 +1,4 @@
-import "./maxBy";
+import "./maxBy.global";
 
 describe("maxBy", () => {
   it("should return maximum element by based on the callback", () => {

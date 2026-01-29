@@ -1,5 +1,5 @@
+import { mapToObjectImpl } from "src/array/mapToObject/mapToObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
-import { MaybePromise, maybePromiseAllThen } from "src/utils";
 
 declare global {
   interface Array<T> {
@@ -41,14 +41,4 @@ declare global {
   }
 }
 
-function mapToObject<T, K extends PropertyKey, V>(fn: CallbackFn<T, readonly [K, V]>): Record<K, V>;
-function mapToObject<T, K extends PropertyKey, V>(fn: CallbackFn<T, Promise<readonly [K, V]>>): Promise<Record<K, V>>;
-function mapToObject<T, K extends PropertyKey, V>(
-  this: T[],
-  fn: CallbackFn<T, MaybePromise<readonly [K, V]>>,
-): MaybePromise<Record<K, V>> {
-  const maybePromises = this.map(fn);
-  return maybePromiseAllThen(maybePromises, (r) => r.toObject());
-}
-
-Array.prototype.mapToObject = mapToObject;
+Array.prototype.mapToObject = mapToObjectImpl;

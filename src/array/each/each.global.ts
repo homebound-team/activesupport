@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { eachImpl } from "src/array/each/each.impl";
 
 declare global {
   interface Array<T> {
@@ -26,7 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.each = function <T>(this: T[], f: (el: T, index: number, array: T[]) => boolean): T[] {
-  this.forEach(f);
-  return this;
-};
+Array.prototype.each = eachImpl;

@@ -1,4 +1,4 @@
-import "./index";
+import "./last.global";
 
 describe("last", () => {
   it("returns the the last element of an array", async () => {

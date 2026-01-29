@@ -1,4 +1,4 @@
-import "./index";
+import "./findAndRemove.global";
 
 describe("findAndRemove", () => {
   it("finds an object", () => {

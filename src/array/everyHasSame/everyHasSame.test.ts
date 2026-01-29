@@ -1,4 +1,4 @@
-import "./index";
+import "./everyHasSame.global";
 
 describe("everyHasSame", () => {
   it("returns true if all elements match", () => {

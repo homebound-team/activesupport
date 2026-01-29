@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncForEach.global";
 
 describe("asyncForEach", () => {
   it("awaits the callback for each element in the array ", async () => {

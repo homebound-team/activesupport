@@ -1,4 +1,4 @@
-import "./minBy";
+import "./minBy.global";
 
 describe("minBy", () => {
   it("should return minimum element by based on the callback", () => {

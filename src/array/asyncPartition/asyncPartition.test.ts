@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncPartition.global";
 
 describe("partition", () => {
   it("works on empty arrays", async () => {

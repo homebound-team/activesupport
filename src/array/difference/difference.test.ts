@@ -1,4 +1,4 @@
-import "./difference";
+import "./difference.global";
 
 describe("difference", () => {
   it("should return elements present in the current array and not the provided array", () => {

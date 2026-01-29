@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { findFirstImpl } from "src/array/findFirst/findFirst.impl";
 
 declare global {
   interface Array<T> {
@@ -28,12 +28,4 @@ declare global {
   }
 }
 
-Array.prototype.findFirst = function <T, U>(this: T[], fn: (element: T) => U | undefined): U | undefined {
-  for (const element of this) {
-    const result = fn(element);
-    if (result !== undefined) {
-      return result;
-    }
-  }
-  return undefined;
-};
+Array.prototype.findFirst = findFirstImpl;

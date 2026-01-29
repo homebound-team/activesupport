@@ -1,4 +1,4 @@
-import "./index";
+import "./groupByObject.global";
 
 describe("groupByObject", () => {
   it("can group objects as-is", () => {

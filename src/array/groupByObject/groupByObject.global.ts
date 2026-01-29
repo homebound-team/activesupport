@@ -1,3 +1,4 @@
+import { groupByObjectImpl } from "src/array/groupByObject/groupByObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -26,20 +27,4 @@ declare global {
   }
 }
 
-Array.prototype.groupByObject = function <T, O, Y = T>(
-  this: T[],
-  fn: CallbackFn<T, O>,
-  valueFn?: CallbackFn<T, Y>,
-): [O, Y[]][] {
-  const result = new Map<O, Y[]>();
-  this.forEach((e, i, a) => {
-    const key = fn(e, i, a);
-    let group = result.get(key);
-    if (group === undefined) {
-      group = [];
-      result.set(key, group);
-    }
-    group.push(valueFn ? valueFn(e, i, a) : (e as any as Y));
-  });
-  return [...result.entries()];
-};
+Array.prototype.groupByObject = groupByObjectImpl;

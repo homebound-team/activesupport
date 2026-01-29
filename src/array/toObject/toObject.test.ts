@@ -1,4 +1,4 @@
-import "./index";
+import "./toObject.global";
 
 describe("toObject", () => {
   it("returns an object from an array of arrays of key/value pairs", () => {

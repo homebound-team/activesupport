@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { newPD, newZDT } from "../temporal/setupTests";
-import "./index";
+import "./min.global";
 
 describe("min", () => {
   it("returns the smallest sorting string from an array", () => {

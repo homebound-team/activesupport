@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncFlatMap.global";
 
 describe("asyncFlatMap", () => {
   it("returns a flattened array of the result of the callback", async () => {

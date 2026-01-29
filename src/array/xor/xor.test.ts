@@ -1,4 +1,4 @@
-import "./xor";
+import "./xor.global";
 
 describe("xor", () => {
   it("should return elements that are in either array but not both", () => {

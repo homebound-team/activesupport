@@ -1,3 +1,4 @@
+import { findAndRemoveImpl } from "src/array/findAndRemove/findAndRemove.impl";
 import { CallbackFn } from "src/array/utils";
 
 declare global {
@@ -14,9 +15,4 @@ declare global {
   }
 }
 
-Array.prototype.findAndRemove = function <T>(this: T[], fn: CallbackFn<T, boolean>): T | undefined {
-  const val = this.find(fn);
-  if (!val) return undefined;
-  this.remove(val);
-  return val;
-};
+Array.prototype.findAndRemove = findAndRemoveImpl;

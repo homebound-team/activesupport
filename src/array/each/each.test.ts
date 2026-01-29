@@ -1,4 +1,4 @@
-import "./index";
+import "./each.global";
 
 describe("each", () => {
   it("runs the callback for each element in the array then returns the array itself", async () => {

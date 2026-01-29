@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { batchedImpl } from "src/array/batched/batched.impl";
 
 declare global {
   interface Array<T> {
@@ -28,10 +28,4 @@ declare global {
   }
 }
 
-Array.prototype.batched = function <T>(this: T[], n: number): T[][] {
-  const result = [] as T[][];
-  for (let i = 0; i < this.length; i += n) {
-    result.push(this.slice(i, i + n));
-  }
-  return result;
-};
+Array.prototype.batched = batchedImpl;

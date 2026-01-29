@@ -1,4 +1,4 @@
-import "./getOrCreate";
+import "./getOrCreate.global";
 
 describe("getOrCreate", () => {
   it("returns existing entities", () => {

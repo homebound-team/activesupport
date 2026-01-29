@@ -1,4 +1,4 @@
-import "./index";
+import "./without.global";
 
 describe("without", () => {
   it("removes without side-effect", () => {

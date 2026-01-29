@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { isEmptyImpl } from "src/array/isEmpty/isEmpty.impl";
 
 declare global {
   interface Array<T> {
@@ -22,7 +22,5 @@ declare global {
 
 Object.defineProperty(Array.prototype, "isEmpty", {
   enumerable: false,
-  get: function () {
-    return this.length === 0;
-  },
+  get: isEmptyImpl,
 });

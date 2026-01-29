@@ -1,4 +1,4 @@
-import "./index";
+import "./hasSameElements.global";
 
 describe("hasSameElements", () => {
   it("basic identical arrays", () => {

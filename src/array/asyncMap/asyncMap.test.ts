@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncMap.global";
 
 describe("asyncMap", () => {
   it("returns an array of the result of the callback called on each element", async () => {

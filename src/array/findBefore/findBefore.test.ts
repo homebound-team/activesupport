@@ -1,4 +1,4 @@
-import "./index";
+import "./findBefore.global";
 
 describe("findBefore", () => {
   it("returns the element that precedes the matched element in the array", async () => {

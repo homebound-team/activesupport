@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { toObjectImpl } from "src/array/toObject/toObject.impl";
 
 declare global {
   interface Array<T> {
@@ -40,6 +40,4 @@ declare global {
   }
 }
 
-Array.prototype.toObject = function <K extends PropertyKey, V extends any>(this: [K, V][]): Record<K, V> {
-  return Object.fromEntries(this) as any;
-};
+Array.prototype.toObject = toObjectImpl;

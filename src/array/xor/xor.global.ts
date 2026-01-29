@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { xorImpl } from "src/array/xor/xor.impl";
 
 declare global {
   interface Array<T> {
@@ -26,8 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.xor = function <T>(this: T[], other: readonly T[]): T[] {
-  const a = new Set(this);
-  const b = new Set(other);
-  return [...a.difference(b), ...b.difference(a)];
-};
+Array.prototype.xor = xorImpl;

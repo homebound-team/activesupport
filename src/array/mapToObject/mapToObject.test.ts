@@ -1,4 +1,4 @@
-import "./index";
+import "./mapToObject.global";
 
 describe("mapToObject", () => {
   it("returns an object from a callback that returns key/value pairs for each element", () => {

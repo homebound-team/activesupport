@@ -1,4 +1,4 @@
-import { isDefined } from "src/utils";
+import { compactImpl } from "src/array/compact/compact.impl";
 
 declare global {
   interface Array<T> {
@@ -22,6 +22,4 @@ declare global {
   }
 }
 
-Array.prototype.compact = function () {
-  return this.filter(isDefined);
-};
+Array.prototype.compact = compactImpl;

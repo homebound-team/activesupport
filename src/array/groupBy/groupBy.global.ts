@@ -1,3 +1,4 @@
+import { groupByImpl } from "src/array/groupBy/groupBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -30,16 +31,4 @@ declare global {
   }
 }
 
-Array.prototype.groupBy = function <K extends PropertyKey, T, Y = T>(
-  this: T[],
-  fn: CallbackFn<T, K>,
-  valueFn?: CallbackFn<T, Y>,
-): Record<K, Y[]> {
-  const result = {} as Record<K, Y[]>;
-  this.forEach((e, i, a) => {
-    const group = fn(e, i, a);
-    result[group] ??= [];
-    result[group].push(valueFn ? valueFn(e, i, a) : (e as any as Y));
-  });
-  return result;
-};
+Array.prototype.groupBy = groupByImpl;

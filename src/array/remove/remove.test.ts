@@ -1,4 +1,4 @@
-import "./index";
+import "./remove.global";
 
 describe("remove", () => {
   it("removes an element from an array", () => {

@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { getOrCreateImpl } from "./getOrCreate.impl";
 
 declare global {
   interface Map<K, V> {
@@ -16,8 +16,4 @@ declare global {
   }
 }
 
-Map.prototype.getOrCreate = function <K, V>(this: Map<K, V>, key: K, create: () => V): V {
-  const result = this.get(key) ?? create();
-  this.has(key) || this.set(key, result);
-  return result;
-};
+Map.prototype.getOrCreate = getOrCreateImpl;

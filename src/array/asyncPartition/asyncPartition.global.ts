@@ -1,3 +1,4 @@
+import { asyncPartitionImpl } from "src/array/asyncPartition/asyncPartition.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { MaybePromise } from "src/utils";
 
@@ -45,15 +46,4 @@ declare global {
   }
 }
 
-Array.prototype.asyncPartition = async function <T, U = T>(
-  this: T[],
-  f: CallbackFn<T, Promise<boolean>>,
-  valueFn?: CallbackFn<T, MaybePromise<U>>,
-): Promise<[U[], U[]]> {
-  return this.asyncMap((e, i, a) => Promise.all([f(e, i, a), valueFn ? valueFn(e, i, a) : (e as any)])).then((result) =>
-    result.partition(
-      ([result]) => result,
-      ([, result]) => result,
-    ),
-  );
-};
+Array.prototype.asyncPartition = asyncPartitionImpl;

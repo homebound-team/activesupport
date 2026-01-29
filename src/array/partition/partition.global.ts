@@ -1,3 +1,4 @@
+import { partitionImpl } from "src/array/partition/partition.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -40,12 +41,4 @@ declare global {
   }
 }
 
-Array.prototype.partition = function <T, U = T>(
-  this: T[],
-  f: CallbackFn<T, boolean>,
-  valueFn?: CallbackFn<T, U>,
-): [U[], U[]] {
-  const [trueElements, falseElements] = [[] as U[], [] as U[]];
-  this.forEach((e, i, a) => (f(e, i, a) ? trueElements : falseElements).push(valueFn ? valueFn(e, i, a) : (e as any)));
-  return [trueElements, falseElements];
-};
+Array.prototype.partition = partitionImpl;

@@ -1,4 +1,4 @@
-import "./index";
+import "./partition.global";
 
 describe("partition", () => {
   it("works on empty arrays", () => {

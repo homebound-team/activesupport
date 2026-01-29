@@ -1,4 +1,5 @@
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { everyHasSameImpl } from "./everyHasSame.impl";
 
 declare global {
   interface Array<T> {
@@ -26,9 +27,4 @@ declare global {
   }
 }
 
-Array.prototype.everyHasSame = function <T>(this: T[], fn: CallbackFn<T, unknown>): boolean {
-  if (this.isEmpty) return true;
-  const [e, ...rest] = this;
-  const first = fn(e, 0, this);
-  return rest.every((e, i) => fn(e, i + 1, this) === first);
-};
+Array.prototype.everyHasSame = everyHasSameImpl;

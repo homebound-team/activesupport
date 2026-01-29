@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { findAfterImpl } from "src/array/findAfter/findAfter.impl";
 
 declare global {
   interface Array<T> {
@@ -26,7 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.findAfter = function <T>(this: T[], el: T): T | undefined {
-  const index = this.last === el ? -1 : this.indexOf(el);
-  return index === -1 ? undefined : this[index + 1];
-};
+Array.prototype.findAfter = findAfterImpl;

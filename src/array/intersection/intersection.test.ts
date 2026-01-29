@@ -1,4 +1,4 @@
-import "./intersection";
+import "./intersection.global";
 
 describe("Array.intersection", () => {
   it("should return elements present in both arrays", () => {

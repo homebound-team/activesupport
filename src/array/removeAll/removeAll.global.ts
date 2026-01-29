@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { removeAllImpl } from "src/array/removeAll/removeAll.impl";
 
 declare global {
   interface Array<T> {
@@ -13,12 +13,4 @@ declare global {
   }
 }
 
-Array.prototype.removeAll = function <T>(this: T[], elements: readonly T[]) {
-  if (elements.length === 0) return;
-  // start from the end of the array so we don't need to worry about re-ordering
-  for (let index = this.length - 1; index >= 0; index--) {
-    if (elements.includes(this[index])) {
-      this.splice(index, 1);
-    }
-  }
-};
+Array.prototype.removeAll = removeAllImpl;

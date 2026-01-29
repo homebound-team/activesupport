@@ -1,29 +1,21 @@
-import "./index";
+import "./unique.global";
 
-describe("uniqueByKey", () => {
+describe("unique", () => {
   it("removes duplicates", () => {
-    const arr = [{ foo: 1 }, { foo: 2 }, { foo: 1 }];
-    const result = arr.uniqueByKey("foo");
-    expect(result).toEqual([{ foo: 1 }, { foo: 2 }]);
+    const arr = [1, 2, 2, 3, 3, 3];
+    const result = arr.unique();
+    expect(result).toEqual([1, 2, 3]);
   });
 
-  it("uses the first object if there are multiple matching elements in the array", () => {
-    const arr = [{ foo: 1, bar: 2 }, { foo: 2 }, { foo: 1, baz: 3 }];
-    const result = arr.uniqueByKey("foo");
-    expect(result).toEqual([{ foo: 1, bar: 2 }, { foo: 2 }]);
-  });
-});
-
-describe("uniqueBy", () => {
-  it("removes duplicates", () => {
-    const arr = [{ foo: 1 }, { foo: 2 }, { foo: 1 }];
-    const result = arr.uniqueBy((obj) => obj.foo);
-    expect(result).toEqual([{ foo: 1 }, { foo: 2 }]);
+  it("returns an empty array for an empty array", () => {
+    const arr: number[] = [];
+    const result = arr.unique();
+    expect(result).toEqual([]);
   });
 
-  it("uses the first object if there are multiple matching elements in the array", () => {
-    const arr = [{ foo: 1, bar: 2 }, { foo: 2 }, { foo: 1, baz: 3 }];
-    const result = arr.uniqueBy((obj) => obj.foo);
-    expect(result).toEqual([{ foo: 1, bar: 2 }, { foo: 2 }]);
+  it("preserves order of first occurrence", () => {
+    const arr = [3, 1, 2, 1, 3, 2];
+    const result = arr.unique();
+    expect(result).toEqual([3, 1, 2]);
   });
 });

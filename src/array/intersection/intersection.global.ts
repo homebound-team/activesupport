@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { intersectionImpl } from "src/array/intersection/intersection.impl";
 
 declare global {
   interface Array<T> {
@@ -26,6 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.intersection = function <T>(this: T[], other: T[]): T[] {
-  return [...new Set(this).intersection(new Set(other))];
-};
+Array.prototype.intersection = intersectionImpl;

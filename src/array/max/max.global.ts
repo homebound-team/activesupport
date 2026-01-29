@@ -1,5 +1,6 @@
+import { maxImpl } from "src/array/max/max.impl";
 import { CallbackFn, CallbackFnRO, ToArray, ToReadonlyArray } from "src/array/utils";
-import { Comparable, compare } from "src/utils";
+import { Comparable } from "src/utils";
 
 declare global {
   interface Array<T> {
@@ -39,12 +40,4 @@ declare global {
   }
 }
 
-Array.prototype.max = function <T, R extends Comparable>(this: ToArray<Comparable> | T[], fn?: CallbackFn<T, R>): R {
-  const values = fn ? ((this as T[]).map(fn) as R[]) : (this as R[]);
-  let max = values.first;
-  for (let i = 1; i < values.length; i++) {
-    const value = values[i];
-    if (compare(value, max!) > 0) max = value;
-  }
-  return max!;
-};
+Array.prototype.max = maxImpl;

@@ -1,4 +1,4 @@
-import { hasSameLarge, hasSameSmall } from "./hasSameElements";
+import { notSameElementsImpl } from "src/array/notSameElements/notSameElements.impl";
 
 declare global {
   interface Array<T> {
@@ -28,12 +28,4 @@ declare global {
   }
 }
 
-Array.prototype.notSameElements = function <T>(this: T[], other: readonly T[]): boolean {
-  if (this.length !== other.length) return true;
-  // Under 25 elements just do the linear scan / O(n^2) version
-  if (this.length <= 25 && other.length <= 25) {
-    return !hasSameSmall(this, other);
-  } else {
-    return !hasSameLarge(this, other);
-  }
-};
+Array.prototype.notSameElements = notSameElementsImpl;

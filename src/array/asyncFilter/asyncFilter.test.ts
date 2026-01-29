@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncFilter.global";
 
 describe("asyncFilter", () => {
   it("returns elements that match the predicate (even number)", async () => {

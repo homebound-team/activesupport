@@ -1,4 +1,4 @@
-import "./index";
+import "./indexBy.global";
 
 describe("indexBy", () => {
   it("can index by multiple keys per element", () => {

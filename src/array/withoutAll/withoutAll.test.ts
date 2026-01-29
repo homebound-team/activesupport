@@ -1,4 +1,4 @@
-import "./index";
+import "./withoutAll.global";
 
 describe("withoutAll", () => {
   it("removes array without side-effect", () => {

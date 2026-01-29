@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { differenceImpl } from "src/array/difference/difference.impl";
 
 declare global {
   interface Array<T> {
@@ -26,6 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.difference = function <T>(this: T[], other: T[]): T[] {
-  return [...new Set(this).difference(new Set(other))];
-};
+Array.prototype.difference = differenceImpl;

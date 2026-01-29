@@ -1,4 +1,4 @@
-import "./index";
+import "./compact.global";
 
 describe("compact", () => {
   it("returns an array with undefined and null elements removed", async () => {

@@ -1,4 +1,4 @@
-import "./index";
+import "./nonEmpty.global";
 
 describe("nonEmpty", () => {
   it("returns true for an array with elements", async () => {

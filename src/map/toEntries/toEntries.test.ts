@@ -1,6 +1,6 @@
-import "./toEntries";
+import "./toEntries.global";
 
-describe("Map.toEntries", () => {
+describe("toEntries", () => {
   it("returns an array of key/value pairs from a Map", () => {
     // Given a Map
     const m = new Map<string, number | string>([

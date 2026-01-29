@@ -1,4 +1,4 @@
-import "./index";
+import "./findFirst.global";
 
 describe("findFirst", () => {
   it("returns the first defined result from the lambda", async () => {

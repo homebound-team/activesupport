@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { withoutAllImpl } from "src/array/withoutAll/withoutAll.impl";
 
 declare global {
   interface Array<T> {
@@ -26,8 +26,4 @@ declare global {
   }
 }
 
-Array.prototype.withoutAll = function <T>(this: T[], elements: T[]): Array<T> {
-  const result = [...this];
-  result.removeAll(elements);
-  return result;
-};
+Array.prototype.withoutAll = withoutAllImpl;

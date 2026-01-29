@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { newPD, newZDT } from "../temporal/setupTests";
-import "./index";
+import "./max.global";
 
 describe("max", () => {
   it("returns the largest highest sorting string from an array", () => {

@@ -1,4 +1,4 @@
-import "./index";
+import "./first.global";
 
 describe("first", () => {
   it("returns the the first element of an array", async () => {

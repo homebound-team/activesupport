@@ -1,4 +1,4 @@
-import "./index";
+import "./groupBy.global";
 
 describe("groupBy", () => {
   it("returns a record of arrays keyed by the callback", () => {

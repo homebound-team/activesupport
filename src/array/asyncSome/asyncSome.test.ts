@@ -1,4 +1,4 @@
-import "./index";
+import "./asyncSome.global";
 
 describe("asyncSome", () => {
   it("returns true if any element matches predicate (even number)", async () => {

@@ -1,4 +1,4 @@
-import "./index";
+import "./count.global";
 
 describe("count", () => {
   it("returns an the number of elements that match the predicate", async () => {

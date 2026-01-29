@@ -1,4 +1,4 @@
-export {}; // needed for TS to realize this file can be imported
+import { sentenceJoinImpl } from "src/array/sentenceJoin/sentenceJoin.impl";
 
 declare global {
   interface Array<T> {
@@ -30,14 +30,4 @@ declare global {
   }
 }
 
-Array.prototype.sentenceJoin = function <T>(this: T[], opts?: { word?: "and" | "or"; separator?: string }): string {
-  const { word = "and", separator = ", " } = opts ?? {};
-
-  if (this.length > 2) {
-    return `${this.slice(0, -1).join(separator)} ${word} ${this.last}`;
-  } else if (this.length === 2) {
-    return `${this.first} ${word} ${this.last}`;
-  } else {
-    return `${this.first ?? ""}`;
-  }
-};
+Array.prototype.sentenceJoin = sentenceJoinImpl;

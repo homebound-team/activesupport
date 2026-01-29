@@ -1,5 +1,5 @@
+import { countImpl } from "src/array/count/count.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
-import { MaybePromise, maybePromiseAllThen } from "src/utils";
 
 declare global {
   interface Array<T> {
@@ -39,11 +39,4 @@ declare global {
   }
 }
 
-function count<T>(this: T[], fn: CallbackFn<T, boolean>): number;
-function count<T>(this: T[], fn: CallbackFn<T, Promise<boolean>>): Promise<number>;
-function count<T>(this: T[], fn: CallbackFn<T, MaybePromise<boolean>>): MaybePromise<number> {
-  const maybePromises = this.map(fn as any) as MaybePromise<boolean>[];
-  return maybePromiseAllThen(maybePromises, (result) => result.filter((r) => r).length);
-}
-
-Array.prototype.count = count;
+Array.prototype.count = countImpl;
