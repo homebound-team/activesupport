@@ -38,7 +38,3 @@ Date.prototype.toTemporalInstant = toTemporalInstant;
 Date.prototype.toZonedDateTime = function (tzLike: Temporal.TimeZoneLike) {
   return this.toTemporalInstant().toZonedDateTimeISO(tzLike);
 };
-
-Date.prototype.toPlainDate = function (tzLike: Temporal.TimeZoneLike) {
-  return this.toTemporalInstant().toZonedDateTimeISO(tzLike).toPlainDate();
-};
