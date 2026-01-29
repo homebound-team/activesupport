@@ -1,5 +1,5 @@
-import { Comparable, compare } from "../utils";
-import { CallbackFn, CallbackFnRO, ToArray, ToReadonlyArray } from "./index";
+import { CallbackFn, CallbackFnRO, ToArray, ToReadonlyArray } from "src/array/utils";
+import { Comparable, compare } from "src/utils";
 
 declare global {
   interface Array<T> {

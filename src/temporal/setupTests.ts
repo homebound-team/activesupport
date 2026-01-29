@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals";
 import { Temporal } from "temporal-polyfill";
-import "../array";
+import "../array/utils";
 import "../object";
 import "./index";
 

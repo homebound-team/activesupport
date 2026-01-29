@@ -1,5 +1,5 @@
-import { MaybePromise, maybePromiseThen } from "../utils";
-import { CallbackFn, CallbackFnRO } from "./index";
+import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { MaybePromise, maybePromiseThen } from "src/utils";
 
 declare global {
   interface Array<T> {

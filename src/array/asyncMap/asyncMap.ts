@@ -1,4 +1,4 @@
-import { CallbackFn, CallbackFnRO } from "./index";
+import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
   interface Array<T> {

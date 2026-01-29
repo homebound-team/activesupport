@@ -1,5 +1,5 @@
+import { isDefined } from "src/utils";
 import { Temporal } from "temporal-polyfill";
-import { isDefined } from "../../utils";
 
 declare module "temporal-polyfill" {
   namespace Temporal {

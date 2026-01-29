@@ -1,4 +1,4 @@
-import { Comparable, compare, KeysOfType } from "../utils";
+import { Comparable, compare, KeysOfType } from "src/utils";
 
 declare global {
   interface Array<T> {

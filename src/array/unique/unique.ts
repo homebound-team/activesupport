@@ -1,5 +1,5 @@
+import { Comparable, KeysOfType } from "src/utils";
 import { Temporal } from "temporal-polyfill";
-import { Comparable, KeysOfType } from "../utils";
 
 declare global {
   interface Array<T> {

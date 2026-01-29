@@ -15,5 +15,5 @@ declare global {
 }
 
 Map.prototype.toEntries = function <K, V>(this: Map<K, V>): [K, V][] {
-  return [...this.entries()];
+  return this.entries().toArray();
 };
