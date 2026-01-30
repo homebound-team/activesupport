@@ -1,5 +1,5 @@
-import { asyncMapImpl } from "src/array/asyncMap/asyncMap.impl";
-import { partitionImpl } from "src/array/partition/partition.impl";
+import { asyncMap } from "src/array/asyncMap/asyncMap.impl";
+import { partition } from "src/array/partition/partition.impl";
 import { CallbackFn } from "src/array/utils";
 import { MaybePromise } from "src/utils";
 
@@ -8,15 +8,10 @@ export async function asyncPartitionImpl<T, U = T>(
   fn: CallbackFn<T, Promise<boolean>>,
   valueFn?: CallbackFn<T, MaybePromise<U>>,
 ): Promise<[U[], U[]]> {
-  const results = await asyncMapImpl.call<T[], [CallbackFn<T, Promise<[boolean, U]>>], Promise<[boolean, U][]>>(
-    this,
-    (e, i, a) => Promise.all([fn(e, i, a), valueFn ? valueFn(e, i, a) : (e as any)]),
+  const results = await asyncMap(this, (e, i, a) =>
+    Promise.all([fn(e, i, a), valueFn ? valueFn(e, i, a) : (e as any)]),
   );
-  return partitionImpl.call<
-    [boolean, U][],
-    [CallbackFn<[boolean, U], boolean>, CallbackFn<[boolean, U], U>],
-    [U[], U[]]
-  >(
+  return partition(
     results,
     ([result]) => result,
     ([, result]) => result,

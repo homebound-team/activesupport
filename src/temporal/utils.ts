@@ -1,9 +1,9 @@
 import { fail } from "src/utils";
 
-export type BusinessDay = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type BusinessDayOptions = {
-  businessDays?: BusinessDay[];
+  businessDays?: DayOfWeek[];
   // ISO 8601 Date format
   exceptions?: Record<string, boolean>;
 };
@@ -27,8 +27,8 @@ const validSymbol = Symbol("valid");
  * assertValidBusinessDays({ businessDays: [0, 8] }) //=> throws RangeError
  */
 export function assertValidBusinessDays<T>(
-  options: T & { businessDays?: BusinessDay[] },
-): asserts options is T & { businessDays: BusinessDay[] } {
+  options: T & { businessDays?: DayOfWeek[] },
+): asserts options is T & { businessDays: DayOfWeek[] } {
   // This function might be called in a loop, so we add the symbol to the options once we've verified it's valid
   // so we don't need to do it multiple times
   if (validSymbol in options) return;

@@ -1,11 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import {
-  toPlainDateCTImpl,
-  toPlainDateETImpl,
-  toPlainDateMTImpl,
-  toPlainDatePTImpl,
-  toPlainDateUTCImpl,
-} from "./toPlainDate.impl";
+import * as toPlainDate from "./toPlainDate.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -49,8 +43,8 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.toPlainDateUTC = toPlainDateUTCImpl;
-Temporal.ZonedDateTime.prototype.toPlainDateET = toPlainDateETImpl;
-Temporal.ZonedDateTime.prototype.toPlainDateCT = toPlainDateCTImpl;
-Temporal.ZonedDateTime.prototype.toPlainDateMT = toPlainDateMTImpl;
-Temporal.ZonedDateTime.prototype.toPlainDatePT = toPlainDatePTImpl;
+Object.entries(toPlainDate).forEach(([name, impl]) => {
+  Temporal.ZonedDateTime.prototype[name] = function (this: Temporal.ZonedDateTime) {
+    return impl(this);
+  };
+});

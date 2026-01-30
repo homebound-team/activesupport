@@ -1,5 +1,5 @@
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
-import { asyncFilterImpl } from "./asyncFilter.impl";
+import { asyncFilter } from "./asyncFilter.impl";
 
 declare global {
   interface Array<T> {
@@ -25,4 +25,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncFilter = asyncFilterImpl;
+Array.prototype.asyncFilter = function <T>(this: T[], predicate: CallbackFn<T, Promise<boolean>>) {
+  return asyncFilter(this, predicate);
+};

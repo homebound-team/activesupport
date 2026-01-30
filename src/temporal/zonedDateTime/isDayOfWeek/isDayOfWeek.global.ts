@@ -1,13 +1,5 @@
+import * as isDayOfWeek from "src/temporal/zonedDateTime/isDayOfWeek/isDayOfWeek.impl";
 import { Temporal } from "temporal-polyfill";
-import {
-  isFridayImpl,
-  isMondayImpl,
-  isSaturdayImpl,
-  isSundayImpl,
-  isThursdayImpl,
-  isTuesdayImpl,
-  isWednesdayImpl,
-} from "./isDayOfWeek.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -128,37 +120,11 @@ declare module "temporal-polyfill" {
   }
 }
 
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isMonday", {
-  enumerable: false,
-  get: isMondayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isTuesday", {
-  enumerable: false,
-  get: isTuesdayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isWednesday", {
-  enumerable: false,
-  get: isWednesdayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isThursday", {
-  enumerable: false,
-  get: isThursdayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isFriday", {
-  enumerable: false,
-  get: isFridayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isSaturday", {
-  enumerable: false,
-  get: isSaturdayImpl,
-});
-
-Object.defineProperty(Temporal.ZonedDateTime.prototype, "isSunday", {
-  enumerable: false,
-  get: isSundayImpl,
-});
+Object.entries(isDayOfWeek).forEach(([name, impl]) =>
+  Object.defineProperty(Temporal.ZonedDateTime.prototype, `is${name}`, {
+    enumerable: false,
+    get: function (this: Temporal.ZonedDateTime) {
+      return impl(this);
+    },
+  }),
+);

@@ -1,4 +1,4 @@
-import { isWeekendImpl } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
+import { isWeekend } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
 import { BusinessDayOptions } from "src/temporal/utils";
 import { isDefined } from "src/utils";
 import { Temporal } from "temporal-polyfill";
@@ -20,7 +20,7 @@ export function addBusinessDaysImpl(
 
   const isBusinessDay = (date: Temporal.PlainDate) => {
     const exception = exceptions[date.toString()];
-    return isDefined(exception) ? exception : !isWeekendImpl.call(date, options);
+    return isDefined(exception) ? exception : !isWeekend(date, options);
   };
 
   // start on the initial day and continue until we have gone through all the days

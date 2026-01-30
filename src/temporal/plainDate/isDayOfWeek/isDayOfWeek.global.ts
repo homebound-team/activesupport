@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { isDayOfWeekImpl } from "./isDayOfWeek.impl";
+import * as isDayOfWeek from "./isDayOfWeek.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -120,12 +120,11 @@ declare module "temporal-polyfill" {
   }
 }
 
-["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].forEach((name, i) => {
-  const day = i + 1;
-  Object.defineProperty(Temporal.PlainDate.prototype, `is${name}`, {
+Object.entries(isDayOfWeek).forEach(([name, impl]) =>
+  Object.defineProperty(Temporal.PlainDate.prototype, name, {
     enumerable: false,
-    get: function () {
-      return isDayOfWeekImpl.call(this, day);
+    get: function (this: Temporal.PlainDate) {
+      return impl(this);
     },
-  });
-});
+  }),
+);

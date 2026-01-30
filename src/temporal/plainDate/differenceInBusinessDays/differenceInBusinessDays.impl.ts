@@ -1,9 +1,8 @@
-import { partitionImpl } from "src/array/partition/partition.impl";
-import { sumImpl } from "src/array/sum/sum.impl";
-import { CallbackFn } from "src/array/utils";
+import { partition } from "src/array/partition/partition.impl";
+import { sum } from "src/array/sum/sum.impl";
 import { Interval } from "src/temporal/interval/interval.impl";
-import { isAfterImpl } from "src/temporal/plainDate/isAfter/isAfter.impl";
-import { isWeekendImpl } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
+import { isAfter } from "src/temporal/plainDate/isAfter/isAfter.impl";
+import { isWeekend } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
 import { BusinessDayOptions, assertValidBusinessDays } from "src/temporal/utils";
 import { Temporal } from "temporal-polyfill";
 
@@ -18,7 +17,7 @@ export function differenceInBusinessDaysImpl(
   const { exceptions = {}, businessDays } = options;
   if (this.equals(other)) return 0;
   // figure out if we're going backwards or forwards through time
-  const sign = isAfterImpl.call(this, other) ? 1 : -1;
+  const sign = isAfter(this, other) ? 1 : -1;
   const [start, end] = [other, this];
   // determine the number of integer weeks in our range
   const { weeks } = start.until(end, { largestUnit: "weeks" });
@@ -27,7 +26,7 @@ export function differenceInBusinessDaysImpl(
   let current = start.add({ weeks });
   // account for the remaining days that don't make up a full week.  this loop will run at most 6 times.
   while (!current.equals(end)) {
-    if (!isWeekendImpl.call(current, options)) result += sign;
+    if (!isWeekend(current, options)) result += sign;
     current = current.add({ days: sign });
   }
   const exceptionEntries = Object.entries(exceptions).map(
@@ -39,23 +38,16 @@ export function differenceInBusinessDaysImpl(
   const exceptionDates = exceptionEntries
     // filter out exception dates outside our range
     .filter(([exception]) => interval.contains(exception));
-  type R = readonly [Temporal.PlainDate, boolean];
-  const [boundaryExceptions, innerExceptions] = partitionImpl.call<R[], [CallbackFn<R, boolean>], [R[], R[]]>(
-    exceptionDates,
-    ([d]) => d.equals(start) || d.equals(end),
-  );
-  const exceptionCount: number = sumImpl.call<R[], [CallbackFn<R, number | undefined>], any>(
-    innerExceptions,
-    ([exception, working]) => {
-      if (working && isWeekendImpl.call(exception, options)) {
-        // add a day if we are working on a weekend
-        return sign;
-      } else if (!working && !isWeekendImpl.call(exception, options)) {
-        // remove a day if we are not working on a weekday
-        return -sign;
-      }
-    },
-  );
+  const [boundaryExceptions, innerExceptions] = partition(exceptionDates, ([d]) => d.equals(start) || d.equals(end));
+  const exceptionCount = sum(innerExceptions, ([exception, working]) => {
+    if (working && isWeekend(exception, options)) {
+      // add a day if we are working on a weekend
+      return sign;
+    } else if (!working && !isWeekend(exception, options)) {
+      // remove a day if we are not working on a weekday
+      return -sign;
+    }
+  });
   // handle start and end dates. if both are working days, then add one. if both are not working days, then remove
   // one. Otherwise, do nothing.
   if (boundaryExceptions.length === 2) {

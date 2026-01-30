@@ -1,4 +1,4 @@
-import { maybeSumImpl } from "src/array/maybeSum/maybeSum.impl";
+import { maybeSum } from "src/array/maybeSum/maybeSum.impl";
 import { CallbackFn } from "src/array/utils";
 import { MaybePromise, maybePromiseThen } from "src/utils";
 
@@ -10,14 +10,8 @@ export function sumImpl<T, R extends number | bigint | undefined>(
   this: T[] | R[],
   fn?: CallbackFn<T, MaybePromise<R>>,
 ): MaybePromise<number | bigint> {
-  return maybePromiseThen(
-    maybeSumImpl.call<
-      T[] | R[],
-      [CallbackFn<T, MaybePromise<R>> | undefined],
-      MaybePromise<number | bigint | undefined>
-    >(this, fn),
-    orZero,
-  );
+  if (fn) return maybePromiseThen(maybeSum(this as T[], fn as any), orZero);
+  return maybeSum(this as any) ?? 0;
 }
 
 export function sum<T, R extends number | undefined>(arr: R[]): number;

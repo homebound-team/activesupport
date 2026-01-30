@@ -1,11 +1,11 @@
-import { removeAllImpl } from "src/array/removeAll/removeAll.impl";
+import { removeAll } from "src/array/array.impl";
 
-export function withoutImpl<T>(this: T[], ...elements: T[]): Array<T> {
+export function withoutImpl<T>(this: T[], ...elements: T[]): T[] {
   const result = [...this];
-  removeAllImpl.call(result, elements);
+  removeAll(result, elements);
   return result;
 }
 
-export function without<T>(arr: T[], ...elements: T[]): Array<T> {
-  return withoutImpl.call<T[], T[], Array<T>>(arr, ...elements);
+export function without<T>(arr: T[], ...elements: T[]): T[] {
+  return withoutImpl.call<T[], T[], T[]>(arr, ...elements);
 }
