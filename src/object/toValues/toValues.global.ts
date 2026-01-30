@@ -1,4 +1,4 @@
-import { allowOverwritingPrototypeExtension } from "./utils";
+import { allowOverwritingPrototypeExtension } from "src/object/utils";
 
 declare global {
   interface Object {

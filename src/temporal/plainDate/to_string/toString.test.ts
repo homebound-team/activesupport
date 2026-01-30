@@ -1,4 +1,5 @@
-import { newPD } from "../setupTests";
+import { newPD } from "src/temporal/setupTests";
+import "./toString.global";
 
 describe("toString", () => {
   it("returns ISO format when called with no arguments", () => {

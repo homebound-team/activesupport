@@ -1,5 +1,6 @@
+import { newPD } from "src/temporal/setupTests";
 import { Temporal } from "temporal-polyfill";
-import { newPD } from "../setupTests";
+import "./differenceInBusinessDays.global";
 
 describe("differenceInBusinessDays", () => {
   it("returns the number of business days between the given dates, excluding weekends", () => {

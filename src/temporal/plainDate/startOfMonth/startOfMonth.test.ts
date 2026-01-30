@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./startOfMonth.global";
 
 describe("startOfMonth", () => {
   it("returns a date set to the first day of a month", () => {

@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./endOfMonth.global";
 
 describe("endOfMonth", () => {
   it("returns a date set to the last day of a month", () => {

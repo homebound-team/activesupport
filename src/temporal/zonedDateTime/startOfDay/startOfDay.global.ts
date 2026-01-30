@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { startOfDayImpl } from "./startOfDay.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -23,7 +24,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.startOfDay = function () {
-  // TODO: update this for micro and nano seconds once available
-  return this.with({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-};
+Temporal.ZonedDateTime.prototype.startOfDay = startOfDayImpl;

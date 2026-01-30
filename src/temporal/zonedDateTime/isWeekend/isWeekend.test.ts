@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./isWeekend.global";
 
 describe("isWeekend", () => {
   it("returns true if the given date is in a weekend", () => {

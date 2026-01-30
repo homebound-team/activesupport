@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./startOfDay.global";
 
 describe("startOfDay", () => {
   it("returns the date with the time set to 00:00:00", () => {

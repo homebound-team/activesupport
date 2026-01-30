@@ -41,4 +41,4 @@ declare global {
   }
 }
 
-Array.prototype.mapToObject = mapToObjectImpl;
+Array.prototype.mapToObject = mapToObjectImpl as (typeof Array.prototype)["mapToObject"];

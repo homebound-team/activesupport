@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { withValidBusinessDays } from "../../index";
+import { isWeekendImpl } from "./isWeekend.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -31,7 +31,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.isWeekend = function (options: { businessDays?: number[] } = {}) {
-  const { businessDays } = withValidBusinessDays(options);
-  return !businessDays.includes(this.dayOfWeek);
-};
+Temporal.PlainDate.prototype.isWeekend = isWeekendImpl;

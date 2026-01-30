@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./isBefore.global";
 
 describe("isBefore", () => {
   it("returns true if the first date is before the second one", () => {

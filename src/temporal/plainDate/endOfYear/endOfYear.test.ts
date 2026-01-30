@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./endOfYear.global";
 
 describe("endOfYear", () => {
   it("returns a date set to the last day of a year", () => {

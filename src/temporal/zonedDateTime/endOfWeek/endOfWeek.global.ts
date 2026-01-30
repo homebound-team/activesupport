@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { endOfWeekImpl } from "./endOfWeek.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -30,9 +31,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.endOfWeek = function (options: Temporal.WeekOptions = {}): Temporal.ZonedDateTime {
-  const { dayOfWeek, daysInWeek } = this;
-  const { weekStartsOn = daysInWeek } = options;
-  const days = (dayOfWeek < weekStartsOn ? -daysInWeek : 0) + 6 - (dayOfWeek - weekStartsOn);
-  return this.add({ days }).endOfDay();
-};
+Temporal.ZonedDateTime.prototype.endOfWeek = endOfWeekImpl;

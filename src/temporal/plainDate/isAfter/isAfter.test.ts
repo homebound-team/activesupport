@@ -1,4 +1,5 @@
-import { newPD } from "../setupTests";
+import { newPD } from "src/temporal/setupTests";
+import "./isAfter.global";
 
 describe("isAfter", () => {
   it("returns true if the first date is after the second one", () => {

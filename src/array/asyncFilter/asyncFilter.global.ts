@@ -1,5 +1,5 @@
-import { asyncFilterImpl } from "src/array/asyncFilter/asyncFilter.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { asyncFilterImpl } from "./asyncFilter.impl";
 
 declare global {
   interface Array<T> {

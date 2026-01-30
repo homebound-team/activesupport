@@ -1,8 +1,6 @@
 import { expect } from "@jest/globals";
+import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
-import "../array/utils";
-import "../object";
-import "./index";
 
 export function newPD(date: string): Temporal.PlainDate {
   return Temporal.PlainDate.from(date);
@@ -13,12 +11,12 @@ export function newZDT(datetime: string): Temporal.ZonedDateTime {
   return Temporal.ZonedDateTime.from(datetime);
 }
 
-export function newPDInterval(start: string, end: string): Temporal.Interval<Temporal.PlainDate> {
-  return Temporal.Interval.from(newPD(start), newPD(end));
+export function newPDInterval(start: string, end: string): Interval<Temporal.PlainDate> {
+  return Interval.from(newPD(start), newPD(end));
 }
 
-export function newZDTInterval(start: string, end: string): Temporal.Interval<Temporal.ZonedDateTime> {
-  return Temporal.Interval.from(newZDT(start), newZDT(end));
+export function newZDTInterval(start: string, end: string): Interval<Temporal.ZonedDateTime> {
+  return Interval.from(newZDT(start), newZDT(end));
 }
 
 export function areTemporalsEqual(a: unknown, b: unknown) {

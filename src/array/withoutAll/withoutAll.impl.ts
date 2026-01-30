@@ -1,6 +1,8 @@
+import { removeAllImpl } from "src/array/removeAll/removeAll.impl";
+
 export function withoutAllImpl<T>(this: T[], elements: T[]): Array<T> {
   const result = [...this];
-  result.removeAll(elements);
+  removeAllImpl.call(result, elements);
   return result;
 }
 

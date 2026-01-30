@@ -1,5 +1,5 @@
-import { newPD, newPDInterval } from "../setupTests";
-import "./index";
+import { newPD, newPDInterval } from "src/temporal/setupTests";
+import "./isWithin.global";
 
 describe("isWithinInterval", () => {
   it("returns true if the given date in within the given interval", () => {

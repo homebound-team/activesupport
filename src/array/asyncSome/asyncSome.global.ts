@@ -1,6 +1,6 @@
-import { asyncSomeImpl } from "src/array/asyncSome/asyncSome.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { MaybePromise } from "src/utils";
+import { asyncSomeImpl } from "./asyncSome.impl";
 
 declare global {
   interface Array<T> {

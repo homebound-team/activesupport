@@ -1,6 +1,6 @@
-import { asyncPartitionImpl } from "src/array/asyncPartition/asyncPartition.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { MaybePromise } from "src/utils";
+import { asyncPartitionImpl } from "./asyncPartition.impl";
 
 declare global {
   interface Array<T> {

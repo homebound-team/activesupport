@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { endOfDayImpl } from "./endOfDay.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -23,7 +24,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.endOfDay = function () {
-  // TODO: update this for micro and nano seconds once available
-  return this.with({ hour: 23, minute: 59, second: 59, millisecond: 999 });
-};
+Temporal.ZonedDateTime.prototype.endOfDay = endOfDayImpl;

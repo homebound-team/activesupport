@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { toCTImpl, toETImpl, toMTImpl, toPTImpl, toUTCImpl } from "./toZonedDateTime.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -37,16 +38,8 @@ declare module "temporal-polyfill" {
   }
 }
 
-(
-  [
-    ["UTC", "UTC"],
-    ["ET", "America/New_York"],
-    ["CT", "America/Chicago"],
-    ["MT", "America/Denver"],
-    ["PT", "America/Los_Angeles"],
-  ] as const
-).map(([shorthand, timeZone]) => {
-  Temporal.PlainDate.prototype[`to${shorthand}`] = function () {
-    return this.toZonedDateTime(timeZone);
-  };
-});
+Temporal.PlainDate.prototype.toUTC = toUTCImpl;
+Temporal.PlainDate.prototype.toET = toETImpl;
+Temporal.PlainDate.prototype.toCT = toCTImpl;
+Temporal.PlainDate.prototype.toMT = toMTImpl;
+Temporal.PlainDate.prototype.toPT = toPTImpl;

@@ -1,4 +1,6 @@
-export * from "./map/map.global";
-export * from "./object";
-export * from "./temporal";
+import "./array/array.global";
+import "./map/map.global";
+import "./object/object.global";
+import "./temporal/temporal.global";
+
 export * from "./utils";

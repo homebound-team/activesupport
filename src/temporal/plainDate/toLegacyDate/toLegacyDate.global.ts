@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { toLegacyDateImpl } from "./toLegacyDate.impl";
 
 type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
 
@@ -19,6 +20,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.toLegacyDate = function (timeZoneAndTime) {
-  return new Date(this.toZonedDateTime(timeZoneAndTime).epochMilliseconds);
-};
+Temporal.PlainDate.prototype.toLegacyDate = toLegacyDateImpl;

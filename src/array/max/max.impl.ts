@@ -3,7 +3,7 @@ import { Comparable, compare } from "src/utils";
 
 export function maxImpl<T, R extends Comparable>(this: ToArray<Comparable> | T[], fn?: CallbackFn<T, R>): R {
   const values = fn ? ((this as T[]).map(fn) as R[]) : (this as R[]);
-  let max = values.first;
+  let max = values[0];
   for (let i = 1; i < values.length; i++) {
     const value = values[i];
     if (compare(value, max!) > 0) max = value;

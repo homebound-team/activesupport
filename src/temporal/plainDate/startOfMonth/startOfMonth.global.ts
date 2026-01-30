@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { startOfMonthImpl } from "./startOfMonth.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -23,6 +24,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.startOfMonth = function (): Temporal.PlainDate {
-  return this.with({ day: 1 });
-};
+Temporal.PlainDate.prototype.startOfMonth = startOfMonthImpl;

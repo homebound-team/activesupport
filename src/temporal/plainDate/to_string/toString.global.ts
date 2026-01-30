@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { toStringImpl } from "./toString.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -30,30 +31,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-const originalToString = Temporal.PlainDate.prototype.toString;
-
-function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeFormatOptions {
-  if (!options || typeof options !== "object") return false;
-  const o = options as Record<string, unknown>;
-  return (
-    "month" in o ||
-    "year" in o ||
-    "day" in o ||
-    "hour" in o ||
-    "minute" in o ||
-    "second" in o ||
-    "weekday" in o ||
-    "era" in o ||
-    "dateStyle" in o ||
-    "timeStyle" in o
-  );
-}
-
-Temporal.PlainDate.prototype.toString = function (
-  options?: Temporal.ShowCalendarOption | Intl.DateTimeFormatOptions,
-): string {
-  if (options && isDateTimeFormatOptions(options)) {
-    return this.toLocaleString("en-US", options);
-  }
-  return originalToString.call(this, options as Temporal.ShowCalendarOption);
-};
+Temporal.PlainDate.prototype.toString = toStringImpl;

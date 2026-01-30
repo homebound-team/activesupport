@@ -39,4 +39,4 @@ declare global {
   }
 }
 
-Array.prototype.count = countImpl;
+Array.prototype.count = countImpl as (typeof Array.prototype)["count"];

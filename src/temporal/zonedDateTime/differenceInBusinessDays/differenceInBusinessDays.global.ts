@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { differenceInBusinessDaysImpl } from "./differenceInBusinessDays.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -60,9 +61,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.differenceInBusinessDays = function (
-  other: Temporal.ZonedDateTime,
-  options: Temporal.BusinessDayOptions = {},
-) {
-  return this.toPlainDate().differenceInBusinessDays(other.toPlainDate(), options);
-};
+Temporal.ZonedDateTime.prototype.differenceInBusinessDays = differenceInBusinessDaysImpl;

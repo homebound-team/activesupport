@@ -37,4 +37,4 @@ declare global {
   }
 }
 
-Array.prototype.maybeSum = maybeSumImpl;
+Array.prototype.maybeSum = maybeSumImpl as (typeof Array.prototype)["maybeSum"];

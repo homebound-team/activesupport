@@ -1,5 +1,5 @@
-import { newZDT } from "../setupTests";
-import "./index";
+import { newZDT } from "src/temporal/setupTests";
+import "./toInterval.global";
 
 describe("toInterval", () => {
   it("generates an interval from a datetime and another datetime", () => {

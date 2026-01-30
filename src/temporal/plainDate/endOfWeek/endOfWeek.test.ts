@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./endOfWeek.global";
 
 describe("endOfWeek", () => {
   it("returns a date set to the last day of a week", () => {

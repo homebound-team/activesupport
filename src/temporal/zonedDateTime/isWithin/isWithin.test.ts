@@ -1,4 +1,5 @@
-import { newZDT, newZDTInterval } from "../setupTests";
+import { newZDT, newZDTInterval } from "src/temporal/setupTests";
+import "./isWithin.global";
 
 describe("isWithin", () => {
   it("returns true if the given date in within the given interval", () => {

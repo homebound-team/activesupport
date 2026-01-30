@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./toLegacyDate.global";
 
 describe("toLegacyDate.test", () => {
   it("generates a legacy date from a plain date", () => {

@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { withValidBusinessDays } from "../index";
+import { differenceInBusinessDaysImpl } from "./differenceInBusinessDays.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -59,47 +59,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-// Implementation converted from previous code located in businessDaysUtils.ts.  I'm not entirely sure it's
-// correct but the tests (also converted) all pass.
-Temporal.PlainDate.prototype.differenceInBusinessDays = function (
-  other: Temporal.PlainDate,
-  options: Temporal.BusinessDayOptions = {},
-) {
-  const { exceptions = {}, businessDays } = withValidBusinessDays(options);
-  if (this.equals(other)) return 0;
-  // figure out if we're going backwards or forwards through time
-  const sign = this.isAfter(other) ? 1 : -1;
-  const [start, end] = [other, this];
-  // determine the number of integer weeks in our range
-  const { weeks } = start.until(end, { largestUnit: "weeks" });
-  // multiply by the number of days in a business week to get a baseline number of days
-  let result = weeks * businessDays.length;
-  let current = start.add({ weeks });
-  // account for the remaining days that don't make up a full week.  this loop will run at most 6 times.
-  while (!current.equals(end)) {
-    if (!current.isWeekend(options)) result += sign;
-    current = current.add({ days: sign });
-  }
-  const exceptionDates = exceptions
-    .toEntries()
-    .map(([str, working]) => [Temporal.PlainDate.from(str), working] as const);
-  if (exceptionDates.isEmpty) return result;
-  // handle exceptions if present
-  const interval = Temporal.Interval.from(start, end);
-  const exceptionCount = exceptionDates
-    // filter out exception dates outside or on the boundary of our range
-    .filter(([exception]) => interval.contains(exception, { excludeBoundaries: true }))
-    .sum(([exception, working]) =>
-      // add a day if we are working on a weekend and remove one if we are not working on a weekday
-      working && exception.isWeekend(options) ? sign : !working && !exception.isWeekend(options) ? -sign : 0,
-    );
-  // handle start and end dates. if both are working days then add one. if both are not working days then remove
-  // one. Otherwise, do nothing.
-  const boundaryExceptions = exceptionDates.filter(([d]) => d.equals(start) || d.equals(end));
-  if (boundaryExceptions.length === 2) {
-    if (boundaryExceptions.every(([, working]) => working)) result += sign;
-    if (boundaryExceptions.every(([, working]) => !working)) result -= sign;
-  }
-
-  return result + exceptionCount;
-};
+Temporal.PlainDate.prototype.differenceInBusinessDays = differenceInBusinessDaysImpl;

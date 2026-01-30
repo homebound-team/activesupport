@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./endOfWeek.global";
 
 describe("endOfWeek", () => {
   it("returns the date with the time set to 23:59:59:999 and the date set to the last day of a week", () => {

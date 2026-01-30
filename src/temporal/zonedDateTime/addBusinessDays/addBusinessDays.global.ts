@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { addBusinessDaysImpl } from "./addBusinessDays.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -28,12 +29,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.addBusinessDays = function (
-  amount: number,
-  options: Temporal.BusinessDayOptions = {},
-): Temporal.ZonedDateTime {
-  // Convert to a plain date then add our business days
-  const result = this.toPlainDate().addBusinessDays(amount, options);
-  // Restore our time zone and wall clock time (ignore DST adjustments)
-  return result.toZonedDateTime({ timeZone: this, plainTime: this });
-};
+Temporal.ZonedDateTime.prototype.addBusinessDays = addBusinessDaysImpl;

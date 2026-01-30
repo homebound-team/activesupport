@@ -89,4 +89,4 @@ declare global {
   }
 }
 
-Array.prototype.sum = sumImpl;
+Array.prototype.sum = sumImpl as (typeof Array.prototype)["sum"];

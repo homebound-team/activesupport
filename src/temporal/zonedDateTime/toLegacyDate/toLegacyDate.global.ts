@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { toLegacyDateImpl } from "./toLegacyDate.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -14,6 +15,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.toLegacyDate = function () {
-  return new Date(this.epochMilliseconds);
-};
+Temporal.ZonedDateTime.prototype.toLegacyDate = toLegacyDateImpl;

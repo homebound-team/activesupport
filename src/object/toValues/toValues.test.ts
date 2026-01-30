@@ -1,4 +1,4 @@
-import "./index";
+import "./toValues.global";
 
 describe("toValues", () => {
   it("returns an array of values pairs from an object", () => {

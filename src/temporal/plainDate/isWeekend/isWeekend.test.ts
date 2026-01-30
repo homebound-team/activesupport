@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./isWeekend.global";
 
 describe("isWeekend", () => {
   it("returns true if the given date is in a weekend", () => {

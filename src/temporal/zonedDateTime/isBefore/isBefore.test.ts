@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./isBefore.global";
 
 describe("isBefore", () => {
   it("returns true if the first date is before the second one", () => {

@@ -1,5 +1,5 @@
-import { newZDT } from "../setupTests";
-import "./index";
+import { newZDT } from "src/temporal/setupTests";
+import "./toLegacyDate.global";
 
 describe("toLegacyDate", () => {
   it("generates a legacy date from a datetime", () => {

@@ -1,7 +1,7 @@
 // get the Object's properties before we mess with the prototype
 const builtinProps = Object.getOwnPropertyNames(Object.prototype);
 
-import "./index";
+import "./object.global";
 
 describe("object", () => {
   // now figure out which properties are actually new

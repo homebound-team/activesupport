@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./differenceInBusinessDays.global";
 
 describe("differenceInBusinessDays", () => {
   it("returns the number of business days between the given dates, excluding weekends", () => {
@@ -198,21 +199,10 @@ describe("differenceInBusinessDays", () => {
     });
 
     it("can handle an exception that falls on the second date", function () {
-      // with businessDays as Mon-Fri
-      const result =
-        // Sunday
-        newZDT("2022-01-16T00:00:00.000Z").differenceInBusinessDays(
-          // Saturday
-          newZDT("2022-01-08T00:00:00.000Z"),
-          {
-            exceptions: {
-              // Saturday
-              "2022-01-09": true,
-              // Sunday
-              "2022-01-16": true,
-            },
-          },
-        );
+      const sunday = newZDT("2022-01-16T00:00:00.000Z");
+      const saturday = newZDT("2022-01-08T00:00:00.000Z");
+      const exceptions = { "2022-01-09": true, "2022-01-16": true }; // Both Sundays
+      const result = sunday.differenceInBusinessDays(saturday, { exceptions });
       expect(result).toBe(6);
     });
 

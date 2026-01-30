@@ -1,9 +1,10 @@
+import { removeImpl } from "src/array/remove/remove.impl";
 import { CallbackFn } from "src/array/utils";
 
 export function findAndRemoveImpl<T>(this: T[], fn: CallbackFn<T, boolean>): T | undefined {
   const val = this.find(fn);
   if (!val) return undefined;
-  this.remove(val);
+  removeImpl.call(this, val);
   return val;
 }
 

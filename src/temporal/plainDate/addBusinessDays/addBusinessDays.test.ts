@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./addBusinessDays.global";
 
 describe("addBusinessDays", () => {
   describe("can add Saturdays and/or Sundays to working days with the businessDays option", () => {

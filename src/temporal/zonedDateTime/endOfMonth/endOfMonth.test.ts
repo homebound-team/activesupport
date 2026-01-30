@@ -1,4 +1,6 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./endOfMonth.global";
+
 describe("endOfMonth", () => {
   it("returns the date with the time set to 23:59:59.999 and the date set to the last day of a month", () => {
     const date = newZDT("2014-09-02T11:55:00.000Z");

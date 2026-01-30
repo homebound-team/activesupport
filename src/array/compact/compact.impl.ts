@@ -1,7 +1,7 @@
 import { isDefined } from "src/utils";
 
-export function compactImpl<T>(this: T[]): NonNullable<T>[] {
-  return this.filter(isDefined);
+export function compactImpl<T extends any>(this: T[]): NonNullable<T>[] {
+  return this.filter(isDefined) as NonNullable<T>[];
 }
 
 export function compact<T>(arr: T[]): NonNullable<T>[] {

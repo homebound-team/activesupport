@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { endOfYearImpl } from "./endOfYear.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -26,7 +27,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.endOfYear = function (): Temporal.PlainDate {
-  const current = this.with({ month: this.monthsInYear });
-  return current.with({ day: current.daysInMonth });
-};
+Temporal.PlainDate.prototype.endOfYear = endOfYearImpl;

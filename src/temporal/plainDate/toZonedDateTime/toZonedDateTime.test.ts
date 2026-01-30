@@ -1,5 +1,5 @@
-import { newPD, newZDT } from "../setupTests";
-import "./index";
+import { newPD, newZDT } from "src/temporal/setupTests";
+import "./toZonedDateTime.global";
 
 describe("toZonedDateTime", () => {
   it("generates a plain date from the zoned date using the UTC timezone", () => {

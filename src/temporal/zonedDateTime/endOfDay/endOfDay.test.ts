@@ -1,4 +1,5 @@
-import { newZDT } from "../setupTests";
+import { newZDT } from "src/temporal/setupTests";
+import "./endOfDay.global";
 
 describe("endOfDay", () => {
   it("returns the date with the time set to 23:59:59.999", () => {

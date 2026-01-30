@@ -1,5 +1,5 @@
-import { isDefined } from "src/utils";
 import { Temporal } from "temporal-polyfill";
+import { addBusinessDaysImpl } from "./addBusinessDays.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -29,31 +29,4 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.addBusinessDays = function (
-  amount: number,
-  options: Temporal.BusinessDayOptions = {},
-): Temporal.PlainDate {
-  if (isNaN(amount)) throw new RangeError("amount cannot be NaN");
-
-  const { exceptions = {} } = options;
-
-  let current = this;
-
-  amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-
-  const step = amount < 0 ? -1 : 1;
-
-  const isBusinessDay = (date: Temporal.PlainDate) => {
-    const exception = exceptions[date.toString()];
-    return isDefined(exception) ? exception : !date.isWeekend(options);
-  };
-
-  // start on initial day and continue until we have gone through all the days
-  amount = Math.abs(amount);
-  while (amount > 0) {
-    current = current.add({ days: step });
-    if (isBusinessDay(current)) amount -= 1;
-  }
-
-  return current;
-};
+Temporal.PlainDate.prototype.addBusinessDays = addBusinessDaysImpl;

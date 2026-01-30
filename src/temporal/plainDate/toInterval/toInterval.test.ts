@@ -1,5 +1,5 @@
-import { newPD } from "../setupTests";
-import "./index";
+import { newPD } from "src/temporal/setupTests";
+import "./toInterval.global";
 
 describe("toInterval", () => {
   it("generates an interval from a plain date and another plain date", () => {

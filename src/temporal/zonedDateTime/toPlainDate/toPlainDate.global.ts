@@ -1,4 +1,11 @@
 import { Temporal } from "temporal-polyfill";
+import {
+  toPlainDateCTImpl,
+  toPlainDateETImpl,
+  toPlainDateMTImpl,
+  toPlainDatePTImpl,
+  toPlainDateUTCImpl,
+} from "./toPlainDate.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -42,16 +49,8 @@ declare module "temporal-polyfill" {
   }
 }
 
-(
-  [
-    ["UTC", "UTC"],
-    ["ET", "America/New_York"],
-    ["CT", "America/Chicago"],
-    ["MT", "America/Denver"],
-    ["PT", "America/Los_Angeles"],
-  ] as const
-).map(([shorthand, timeZone]) => {
-  Temporal.ZonedDateTime.prototype[`toPlainDate${shorthand}`] = function () {
-    return this.withTimeZone(timeZone).toPlainDate();
-  };
-});
+Temporal.ZonedDateTime.prototype.toPlainDateUTC = toPlainDateUTCImpl;
+Temporal.ZonedDateTime.prototype.toPlainDateET = toPlainDateETImpl;
+Temporal.ZonedDateTime.prototype.toPlainDateCT = toPlainDateCTImpl;
+Temporal.ZonedDateTime.prototype.toPlainDateMT = toPlainDateMTImpl;
+Temporal.ZonedDateTime.prototype.toPlainDatePT = toPlainDatePTImpl;

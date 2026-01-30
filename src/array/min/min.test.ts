@@ -1,5 +1,5 @@
+import { newPD, newZDT } from "src/temporal/setupTests";
 import { Temporal } from "temporal-polyfill";
-import { newPD, newZDT } from "../temporal/setupTests";
 import "./min.global";
 
 describe("min", () => {

@@ -2,11 +2,11 @@ export function sentenceJoinImpl<T>(this: T[], opts?: { word?: "and" | "or"; sep
   const { word = "and", separator = ", " } = opts ?? {};
 
   if (this.length > 2) {
-    return `${this.slice(0, -1).join(separator)} ${word} ${this.last}`;
+    return `${this.slice(0, -1).join(separator)} ${word} ${this[this.length - 1]}`;
   } else if (this.length === 2) {
-    return `${this.first} ${word} ${this.last}`;
+    return `${this[0]} ${word} ${this[1]}`;
   } else {
-    return `${this.first ?? ""}`;
+    return `${this[0] ?? ""}`;
   }
 }
 
