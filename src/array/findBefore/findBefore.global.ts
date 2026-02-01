@@ -1,4 +1,4 @@
-import { findBeforeImpl } from "src/array/findBefore/findBefore.impl";
+import { findBefore } from "src/array/findBefore/findBefore.impl";
 
 declare global {
   interface Array<T> {
@@ -26,4 +26,6 @@ declare global {
   }
 }
 
-Array.prototype.findBefore = findBeforeImpl;
+Array.prototype.findBefore = function <T>(this: T[], el: T) {
+  return findBefore(this, el);
+};

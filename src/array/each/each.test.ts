@@ -1,12 +1,12 @@
-import "./each.global";
+import { each } from "./each.impl";
 
 describe("each", () => {
   it("runs the callback for each element in the array then returns the array itself", async () => {
     // given an array of strings
     const a = ["a", "b", "c"];
     // when we call each with a callback
-    const callback = jest.fn(() => Promise.resolve());
-    const result = a.each(callback);
+    const callback = jest.fn((s, i, a) => 5);
+    const result = each(a, callback);
     // then we expect that callback to have been called for every element and the array to be returned
     expect(result).toBe(a);
     expect(callback).toHaveBeenCalledTimes(3);

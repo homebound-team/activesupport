@@ -1,4 +1,4 @@
-import { asyncMapImpl } from "src/array/asyncMap/asyncMap.impl";
+import { asyncMap } from "src/array/asyncMap/asyncMap.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -27,4 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncMap = asyncMapImpl;
+Array.prototype.asyncMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V>>) {
+  return asyncMap(this, fn);
+};

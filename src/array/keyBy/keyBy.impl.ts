@@ -1,18 +1,31 @@
-import { CallbackFn } from "src/array/utils";
+import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
-export function keyByImpl<
-  T,
-  K extends PropertyKey,
-  TK extends keyof T,
-  TKK extends T[TK] extends K ? TK : never,
-  Y = T,
->(this: T[], fnOrKey: CallbackFn<T, K> | TKK, valueFn?: CallbackFn<T, Y>) {
-  const result = {} as Record<K, Y>;
+export function keyBy<T, K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(
+  arr: readonly T[],
+  field: TK,
+): Record<TK, T>;
+
+export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
+  arr: T[],
+  fn: CallbackFn<T, K>,
+  valueFn?: CallbackFn<T, R>,
+): Record<K, R>;
+export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
+  arr: readonly T[],
+  fn: CallbackFnRO<T, K>,
+  valueFn?: CallbackFnRO<T, R>,
+): Record<K, R>;
+export function keyBy<T, K extends PropertyKey, TK extends keyof T, TKK extends T[TK] extends K ? TK : never, R = T>(
+  arr: readonly T[],
+  fnOrKey: CallbackFnEither<T, K> | TKK,
+  valueFn?: CallbackFnEither<T, R>,
+) {
+  const result = {} as Record<K, R>;
   const fn = typeof fnOrKey === "function" ? fnOrKey : undefined;
   const key = typeof fnOrKey === "function" ? undefined : fnOrKey;
-  this.forEach((e, i, a) => {
-    const group = fn ? fn(e, i, a) : (e[key as TKK] as K);
-    const value = valueFn ? valueFn(e, i, a) : (e as any as Y);
+  arr.forEach((e, i, a) => {
+    const group = fn ? fn(e, i, a as T[]) : (e[key as TKK] as K);
+    const value = valueFn ? valueFn(e, i, a as T[]) : (e as any as R);
     if (group in result) {
       if (result[group] !== value) throw new Error(`${String(group)} already had a value assigned`);
     } else {
@@ -20,16 +33,4 @@ export function keyByImpl<
     }
   });
   return result;
-}
-
-export function keyBy<T, K extends PropertyKey, TK extends keyof T, TKK extends T[TK] extends K ? TK : never, Y = T>(
-  arr: T[],
-  fnOrKey: CallbackFn<T, K> | TKK,
-  valueFn?: CallbackFn<T, Y>,
-) {
-  return keyByImpl.call<T[], [CallbackFn<T, K> | TKK, CallbackFn<T, Y> | undefined], Record<K, Y>>(
-    arr,
-    fnOrKey,
-    valueFn,
-  );
 }

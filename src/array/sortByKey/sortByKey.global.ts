@@ -1,4 +1,4 @@
-import { sortByKeyImpl } from "src/array/sortByKey/sortByKey.impl";
+import { sortByKey } from "src/array/sortByKey/sortByKey.impl";
 import { Comparable, KeysOfType } from "src/utils";
 
 declare global {
@@ -23,4 +23,6 @@ declare global {
   }
 }
 
-Array.prototype.sortByKey = sortByKeyImpl;
+Array.prototype.sortByKey = function <T, K extends KeysOfType<T, Comparable>>(this: T[], key: K) {
+  return sortByKey(this, key);
+};

@@ -1,5 +1,6 @@
+import { BusinessDayOptions } from "src/temporal/utils";
 import { Temporal } from "temporal-polyfill";
-import { isWeekendImpl } from "./isWeekend.impl";
+import { isWeekend } from "./isWeekend.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -26,9 +27,14 @@ declare module "temporal-polyfill" {
        * const result = Temporal.ZonedDateTime.from("2014-10-05").isWeekend({ businessDays: [6,7] })
        * //=> false
        */
-      isWeekend(options?: { businessDays?: number[] }): boolean;
+      isWeekend(options?: BusinessDayOptions): boolean;
     }
   }
 }
 
-Temporal.ZonedDateTime.prototype.isWeekend = isWeekendImpl;
+Temporal.ZonedDateTime.prototype.isWeekend = function (
+  this: Temporal.ZonedDateTime,
+  options?: BusinessDayOptions,
+): boolean {
+  return isWeekend(this, options);
+};

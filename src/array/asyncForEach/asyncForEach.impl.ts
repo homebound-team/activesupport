@@ -1,9 +1,7 @@
-import { CallbackFn } from "src/array/utils";
+import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
-export async function asyncForEachImpl<T>(this: T[], fn: CallbackFn<T, Promise<any>>): Promise<void> {
-  return Promise.all(this.map(fn)).then(() => {});
-}
-
-export async function asyncForEach<T>(arr: T[], fn: CallbackFn<T, Promise<any>>): Promise<void> {
-  return asyncForEachImpl.call<T[], [CallbackFn<T, Promise<any>>], Promise<void>>(arr, fn);
+export async function asyncForEach<T>(arr: T[], fn: CallbackFn<T, Promise<any>>): Promise<void>;
+export async function asyncForEach<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<any>>): Promise<void>;
+export async function asyncForEach<T>(arr: readonly T[], fn: CallbackFnEither<T, Promise<any>>): Promise<void> {
+  await Promise.all(arr.map(fn as CallbackFnRO<T, Promise<any>>));
 }

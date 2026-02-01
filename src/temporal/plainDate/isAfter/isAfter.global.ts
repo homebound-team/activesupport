@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { isAfterImpl } from "./isAfter.impl";
+import { isAfter } from "./isAfter.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -26,4 +26,6 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.isAfter = isAfterImpl;
+Temporal.PlainDate.prototype.isAfter = function (this: Temporal.PlainDate, other: Temporal.PlainDate): boolean {
+  return isAfter(this, other);
+};

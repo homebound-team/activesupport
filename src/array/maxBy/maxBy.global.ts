@@ -1,4 +1,4 @@
-import { maxByImpl } from "src/array/maxBy/maxBy.impl";
+import { maxBy } from "src/array/maxBy/maxBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { Comparable } from "src/utils";
 
@@ -28,4 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.maxBy = maxByImpl;
+Array.prototype.maxBy = function <T, R extends Comparable>(this: T[], fn: CallbackFn<T, R>) {
+  return maxBy(this, fn);
+};

@@ -1,39 +1,39 @@
-import "./everyHasSame.global";
+import { everyHasSame } from "./everyHasSame.impl";
 
 describe("everyHasSame", () => {
   it("returns true if all elements match", () => {
     // given everything has the same 'name' property
     const a = [{ name: "Homebound" }, { name: "Homebound" }, { name: "Homebound" }];
     // then expect them to everyHasSamely match
-    expect(a.everyHasSame((el) => el.name)).toBe(true);
+    expect(everyHasSame(a, (el) => el.name)).toBe(true);
   });
 
   it("returns false if elements don't match", () => {
     // given 1 item has a different name
     const a = [{ name: "Homebound" }, { name: "Homebound" }, { name: "Nikki" }];
     // then expect them NOT to be everyHasSame
-    expect(a.everyHasSame((el) => el.name)).toBe(false);
+    expect(everyHasSame(a, (el) => el.name)).toBe(false);
   });
 
   it("works for simple data", () => {
     // given even numbers
     const a = [0, 2, 4, 6, 8];
     // then a check against each of them is everyHasSame
-    expect(a.everyHasSame((el) => el % 2 === 0)).toBe(true);
+    expect(everyHasSame(a, (el) => el % 2 === 0)).toBe(true);
   });
 
   it("returns true for arrays-of-1", () => {
     // given 1 item
     const a = [1];
     // then it is everyHasSame with itself
-    expect(a.everyHasSame((el) => el)).toBe(true);
+    expect(everyHasSame(a, (el) => el)).toBe(true);
   });
 
   it("returns true for empty array", () => {
     // given an empty array
     const a: void[] = [];
     // then it's everyHasSamely silent
-    expect(a.everyHasSame((el) => el)).toBe(true);
+    expect(everyHasSame(a, (el) => el)).toBe(true);
   });
 
   // This is different than "Your array had an undefined, so I passed it to you," as this
@@ -44,7 +44,7 @@ describe("everyHasSame", () => {
     const a: void[] = [];
     const fn = jest.fn();
     // when `everyHasSame` is called
-    a.everyHasSame(fn);
+    everyHasSame(a, fn);
     // then fn never got invoked because there were no elements on which to invoke it
     expect(fn).not.toHaveBeenCalled();
   });
@@ -54,7 +54,7 @@ describe("everyHasSame", () => {
     const a = [1, 1, 1, 1];
     const fn = jest.fn((e) => e === 1);
     // When we call `everyHasSame`
-    a.everyHasSame(fn);
+    everyHasSame(a, fn);
     // then we get 4 calls
     expect(fn).toHaveBeenCalledTimes(4);
   });
@@ -64,7 +64,7 @@ describe("everyHasSame", () => {
     const a = [1, 2, 1, 1];
     const fn = jest.fn((e) => e === 1);
     // When we call `everyHasSame`
-    a.everyHasSame(fn);
+    everyHasSame(a, fn);
     // then we stopped after 2 calls (first 2 elements)
     expect(fn).toHaveBeenCalledTimes(2);
   });
@@ -74,7 +74,7 @@ describe("everyHasSame", () => {
     const a = [1, 1, undefined, 1];
     // then failing to account for the undefined results in a type error (and an inevitable thrown error)
     expect(() =>
-      a.everyHasSame((el) =>
+      everyHasSame(a, (el) =>
         // @ts-expect-error - `el` should factor for possibly-undefined, i.e. `a?.toExponential()`
         el.toExponential(),
       ),

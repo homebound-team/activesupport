@@ -1,4 +1,4 @@
-import { toObjectImpl } from "src/array/toObject/toObject.impl";
+import { toObject } from "src/array/toObject/toObject.impl";
 
 declare global {
   interface Array<T> {
@@ -40,4 +40,6 @@ declare global {
   }
 }
 
-Array.prototype.toObject = toObjectImpl;
+Array.prototype.toObject = function <K extends PropertyKey, V>(this: [K, V][]) {
+  return toObject(this);
+};

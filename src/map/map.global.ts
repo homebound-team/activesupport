@@ -1,2 +1,2 @@
-import "./getOrCreate.global";
-import "./toEntries.global";
+import "./getOrCreate/getOrCreate.global";
+import "./toEntries/toEntries.global";

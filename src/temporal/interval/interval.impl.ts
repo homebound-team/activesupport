@@ -1,11 +1,11 @@
-import { isAfterImpl as isAfterPD } from "src/temporal/plainDate/isAfter/isAfter.impl";
-import { isBeforeImpl as isBeforePD } from "src/temporal/plainDate/isBefore/isBefore.impl";
-import { startOfMonthImpl as startOfMonthPd } from "src/temporal/plainDate/startOfMonth/startOfMonth.impl";
-import { startOfWeekImpl as startOfWeekPD } from "src/temporal/plainDate/startOfWeek/startOfWeek.impl";
-import { isAfterImpl as isAfterZDT } from "src/temporal/zonedDateTime/isAfter/isAfter.impl";
-import { isBeforeImpl as isBeforeZDT } from "src/temporal/zonedDateTime/isBefore/isBefore.impl";
-import { startOfMonthImpl as startOfMonthZDT } from "src/temporal/zonedDateTime/startOfMonth/startOfMonth.impl";
-import { startOfWeekImpl as startOfWeekZDT } from "src/temporal/zonedDateTime/startOfWeek/startOfWeek.impl";
+import { isAfter as isAfterPD } from "src/temporal/plainDate/isAfter/isAfter.impl";
+import { isBefore as isBeforePD } from "src/temporal/plainDate/isBefore/isBefore.impl";
+import { startOfMonth as startOfMonthPd } from "src/temporal/plainDate/startOfMonth/startOfMonth.impl";
+import { startOfWeek as startOfWeekPD } from "src/temporal/plainDate/startOfWeek/startOfWeek.impl";
+import { isAfter as isAfterZDT } from "src/temporal/zonedDateTime/isAfter/isAfter.impl";
+import { isBefore as isBeforeZDT } from "src/temporal/zonedDateTime/isBefore/isBefore.impl";
+import { startOfMonth as startOfMonthZDT } from "src/temporal/zonedDateTime/startOfMonth/startOfMonth.impl";
+import { startOfWeek as startOfWeekZDT } from "src/temporal/zonedDateTime/startOfWeek/startOfWeek.impl";
 import { Temporal } from "temporal-polyfill";
 
 export class Interval<T extends Temporal.PlainDate | Temporal.ZonedDateTime> {
@@ -27,9 +27,7 @@ export class Interval<T extends Temporal.PlainDate | Temporal.ZonedDateTime> {
 
     let [current, end] = (reversed ? [this.end, this.start] : [this.start, this.end]) as [T, T];
 
-    current = (
-      current instanceof Temporal.PlainDate ? startOfMonthPd.call(current) : startOfMonthZDT.call(current)
-    ) as T;
+    current = (current instanceof Temporal.PlainDate ? startOfMonthPd(current) : startOfMonthZDT(current)) as T;
 
     let step = options?.step ?? 1;
     if (!step) return [];
@@ -52,9 +50,7 @@ export class Interval<T extends Temporal.PlainDate | Temporal.ZonedDateTime> {
     let reversed = this.isReversed;
     let [current, end] = (reversed ? [this.end, this.start] : [this.start, this.end]).map(
       (value) =>
-        (value instanceof Temporal.PlainDate
-          ? startOfWeekPD.call(value, options)
-          : startOfWeekZDT.call(value, options)) as T,
+        (value instanceof Temporal.PlainDate ? startOfWeekPD(value, options) : startOfWeekZDT(value, options)) as T,
     );
 
     let { step = 1 } = options;
@@ -84,17 +80,17 @@ export class Interval<T extends Temporal.PlainDate | Temporal.ZonedDateTime> {
 
 function isAfter<T extends Temporal.PlainDate | Temporal.ZonedDateTime>(a: T, b: T) {
   if (a instanceof Temporal.PlainDate) {
-    return isAfterPD.call(a, b as any);
+    return isAfterPD(a, b as any);
   } else {
-    return isAfterZDT.call(a, b as any);
+    return isAfterZDT(a, b as any);
   }
 }
 
 function isBefore<T extends Temporal.PlainDate | Temporal.ZonedDateTime>(a: T, b: T) {
   if (a instanceof Temporal.PlainDate) {
-    return isBeforePD.call(a, b as any);
+    return isBeforePD(a, b as any);
   } else {
-    return isBeforeZDT.call(a, b as any);
+    return isBeforeZDT(a, b as any);
   }
 }
 

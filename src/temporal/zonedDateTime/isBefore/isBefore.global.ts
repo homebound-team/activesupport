@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { isBeforeImpl } from "./isBefore.impl";
+import { isBefore } from "./isBefore.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -26,4 +26,9 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.isBefore = isBeforeImpl;
+Temporal.ZonedDateTime.prototype.isBefore = function (
+  this: Temporal.ZonedDateTime,
+  other: Temporal.ZonedDateTime,
+): boolean {
+  return isBefore(this, other);
+};

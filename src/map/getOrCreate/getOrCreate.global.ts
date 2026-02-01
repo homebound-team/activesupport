@@ -1,4 +1,4 @@
-import { getOrCreateImpl } from "./getOrCreate.impl";
+import { getOrCreate } from "./getOrCreate.impl";
 
 declare global {
   interface Map<K, V> {
@@ -16,4 +16,6 @@ declare global {
   }
 }
 
-Map.prototype.getOrCreate = getOrCreateImpl;
+Map.prototype.getOrCreate = function <K, V>(this: Map<K, V>, key: K, create: () => V): V {
+  return getOrCreate(this, key, create);
+};

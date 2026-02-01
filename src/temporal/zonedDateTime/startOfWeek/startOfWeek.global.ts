@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { startOfWeekImpl } from "./startOfWeek.impl";
+import { startOfWeek } from "./startOfWeek.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -31,4 +31,9 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.startOfWeek = startOfWeekImpl;
+Temporal.ZonedDateTime.prototype.startOfWeek = function (
+  this: Temporal.ZonedDateTime,
+  options?: { weekStartsOn?: number },
+): Temporal.ZonedDateTime {
+  return startOfWeek(this, options);
+};

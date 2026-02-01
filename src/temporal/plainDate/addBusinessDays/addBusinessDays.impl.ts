@@ -3,8 +3,8 @@ import { BusinessDayOptions } from "src/temporal/utils";
 import { isDefined } from "src/utils";
 import { Temporal } from "temporal-polyfill";
 
-export function addBusinessDaysImpl(
-  this: Temporal.PlainDate,
+export function addBusinessDays(
+  date: Temporal.PlainDate,
   amount: number,
   options: BusinessDayOptions = {},
 ): Temporal.PlainDate {
@@ -12,15 +12,15 @@ export function addBusinessDaysImpl(
 
   const { exceptions = {} } = options;
 
-  let current = this;
+  let current = date;
 
   amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
 
   const step = amount < 0 ? -1 : 1;
 
-  const isBusinessDay = (date: Temporal.PlainDate) => {
-    const exception = exceptions[date.toString()];
-    return isDefined(exception) ? exception : !isWeekend(date, options);
+  const isBusinessDay = (d: Temporal.PlainDate) => {
+    const exception = exceptions[d.toString()];
+    return isDefined(exception) ? exception : !isWeekend(d, options);
   };
 
   // start on the initial day and continue until we have gone through all the days
@@ -31,12 +31,4 @@ export function addBusinessDaysImpl(
   }
 
   return current;
-}
-
-export function addBusinessDays(
-  date: Temporal.PlainDate,
-  businessDays: number,
-  options?: BusinessDayOptions,
-): Temporal.PlainDate {
-  return addBusinessDaysImpl.call(date, businessDays, options);
 }

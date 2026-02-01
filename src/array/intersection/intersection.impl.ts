@@ -1,7 +1,3 @@
-export function intersectionImpl<T>(this: T[], other: T[]): T[] {
-  return [...new Set(this).intersection(new Set(other))];
-}
-
-export function intersection<T>(arr: T[], other: T[]): T[] {
-  return intersectionImpl.call<T[], [T[]], T[]>(arr, other);
+export function intersection<T>(arr: readonly T[], other: readonly T[]): T[] {
+  return [...new Set(arr).intersection(new Set(other))];
 }

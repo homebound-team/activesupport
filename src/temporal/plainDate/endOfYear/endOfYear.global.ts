@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { endOfYearImpl } from "./endOfYear.impl";
+import { endOfYear } from "./endOfYear.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -27,4 +27,6 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.endOfYear = endOfYearImpl;
+Temporal.PlainDate.prototype.endOfYear = function (this: Temporal.PlainDate): Temporal.PlainDate {
+  return endOfYear(this);
+};

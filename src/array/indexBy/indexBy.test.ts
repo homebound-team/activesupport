@@ -1,4 +1,4 @@
-import "./indexBy.global";
+import { indexBy } from "./indexBy.impl";
 
 describe("indexBy", () => {
   it("can index by multiple keys per element", () => {
@@ -7,7 +7,7 @@ describe("indexBy", () => {
       { id: 2, tags: ["blue", "large"] },
       { id: 3, tags: ["red", "large"] },
     ];
-    const indexed = data.indexBy((item) => item.tags);
+    const indexed = indexBy(data, (item) => item.tags);
     expect(indexed.get("red")).toEqual([
       { id: 1, tags: ["red", "small"] },
       { id: 3, tags: ["red", "large"] },
@@ -26,7 +26,8 @@ describe("indexBy", () => {
       { id: 2, tags: ["blue", "large"] },
       { id: 3, tags: ["red", "large"] },
     ];
-    const indexed = data.indexBy(
+    const indexed = indexBy(
+      data,
       (item) => item.tags,
       (item) => item.id,
     );
@@ -37,19 +38,19 @@ describe("indexBy", () => {
   });
 
   it("handles empty arrays", () => {
-    const indexed = [].indexBy(() => []);
+    const indexed = indexBy([], () => []);
     expect(indexed.size).toBe(0);
   });
 
   it("handles elements with no keys", () => {
     const data = [{ id: 1 }, { id: 2 }];
-    const indexed = data.indexBy(() => []);
+    const indexed = indexBy(data, () => []);
     expect(indexed.size).toBe(0);
   });
 
   it("handles duplicate keys for same element", () => {
     const data = [{ id: 1, value: "test" }];
-    const indexed = data.indexBy(() => ["key1", "key1", "key2"]);
+    const indexed = indexBy(data, () => ["key1", "key1", "key2"]);
     expect(indexed.get("key1")).toEqual([{ id: 1, value: "test" }]);
     expect(indexed.get("key2")).toEqual([{ id: 1, value: "test" }]);
   });

@@ -1,4 +1,4 @@
-import { minByImpl } from "src/array/minBy/minBy.impl";
+import { minBy } from "src/array/minBy/minBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { Comparable } from "src/utils";
 
@@ -28,4 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.minBy = minByImpl;
+Array.prototype.minBy = function <T, R extends Comparable>(this: T[], fn: CallbackFn<T, R>) {
+  return minBy(this, fn);
+};

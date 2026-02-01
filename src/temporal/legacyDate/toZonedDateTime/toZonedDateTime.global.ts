@@ -1,4 +1,4 @@
-import { toZonedDateTimeImpl } from "src/temporal/legacyDate/toZonedDateTime/toZonedDateTime.impl";
+import { toZonedDateTime } from "src/temporal/legacyDate/toZonedDateTime/toZonedDateTime.impl";
 import { Temporal } from "temporal-polyfill";
 
 declare global {
@@ -15,4 +15,6 @@ declare global {
   }
 }
 
-Date.prototype.toZonedDateTime = toZonedDateTimeImpl;
+Date.prototype.toZonedDateTime = function (this: Date, tzLike: Temporal.TimeZoneLike) {
+  return toZonedDateTime(this, tzLike);
+};

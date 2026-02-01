@@ -1,11 +1,11 @@
-import "./remove.global";
+import { remove } from "./remove.impl";
 
 describe("remove", () => {
   it("removes an element from an array", () => {
     // Given an array of strings
     const a = ["a", "b", "c"];
     // When we remove an element
-    a.remove("b");
+    remove(a, "b");
     // Then the array is mutated and the element removed
     expect(a).toEqual(["a", "c"]);
   });
@@ -14,7 +14,7 @@ describe("remove", () => {
     // Given an array of strings
     const a = ["a", "b", "c", "d", "e"];
     // When we remove an element
-    a.remove("b", "d");
+    remove(a, "b", "d");
     // Then the array is mutated and the element removed
     expect(a).toEqual(["a", "c", "e"]);
   });
@@ -23,7 +23,7 @@ describe("remove", () => {
     // Given an array of strings
     const a = ["a", "b", "c"];
     // When we remove a non-existent element
-    a.remove("x");
+    remove(a, "x");
     // Then the array remains unchanged
     expect(a).toEqual(["a", "b", "c"]);
   });
@@ -32,7 +32,7 @@ describe("remove", () => {
     // Given an empty array
     const a: string[] = [];
     // When we remove an element
-    a.remove("a");
+    remove(a, "a");
     // Then the array remains empty
     expect(a).toEqual([]);
   });
@@ -41,7 +41,7 @@ describe("remove", () => {
     // Given an array with duplicates
     const a = ["a", "b", "b", "c", "b"];
     // When we remove the duplicate element
-    a.remove("b");
+    remove(a, "b");
     // Then all occurrences are removed
     expect(a).toEqual(["a", "c"]);
   });
@@ -50,7 +50,7 @@ describe("remove", () => {
     // Given an array with duplicates
     const a = ["a", "b", "b", "c", "c", "d"];
     // When we remove multiple elements
-    a.remove("b", "c");
+    remove(a, "b", "c");
     // Then all occurrences of both elements are removed
     expect(a).toEqual(["a", "d"]);
   });
@@ -59,7 +59,7 @@ describe("remove", () => {
     // Given an array of numbers
     const a = [1, 2, 3, 4, 5];
     // When we remove a number
-    a.remove(3);
+    remove(a, 3);
     // Then the number is removed
     expect(a).toEqual([1, 2, 4, 5]);
   });
@@ -71,7 +71,7 @@ describe("remove", () => {
     const obj3 = { id: 3 };
     const a = [obj1, obj2, obj3];
     // When we remove an object by reference
-    a.remove(obj2);
+    remove(a, obj2);
     // Then the object is removed
     expect(a).toEqual([obj1, obj3]);
   });
@@ -83,7 +83,7 @@ describe("remove", () => {
     const obj3 = { id: 3 };
     const a = [obj1, obj2, obj3];
     // When we try to remove an object with same properties but different reference
-    a.remove({ id: 2 } as any);
+    remove(a, { id: 2 } as any);
     // Then the original object remains
     expect(a).toEqual([obj1, obj2, obj3]);
   });
@@ -92,7 +92,7 @@ describe("remove", () => {
     // Given an array
     const a = ["a", "b", "c"];
     // When we call remove with no arguments
-    a.remove();
+    remove(a);
     // Then the array remains unchanged
     expect(a).toEqual(["a", "b", "c"]);
   });
@@ -101,7 +101,7 @@ describe("remove", () => {
     // Given an array
     const a = ["a", "b", "c"];
     // When we remove all elements
-    a.remove("a", "b", "c");
+    remove(a, "a", "b", "c");
     // Then the array becomes empty
     expect(a).toEqual([]);
   });
@@ -110,7 +110,7 @@ describe("remove", () => {
     // Given an array of mixed types
     const a: (string | number)[] = ["a", 1, "b", 2, "c"];
     // When we remove elements of different types
-    a.remove("b", 2);
+    remove(a, "b", 2);
     // Then both types are removed correctly
     expect(a).toEqual(["a", 1, "c"]);
   });
@@ -119,7 +119,7 @@ describe("remove", () => {
     // Given an array with undefined and null
     const a = ["a", undefined, "b", null, "c"];
     // When we remove undefined and null
-    a.remove(undefined, null);
+    remove(a, undefined, null);
     // Then they are removed
     expect(a).toEqual(["a", "b", "c"]);
   });
@@ -128,7 +128,7 @@ describe("remove", () => {
     // Given an array with specific order
     const a = [1, 5, 2, 8, 3, 9, 4];
     // When we remove some elements
-    a.remove(2, 8, 9);
+    remove(a, 2, 8, 9);
     // Then the remaining elements maintain their relative order
     expect(a).toEqual([1, 5, 3, 4]);
   });

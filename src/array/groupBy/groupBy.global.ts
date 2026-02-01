@@ -1,4 +1,4 @@
-import { groupByImpl } from "src/array/groupBy/groupBy.impl";
+import { groupBy } from "src/array/groupBy/groupBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -31,4 +31,10 @@ declare global {
   }
 }
 
-Array.prototype.groupBy = groupByImpl;
+function impl<T, K extends PropertyKey>(this: T[], fn: CallbackFn<T, K>): Record<K, T[]>;
+function impl<K extends PropertyKey, T, R>(this: T[], fn: CallbackFn<T, K>, valueFn: CallbackFn<T, R>): Record<K, R[]>;
+function impl<T, K extends PropertyKey, R = T>(this: T[], fn: CallbackFn<T, K>, valueFn?: CallbackFn<T, R>) {
+  return groupBy(this, fn, valueFn!);
+}
+
+Array.prototype.groupBy = impl;

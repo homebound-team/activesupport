@@ -1,4 +1,4 @@
-import { withoutImpl } from "src/array/without/without.impl";
+import { without } from "src/array/without/without.impl";
 
 declare global {
   interface Array<T> {
@@ -48,4 +48,6 @@ declare global {
   }
 }
 
-Array.prototype.without = withoutImpl;
+Array.prototype.without = function <T>(this: T[], ...elements: T[]) {
+  return without(this, ...elements);
+};

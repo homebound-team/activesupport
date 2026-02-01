@@ -121,7 +121,7 @@ declare module "temporal-polyfill" {
 }
 
 Object.entries(isDayOfWeek).forEach(([name, impl]) =>
-  Object.defineProperty(Temporal.ZonedDateTime.prototype, `is${name}`, {
+  Object.defineProperty(Temporal.ZonedDateTime.prototype, name, {
     enumerable: false,
     get: function (this: Temporal.ZonedDateTime) {
       return impl(this);

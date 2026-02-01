@@ -1,25 +1,28 @@
-import { uniqueByImpl } from "src/array/uniqueBy/uniqueBy.impl";
+import { uniqueBy } from "src/array/uniqueBy/uniqueBy.impl";
+import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
   interface Array<T> {
     /**
      * Returns a new array with duplicates removed based on the value returned by the callback.
-     * @param f A function that returns the value to use for uniqueness comparison
+     * @param fn A function that returns the value to use for uniqueness comparison
      * @returns A new array containing elements with unique callback values
      * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
      */
-    uniqueBy(f: (el: T, index: number, array: T[]) => unknown): T[];
+    uniqueBy(fn: CallbackFn<T, unknown>): T[];
   }
 
   interface ReadonlyArray<T> {
     /**
      * Returns a new array with duplicates removed based on the value returned by the callback.
-     * @param f A function that returns the value to use for uniqueness comparison
+     * @param fn A function that returns the value to use for uniqueness comparison
      * @returns A new array containing elements with unique callback values
      * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
      */
-    uniqueBy(f: (el: T, index: number, array: readonly T[]) => unknown): T[];
+    uniqueBy(fn: CallbackFnRO<T, unknown>): T[];
   }
 }
 
-Array.prototype.uniqueBy = uniqueByImpl;
+Array.prototype.uniqueBy = function <T>(this: T[], fn: CallbackFn<T, unknown>) {
+  return uniqueBy(this, fn);
+};

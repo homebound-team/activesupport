@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { endOfMonthImpl } from "./endOfMonth.impl";
+import { endOfMonth } from "./endOfMonth.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -24,4 +24,6 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.endOfMonth = endOfMonthImpl;
+Temporal.ZonedDateTime.prototype.endOfMonth = function (this: Temporal.ZonedDateTime): Temporal.ZonedDateTime {
+  return endOfMonth(this);
+};

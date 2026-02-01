@@ -1,5 +1,5 @@
-import { maxImpl } from "src/array/max/max.impl";
-import { CallbackFn, CallbackFnRO, ToArray, ToReadonlyArray } from "src/array/utils";
+import { max } from "src/array/max/max.impl";
+import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { Comparable } from "src/utils";
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
      * @example ["11", "23", "222"].max() //=> "23"
      * @example [new Date("2023-01-01"), new Date("2024-01-01")].max() //=> new Date("2024-01-01")
      */
-    max(this: ToArray<Comparable>): T;
+    max(this: Comparable[]): T;
     /**
      * Returns the maximum value after transforming each element with a callback.
      * @param fn A function that returns a comparable value for each element
@@ -29,7 +29,7 @@ declare global {
      * @example ["11", "23", "222"].max() //=> "23"
      * @example [new Date("2023-01-01"), new Date("2024-01-01")].max() //=> new Date("2024-01-01")
      */
-    max(this: ToReadonlyArray<Comparable>): T;
+    max(this: readonly Comparable[]): T;
     /**
      * Returns the maximum value after transforming each element with a callback.
      * @param fn A function that returns a comparable value for each element
@@ -40,4 +40,6 @@ declare global {
   }
 }
 
-Array.prototype.max = maxImpl;
+Array.prototype.max = function <T, R extends Comparable>(this: T[], fn?: CallbackFn<T, R>) {
+  return max(this, fn!);
+};

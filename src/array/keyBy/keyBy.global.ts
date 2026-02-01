@@ -1,4 +1,4 @@
-import { keyByImpl } from "src/array/keyBy/keyBy.impl";
+import { keyBy } from "src/array/keyBy/keyBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -47,4 +47,10 @@ declare global {
   }
 }
 
-Array.prototype.keyBy = keyByImpl;
+Array.prototype.keyBy = function <T, K extends PropertyKey, Y = T>(
+  this: T[],
+  fnOrKey: CallbackFn<T, K> | keyof T,
+  valueFn?: CallbackFn<T, Y>,
+) {
+  return keyBy(this, fnOrKey as any, valueFn);
+};

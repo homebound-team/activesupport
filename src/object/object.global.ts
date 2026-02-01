@@ -1,3 +1,3 @@
-import "./toEntries/toEntries.global";
-import "./toKeys/toKeys.global";
-import "./toValues/toValues.global";
+export * from "./toEntries/toEntries.global";
+export * from "./toKeys/toKeys.global";
+export * from "./toValues/toValues.global";

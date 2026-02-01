@@ -1,20 +1,21 @@
-import { countImpl } from "src/array/count/count.impl";
+import { count } from "src/array/count/count.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { MaybePromise } from "src/utils";
 
 declare global {
   interface Array<T> {
     /**
-     * Counts the number of elements that satisfy the predicate.
+     * Counts the number of elements that satisfy the callback.
      * @param fn A function to test each element
-     * @returns The number of elements for which the predicate returns true
+     * @returns The number of elements for which the callback returns true
      * @example [1, 2, 3, 4, 5].count(n => n % 2 === 0) //=> 2
      * @example [].count(n => true) //=> 0
      */
     count(fn: CallbackFn<T, boolean>): number;
     /**
-     * Counts the number of elements that satisfy the async predicate.
+     * Counts the number of elements that satisfy the async callback.
      * @param fn An async function to test each element
-     * @returns A promise resolving to the number of elements for which the predicate returns true
+     * @returns A promise resolving to the number of elements for which the callback returns true
      * @example await [1, 2, 3, 4, 5].count(async n => n % 2 === 0) //=> 2
      */
     count(fn: CallbackFn<T, Promise<boolean>>): Promise<number>;
@@ -22,21 +23,27 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Counts the number of elements that satisfy the predicate.
+     * Counts the number of elements that satisfy the callback.
      * @param fn A function to test each element
-     * @returns The number of elements for which the predicate returns true
+     * @returns The number of elements for which the callback returns true
      * @example [1, 2, 3, 4, 5].count(n => n % 2 === 0) //=> 2
      * @example [].count(n => true) //=> 0
      */
     count(fn: CallbackFnRO<T, boolean>): number;
     /**
-     * Counts the number of elements that satisfy the async predicate.
+     * Counts the number of elements that satisfy the async callback.
      * @param fn An async function to test each element
-     * @returns A promise resolving to the number of elements for which the predicate returns true
+     * @returns A promise resolving to the number of elements for which the callback returns true
      * @example await [1, 2, 3, 4, 5].count(async n => n % 2 === 0) //=> 2
      */
     count(fn: CallbackFnRO<T, Promise<boolean>>): Promise<number>;
   }
 }
 
-Array.prototype.count = countImpl as (typeof Array.prototype)["count"];
+function impl<T>(this: T[], fn: CallbackFn<T, boolean>): number;
+function impl<T>(this: T[], fn: CallbackFn<T, Promise<boolean>>): Promise<number>;
+function impl<T>(this: T[], fn: CallbackFn<T, MaybePromise<boolean>>): MaybePromise<number> {
+  return count(this, fn as any);
+}
+
+Array.prototype.count = impl;

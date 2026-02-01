@@ -31,22 +31,17 @@ type UnnestMaybePromise<T> = T extends Promise<infer U> ? Promise<U> : MaybeProm
  * @template T The type of the input value
  * @template U The type of the callback result
  * @param maybePromise A value or Promise to process
- * @param callback Function to apply to the resolved value
+ * @param fn Function to apply to the resolved value
  * @returns The result of the callback, maintaining Promise semantics
  * @example
  * maybePromiseThen(5, x => x * 2) //=> 10
  * maybePromiseThen(Promise.resolve(5), x => x * 2) //=> Promise.resolve(10)
  */
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => Promise<U>): Promise<U>;
-export function maybePromiseThen<T, U>(
-  maybePromise: MaybePromise<T>,
-  callback: (obj: T) => MaybePromise<U>,
-): MaybePromise<U>;
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => U): MaybePromise<U>;
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => U): UnnestMaybePromise<U> {
-  return (
-    maybePromise instanceof Promise ? maybePromise.then(callback) : callback(maybePromise)
-  ) as UnnestMaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => Promise<U>): Promise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => MaybePromise<U>): MaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => U): MaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => U): UnnestMaybePromise<U> {
+  return (maybePromise instanceof Promise ? maybePromise.then(fn) : fn(maybePromise)) as UnnestMaybePromise<U>;
 }
 
 /**
@@ -56,29 +51,26 @@ export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: 
  * @template T The type of the input values
  * @template U The type of the callback result
  * @param maybePromises An array of values or Promises to process
- * @param callback Function to apply to the array of resolved values
+ * @param fn Function to apply to the array of resolved values
  * @returns The result of the callback, maintaining Promise semantics
  * @example
  * maybePromiseAllThen([1, 2, 3], arr => arr.sum()) //=> 6
  * maybePromiseAllThen([Promise.resolve(1), 2, 3], arr => arr.sum()) //=> Promise.resolve(6)
  */
+export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], fn: (obj: T[]) => Promise<U>): Promise<U>;
 export function maybePromiseAllThen<T, U>(
   maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => Promise<U>,
-): Promise<U>;
-export function maybePromiseAllThen<T, U>(
-  maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => MaybePromise<U>,
+  fn: (obj: T[]) => MaybePromise<U>,
 ): MaybePromise<U>;
-export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], callback: (obj: T[]) => U): MaybePromise<U>;
+export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], fn: (obj: T[]) => U): MaybePromise<U>;
 export function maybePromiseAllThen<T, U>(
   maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => U,
+  fn: (obj: T[]) => U,
 ): UnnestMaybePromise<U> {
   const maybePromise: MaybePromise<T[]> = maybePromises.some((v) => v instanceof Promise)
     ? (Promise.all(maybePromises) as Promise<T[]>)
     : (maybePromises as T[]);
-  return maybePromiseThen(maybePromise, callback) as UnnestMaybePromise<U>;
+  return maybePromiseThen(maybePromise, fn) as UnnestMaybePromise<U>;
 }
 
 /**

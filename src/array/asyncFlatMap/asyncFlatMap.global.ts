@@ -1,4 +1,4 @@
-import { asyncFlatMapImpl } from "src/array/asyncFlatMap/asyncFlatMap.impl";
+import { asyncFlatMap } from "src/array/asyncFlatMap/asyncFlatMap.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -27,4 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncFlatMap = asyncFlatMapImpl;
+Array.prototype.asyncFlatMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V | V[]>>) {
+  return asyncFlatMap(this, fn);
+};

@@ -1,4 +1,4 @@
-import { uniqueByKeyImpl } from "src/array/uniqueByKey/uniqueByKey.impl";
+import { uniqueByKey } from "src/array/uniqueByKey/uniqueByKey.impl";
 
 declare global {
   interface Array<T> {
@@ -22,4 +22,6 @@ declare global {
   }
 }
 
-Array.prototype.uniqueByKey = uniqueByKeyImpl;
+Array.prototype.uniqueByKey = function <T>(this: T[], key: keyof T) {
+  return uniqueByKey(this, key);
+};

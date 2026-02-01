@@ -1,4 +1,4 @@
-import { asyncForEachImpl } from "src/array/asyncForEach/asyncForEach.impl";
+import { asyncForEach } from "src/array/asyncForEach/asyncForEach.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -27,4 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncForEach = asyncForEachImpl;
+Array.prototype.asyncForEach = function <T>(this: T[], fn: CallbackFn<T, Promise<any>>) {
+  return asyncForEach(this, fn);
+};

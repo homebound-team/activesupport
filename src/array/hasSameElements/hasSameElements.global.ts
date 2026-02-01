@@ -1,4 +1,4 @@
-import { hasSameElementsImpl } from "src/array/hasSameElements/hasSameElements.impl";
+import { hasSameElements } from "src/array/hasSameElements/hasSameElements.impl";
 
 declare global {
   interface Array<T> {
@@ -28,4 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.hasSameElements = hasSameElementsImpl;
+Array.prototype.hasSameElements = function <T>(this: T[], other: readonly T[]) {
+  return hasSameElements(this, other);
+};

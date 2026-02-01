@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { toStringImpl } from "./toString.impl";
+import { toString } from "./toString.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -31,4 +31,9 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.toString = toStringImpl;
+Temporal.PlainDate.prototype.toString = function (
+  this: Temporal.PlainDate,
+  options?: Temporal.ShowCalendarOption | Intl.DateTimeFormatOptions,
+): string {
+  return toString(this, options);
+};

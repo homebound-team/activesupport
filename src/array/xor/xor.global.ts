@@ -1,4 +1,4 @@
-import { xorImpl } from "src/array/xor/xor.impl";
+import { xor } from "src/array/xor/xor.impl";
 
 declare global {
   interface Array<T> {
@@ -26,4 +26,6 @@ declare global {
   }
 }
 
-Array.prototype.xor = xorImpl;
+Array.prototype.xor = function <T>(this: T[], other: readonly T[]) {
+  return xor(this, other);
+};

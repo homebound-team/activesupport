@@ -1,11 +1,11 @@
-import "./without.global";
+import { without } from "./without.impl";
 
 describe("without", () => {
   it("removes without side-effect", () => {
     // Given an array of strings
     const a = ["a", "b", "c"];
     // When we remove an element
-    const b = a.without("b");
+    const b = without(a, "b");
     // Then the original array is unchanged
     expect(a).toEqual(["a", "b", "c"]);
     // And the new array is changed
@@ -16,7 +16,7 @@ describe("without", () => {
     // Given an array of strings
     const a = ["a", "b", "c", "d", "e"];
     // When we remove an element
-    const b = a.without("b", "d");
+    const b = without(a, "b", "d");
     // Then the original array is unchanged
     expect(a).toEqual(["a", "b", "c", "d", "e"]);
     // And the new array is changed
@@ -31,7 +31,7 @@ describe("without", () => {
       ["c", "c"],
     ];
     // When we remove an element
-    const b = a.without(a[1]);
+    const b = without(a, a[1]);
     // Then the original array is unchanged
     expect(a).toEqual([
       ["a", "a"],

@@ -1,31 +1,37 @@
+import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 import { Temporal } from "temporal-polyfill";
 
-export function uniqueByImpl<T>(this: T[], f: (el: T, index: number, array: T[]) => unknown): T[] {
-  // We know our result can't be longer than the input, so we can preallocate the result array and not need to use
-  // push later to avoid potentially resizing the array.
-  const result: T[] = new Array(this.length) as T[];
+export function uniqueBy<T>(arr: T[], fn: CallbackFn<T, unknown>): T[];
+export function uniqueBy<T>(arr: readonly T[], fn: CallbackFnRO<T, unknown>): T[];
+export function uniqueBy<T>(arr: readonly T[], fn: CallbackFnEither<T, unknown>): T[] {
+  if (arr.length === 0) return [];
+  // We know our result can't be longer than the input, so we can preallocate the result array.  This way, we do
+  // not need to use push later and can avoid repeatedly resizing the result array
+  const result: T[] = new Array(arr.length) as T[];
+  let index = 0;
   const set = new Set();
-  for (let i = 0; i < this.length; i++) {
-    let key = f(this[i], i, this);
-    if (key instanceof Date) {
-      key = key.getTime();
-    } else if (key instanceof Temporal.ZonedDateTime) {
-      key = key.epochMilliseconds;
-    } else if (key instanceof Temporal.PlainDate) {
-      key = key.toString();
-    } else if (typeof key === "bigint") {
-      key = `${key}`;
+  for (let i = 0; i < arr.length; i++) {
+    let value = fn(arr[i], i, arr as T[]);
+    // Since we are transforming date/temporal values into strings, we need to ensure that we don't have collisions with
+    // actual strings with those values (or between Date/ZonedDateTime).  So use strings for all these types and add a
+    // prefix to distinguish each type uniquely.
+    if (typeof value === "string") {
+      value = `string:${value}`;
+    } else if (value instanceof Date) {
+      value = `Date:${value.getTime()}`;
+    } else if (value instanceof Temporal.ZonedDateTime) {
+      value = `ZDT:${value.epochMilliseconds}`;
+    } else if (value instanceof Temporal.PlainDate) {
+      value = `PD:${value.toString()}`;
     }
-    if (!set.has(key)) {
-      result[i] = this[i];
-      set.add(key);
+    if (!set.has(value)) {
+      result[index] = arr[i];
+      index++;
+      set.add(value);
     }
   }
-  // The actual result length will be the number of elements in the set.  So we slice the array to that length so we
-  // don't end up with extra undefined elements that we created at the start.
-  return result.slice(0, set.size);
-}
-
-export function uniqueBy<T>(arr: T[], f: (el: T, index: number, array: T[]) => unknown): T[] {
-  return uniqueByImpl.call<T[], [(el: T, index: number, array: T[]) => unknown], T[]>(arr, f);
+  // The actual result length will only be the number of values we've added to the result array, so truncate to that
+  // length
+  result.length = index;
+  return result;
 }

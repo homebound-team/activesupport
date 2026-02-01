@@ -1,12 +1,12 @@
-import { CallbackFn } from "src/array/utils";
+import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
-export function everyHasSameImpl<T>(this: T[], fn: CallbackFn<T, unknown>): boolean {
-  if (this.length === 0) return true;
-  const [e, ...rest] = this;
-  const first = fn(e, 0, this);
-  return rest.every((e, i) => fn(e, i + 1, this) === first);
-}
-
-export function everyHasSame<T>(arr: T[], fn: CallbackFn<T, unknown>): boolean {
-  return everyHasSameImpl.call<T[], [CallbackFn<T, unknown>], boolean>(arr, fn);
+export function everyHasSame<T>(arr: T[], fn: CallbackFn<T, unknown>): boolean;
+export function everyHasSame<T>(arr: readonly T[], fn: CallbackFnRO<T, unknown>): boolean;
+export function everyHasSame<T>(arr: readonly T[], fn: CallbackFnEither<T, unknown>): boolean {
+  if (arr.length === 0) return true;
+  const first = fn(arr[0], 0, arr as T[]);
+  for (let i = 1; i < arr.length; i++) {
+    if (fn(arr[i], i, arr as T[]) !== first) return false;
+  }
+  return true;
 }

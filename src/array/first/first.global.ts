@@ -1,4 +1,4 @@
-import { firstImpl } from "src/array/first/first.impl";
+import { first } from "src/array/first/first.impl";
 
 declare global {
   interface Array<T> {
@@ -22,5 +22,7 @@ declare global {
 
 Object.defineProperty(Array.prototype, "first", {
   enumerable: false,
-  get: firstImpl,
+  get: function <T>(this: T[]) {
+    return first(this);
+  },
 });

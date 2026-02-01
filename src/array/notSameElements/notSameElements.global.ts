@@ -1,4 +1,4 @@
-import { notSameElementsImpl } from "src/array/notSameElements/notSameElements.impl";
+import { notSameElements } from "src/array/notSameElements/notSameElements.impl";
 
 declare global {
   interface Array<T> {
@@ -28,4 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.notSameElements = notSameElementsImpl;
+Array.prototype.notSameElements = function <T>(this: T[], other: readonly T[]) {
+  return notSameElements(this, other);
+};

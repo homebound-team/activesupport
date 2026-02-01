@@ -1,4 +1,4 @@
-import { mapToObjectImpl } from "src/array/mapToObject/mapToObject.impl";
+import { mapToObject } from "src/array/mapToObject/mapToObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -41,4 +41,9 @@ declare global {
   }
 }
 
-Array.prototype.mapToObject = mapToObjectImpl as (typeof Array.prototype)["mapToObject"];
+Array.prototype.mapToObject = function <T, K extends PropertyKey, V>(
+  this: readonly T[],
+  fn: CallbackFnRO<T, readonly [K, V]>,
+) {
+  return mapToObject(this, fn);
+} as (typeof Array.prototype)["mapToObject"];

@@ -1,4 +1,4 @@
-import { sortByImpl } from "src/array/sortBy/sortBy.impl";
+import { sortBy } from "src/array/sortBy/sortBy.impl";
 import { Comparable } from "src/utils";
 
 declare global {
@@ -29,4 +29,6 @@ declare global {
   }
 }
 
-Array.prototype.sortBy = sortByImpl;
+Array.prototype.sortBy = function <T, K extends Comparable>(this: T[], fn: (el: T) => K | K[]) {
+  return sortBy(this, fn);
+};

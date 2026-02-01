@@ -1,36 +1,36 @@
-import { CallbackFn } from "src/array/utils";
+import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 import { MaybePromise, maybePromiseAllThen } from "src/utils";
 
-export function maybeSumImpl<T, R extends number | bigint | undefined>(
-  this: T[] | R[],
-  fn?: CallbackFn<T, MaybePromise<R>>,
+function maybeSum(arr: (number | undefined)[]): number | undefined;
+function maybeSum(arr: (bigint | undefined)[]): number | undefined;
+function maybeSum<T>(arr: T[], fn: CallbackFn<T, number | undefined>): number | undefined;
+function maybeSum<T>(arr: T[], fn: CallbackFn<T, bigint | undefined>): bigint | undefined;
+function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, number | undefined>): number | undefined;
+function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, bigint | undefined>): bigint | undefined;
+function maybeSum<T>(arr: T[], fn: CallbackFn<T, Promise<number | undefined>>): Promise<number | undefined>;
+function maybeSum<T>(arr: T[], fn: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint | undefined>;
+function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<number | undefined>>): Promise<number | undefined>;
+function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<bigint | undefined>>): Promise<bigint | undefined>;
+function maybeSum<T>(
+  arr: readonly T[],
+  fn?: CallbackFnEither<T, MaybePromise<number | bigint | undefined>>,
 ): MaybePromise<number | bigint | undefined> {
-  const promisesOrNumbers = fn ? (this.map(fn as any) as R[] | Promise<R>[]) : (this as R[]);
-  return maybePromiseAllThen(promisesOrNumbers, (numbers) => {
-    let sum: bigint | number | undefined = numbers[0];
-    for (let i = 1; i < numbers.length; i++) {
-      const number = numbers[i];
-      if (number !== undefined) {
-        sum = (((sum ?? (typeof number === "bigint" ? 0n : 0)) as any) + number) as any;
-      }
-    }
-    return sum;
-  });
+  const promisesOrNumbers = fn
+    ? ((arr as T[]).map(fn) as MaybePromise<number | bigint | undefined>[])
+    : (arr as unknown as (number | bigint | undefined)[]);
+  return maybePromiseAllThen(promisesOrNumbers, doSum);
 }
 
-export function maybeSum<T, R extends number | undefined>(arr: R[]): R;
-export function maybeSum<T, R extends number | undefined>(arr: T[], f: CallbackFn<T, R>): R;
-export function maybeSum<T, R extends number | undefined>(arr: T[], f: CallbackFn<T, Promise<R>>): Promise<R>;
-export function maybeSum<T, R extends bigint | undefined>(arr: R[]): R;
-export function maybeSum<T, R extends bigint | undefined>(arr: T[], f: CallbackFn<T, R>): R;
-export function maybeSum<T, R extends bigint | undefined>(arr: T[], f: CallbackFn<T, Promise<R>>): Promise<R>;
-export function maybeSum<T, R extends number | bigint | undefined>(
-  arr: T[] | R[],
-  fn?: CallbackFn<T, MaybePromise<R>>,
-): MaybePromise<number | bigint | undefined> {
-  return maybeSumImpl.call<
-    T[] | R[],
-    [CallbackFn<T, MaybePromise<R>> | undefined],
-    MaybePromise<number | bigint | undefined>
-  >(arr, fn);
+export { maybeSum };
+
+// Defined separately to avoid creating a closure for every runtime call
+function doSum(arr: readonly (number | bigint | undefined)[]): number | bigint | undefined {
+  let sum = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    const number = arr[i];
+    if (number !== undefined) {
+      sum = (((sum ?? (typeof number === "bigint" ? 0n : 0)) as any) + number) as any;
+    }
+  }
+  return sum;
 }

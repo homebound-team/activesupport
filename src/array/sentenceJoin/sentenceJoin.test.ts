@@ -1,11 +1,11 @@
-import "./sentenceJoin.global";
+import { sentenceJoin } from "./sentenceJoin.impl";
 
 describe("sentenceJoin", () => {
   it("returns just the element as a string for a single element array", () => {
     // Given an array with a single number
     const a = [5];
     // When we run sentenceJoin
-    const result = a.sentenceJoin();
+    const result = sentenceJoin(a);
     // Then we get back just the number converted to a string
     expect(result).toBe("5");
   });
@@ -14,7 +14,7 @@ describe("sentenceJoin", () => {
     // Given an array of 2 numbers
     const a = [5, 7];
     // When we run sentenceJoin
-    const result = a.sentenceJoin();
+    const result = sentenceJoin(a);
     // Then we get back just the numbers joined by 'and'
     expect(result).toBe("5 and 7");
   });
@@ -23,7 +23,7 @@ describe("sentenceJoin", () => {
     // Given an array of multiple numbers
     const a = [5, 7, 9, 11];
     // When we run sentenceJoin
-    const result = a.sentenceJoin();
+    const result = sentenceJoin(a);
     // Then we get back just the number converted to a string
     expect(result).toBe("5, 7, 9 and 11");
   });
@@ -32,7 +32,7 @@ describe("sentenceJoin", () => {
     // Given an array of 2 numbers
     const a = [5, 7];
     // When we run sentenceJoin with a word
-    const result = a.sentenceJoin({ word: "or" });
+    const result = sentenceJoin(a, { word: "or" });
     // Then we get back just the number converted to a string
     expect(result).toBe("5 or 7");
   });
@@ -41,7 +41,7 @@ describe("sentenceJoin", () => {
     // Given an array of 2 numbers
     const a = [5, 7, 9, 11];
     // When we run sentenceJoin with a separator
-    const result = a.sentenceJoin({ separator: "." });
+    const result = sentenceJoin(a, { separator: "." });
     // Then we get back just the number converted to a string
     expect(result).toBe("5.7.9 and 11");
   });

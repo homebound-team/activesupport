@@ -1,5 +1,5 @@
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
-import { everyHasSameImpl } from "./everyHasSame.impl";
+import { everyHasSame } from "./everyHasSame.impl";
 
 declare global {
   interface Array<T> {
@@ -27,4 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.everyHasSame = everyHasSameImpl;
+Array.prototype.everyHasSame = function <T>(this: T[], fn: CallbackFn<T, unknown>) {
+  return everyHasSame(this, fn);
+};

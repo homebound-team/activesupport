@@ -1,10 +1,10 @@
-import { partitionImpl } from "src/array/partition/partition.impl";
+import { partition } from "src/array/partition/partition.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
   interface Array<T> {
     /**
-     * Splits the array into two: elements that satisfy the predicate and elements that don't.
+     * Splits the array into two: elements that satisfy the callback and elements that don't.
      * @param fn A function to test each element
      * @returns A tuple of [matches, non-matches]
      * @example ["foo1", "bar", "foo2"].partition(s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -23,7 +23,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Splits the array into two: elements that satisfy the predicate and elements that don't.
+     * Splits the array into two: elements that satisfy the callback and elements that don't.
      * @param fn A function to test each element
      * @returns A tuple of [matches, non-matches]
      * @example ["foo1", "bar", "foo2"].partition(s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -41,4 +41,6 @@ declare global {
   }
 }
 
-Array.prototype.partition = partitionImpl;
+Array.prototype.partition = function <T, U = T>(this: T[], fn: CallbackFn<T, boolean>, valueFn?: CallbackFn<T, U>) {
+  return partition(this, fn, valueFn);
+};

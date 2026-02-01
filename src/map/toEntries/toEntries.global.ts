@@ -1,4 +1,4 @@
-import { toEntriesImpl } from "src/map/toEntries/toEntries.impl";
+import { toEntries } from "src/map/toEntries/toEntries.impl";
 
 declare global {
   interface Map<K, V> {
@@ -14,4 +14,6 @@ declare global {
   }
 }
 
-Map.prototype.toEntries = toEntriesImpl;
+Map.prototype.toEntries = function <K, V>(this: Map<K, V>): [K, V][] {
+  return toEntries(this);
+};

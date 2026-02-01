@@ -1,13 +1,13 @@
 import { newPD, newZDT } from "src/temporal/setupTests";
 import { Temporal } from "temporal-polyfill";
-import "./max.global";
+import { max } from "./max.impl";
 
 describe("max", () => {
   it("returns the largest highest sorting string from an array", () => {
     // Given an array of strings
     const a = ["11", "23", "222"];
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the highest sorting string
     expect(result).toBe("23");
   });
@@ -16,7 +16,7 @@ describe("max", () => {
     // Given an array of numbers
     const a = [1, 5, 3];
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the highest number
     expect(result).toBe(5);
   });
@@ -25,7 +25,7 @@ describe("max", () => {
     // Given an array of bigints
     const a = [1n, 5n, 3n];
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the highest bigints
     expect(result).toBe(5n);
   });
@@ -34,7 +34,7 @@ describe("max", () => {
     // Given an array of dates
     const a = ["2023-05-02", "2024-05-02", "2022-05-02"].map((v) => new Date(v));
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the latest date
     expect(result).toEqual(new Date("2024-05-02"));
   });
@@ -43,7 +43,7 @@ describe("max", () => {
     // Given an array of dates
     const a = ["2023-05-02", "2024-05-02", "2022-05-02"].map((v) => newPD(v));
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the latest plain date
     expect(result).toEqual(Temporal.PlainDate.from("2024-05-02"));
   });
@@ -54,7 +54,7 @@ describe("max", () => {
       newZDT(v),
     );
     // When we call max
-    const result = a.max();
+    const result = max(a);
     // Then we get back the latest zoned date time
     expect(result).toEqual(newZDT("2024-05-02T00:00:00.000Z"));
   });
@@ -63,7 +63,7 @@ describe("max", () => {
     // Given an array of strings
     const a = ["11", "23", "222"];
     // When we call max with a callback that converts strings to numbers
-    const result = a.max((v) => parseInt(v));
+    const result = max(a, (v) => parseInt(v));
     // Then we get back the largest number
     expect(result).toBe(222);
   });

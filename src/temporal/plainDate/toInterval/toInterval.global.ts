@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { toIntervalImpl } from "./toInterval.impl";
+import { toInterval } from "./toInterval.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -21,4 +21,9 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.PlainDate.prototype.toInterval = toIntervalImpl;
+Temporal.PlainDate.prototype.toInterval = function (
+  this: Temporal.PlainDate,
+  end: Temporal.PlainDate,
+): Temporal.Interval<Temporal.PlainDate> {
+  return toInterval(this, end);
+};

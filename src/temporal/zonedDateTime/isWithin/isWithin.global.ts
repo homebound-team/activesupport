@@ -1,5 +1,7 @@
+import "src/temporal/interval/interval.global";
+import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
-import { isWithinImpl } from "./isWithin.impl";
+import { isWithin } from "./isWithin.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -53,4 +55,9 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.isWithin = isWithinImpl;
+Temporal.ZonedDateTime.prototype.isWithin = function (
+  this: Temporal.ZonedDateTime,
+  interval: Temporal.Interval<Temporal.ZonedDateTime>,
+): boolean {
+  return isWithin(this, interval as Interval<Temporal.ZonedDateTime>);
+};

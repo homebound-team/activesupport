@@ -1,4 +1,4 @@
-import { intersectionImpl } from "src/array/intersection/intersection.impl";
+import { intersection } from "src/array/intersection/intersection.impl";
 
 declare global {
   interface Array<T> {
@@ -26,4 +26,6 @@ declare global {
   }
 }
 
-Array.prototype.intersection = intersectionImpl;
+Array.prototype.intersection = function <T>(this: T[], other: T[]) {
+  return intersection(this, other);
+};

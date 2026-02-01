@@ -1,4 +1,4 @@
-import "./groupBy.global";
+import { groupBy } from "./groupBy.impl";
 
 describe("groupBy", () => {
   it("returns a record of arrays keyed by the callback", () => {
@@ -9,7 +9,7 @@ describe("groupBy", () => {
       { foo: "c", bar: 3 },
     ];
     // When we call groupBy with a field
-    const result = a.groupBy((el) => el.foo);
+    const result = groupBy(a, (el) => el.foo);
     // Then we get back a record with each struct keyed by its value for that field
     expect(result).toEqual({
       a: [{ foo: "a", bar: 1 }],
@@ -26,7 +26,7 @@ describe("groupBy", () => {
       { foo: "a", bar: 3 },
     ];
     // When we call groupBy with a field that collides
-    const result = a.groupBy((el) => el.foo);
+    const result = groupBy(a, (el) => el.foo);
     // Then we get an error
     expect(result).toEqual({
       a: [
@@ -45,7 +45,8 @@ describe("groupBy", () => {
       { foo: "a", bar: 3 },
     ];
     // When we call groupBy with a callback that returns a custom string
-    const result = a.groupBy(
+    const result = groupBy(
+      a,
       (el) => el.foo,
       (el) => el.bar,
     );

@@ -1,43 +1,43 @@
 import { newZDT } from "src/temporal/setupTests";
-import "./addBusinessDays.global";
+import { addBusinessDays } from "./addBusinessDays.impl";
 
 describe("addBusinessDays", () => {
   describe("can add Saturdays and/or Sundays to working days with the businessDays option", () => {
     it("given an initial date of Jan 7 and adding 8 days, with businessDay = [1, 2, 3, 4, 5, 6], should return Jan 17, 2022", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(8, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 8, {
         businessDays: [1, 2, 3, 4, 5, 6],
       });
       expect(result).toEqual(newZDT("2022-01-17T00:00:00.000Z"));
     });
 
     it("given an initial date of Jan 7 and adding 8 days, with businessDay = [7, 1, 2, 3, 4, 5], should return Jan 17, 2022", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(8, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 8, {
         businessDays: [7, 1, 2, 3, 4, 5],
       });
       expect(result).toEqual(newZDT("2022-01-17T00:00:00.000Z"));
     });
 
     it("given an initial date of Jan 7 and adding 10 days, with businessDay = [7, 1, 2, 3, 4, 5, 6], should return Jan 17, 2022", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(10, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 10, {
         businessDays: [7, 1, 2, 3, 4, 5, 6],
       });
       expect(result).toEqual(newZDT("2022-01-17T00:00:00.000Z"));
     });
 
     it("should preserve wall clock time", () => {
-      const result = newZDT("2022-01-07T05:35:24.971Z").addBusinessDays(2);
+      const result = addBusinessDays(newZDT("2022-01-07T05:35:24.971Z"), 2);
       expect(result).toEqual(newZDT("2022-01-11T05:35:24.971Z"));
     });
 
     it("should preserve time zone", () => {
-      const result = newZDT("2022-01-07T00:00:00.000[America/Los_Angeles]").addBusinessDays(2);
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000[America/Los_Angeles]"), 2);
       expect(result).toEqual(newZDT("2022-01-11T00:00:00.000[America/Los_Angeles]"));
     });
   });
 
   describe("exceptions", () => {
     it("handles true exceptions", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(10, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 10, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-08": true, "2022-01-09": true },
       });
@@ -45,7 +45,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles false exceptions on Mondays", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(9, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 9, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-10": false, "2022-01-17": false },
       });
@@ -53,7 +53,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles false exceptions on Saturdays", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(12, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 12, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: { "2022-01-08": false, "2022-01-15": false },
       });
@@ -61,7 +61,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles a mix of true and false exceptions", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(13, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 13, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: {
           "2022-01-08": false, // Sat
@@ -76,7 +76,7 @@ describe("addBusinessDays", () => {
     });
 
     it("ignores exceptions that are out of range", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(10, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 10, {
         businessDays: [1, 2, 3, 4, 5],
         exceptions: { "2022-01-01": true, "2022-01-09": true, "2022-01-30": true },
       });
@@ -84,7 +84,7 @@ describe("addBusinessDays", () => {
     });
 
     it("moves to the following day when ending on a non-working weekend with a true Saturday exception", () => {
-      const result = newZDT("2022-01-05T00:00:00.000Z").addBusinessDays(4, {
+      const result = addBusinessDays(newZDT("2022-01-05T00:00:00.000Z"), 4, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-08": true },
       });
@@ -92,7 +92,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles true Sunday exceptions", () => {
-      const result = newZDT("2022-01-05T00:00:00.000Z").addBusinessDays(5, {
+      const result = addBusinessDays(newZDT("2022-01-05T00:00:00.000Z"), 5, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: { "2022-01-09": true },
       });
@@ -100,7 +100,7 @@ describe("addBusinessDays", () => {
     });
 
     it("ends on a true exception", () => {
-      const result = newZDT("2022-01-05T00:00:00.000Z").addBusinessDays(4, {
+      const result = addBusinessDays(newZDT("2022-01-05T00:00:00.000Z"), 4, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: { "2022-01-09": true },
       });
@@ -108,7 +108,7 @@ describe("addBusinessDays", () => {
     });
 
     it("should move to following Monday when ending on a false exception", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(5, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 5, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-14": false },
       });
@@ -116,7 +116,7 @@ describe("addBusinessDays", () => {
     });
 
     it("starts on a non-working Saturday and ends on a false exception, should move to following Monday", () => {
-      const result = newZDT("2022-01-08T00:00:00.000Z").addBusinessDays(5, {
+      const result = addBusinessDays(newZDT("2022-01-08T00:00:00.000Z"), 5, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-14": false },
       });
@@ -124,7 +124,7 @@ describe("addBusinessDays", () => {
     });
 
     it("starts on a false exception", () => {
-      const result = newZDT("2022-01-07T00:00:00.000Z").addBusinessDays(5, {
+      const result = addBusinessDays(newZDT("2022-01-07T00:00:00.000Z"), 5, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-07": false },
       });
@@ -132,7 +132,7 @@ describe("addBusinessDays", () => {
     });
 
     it("starts on a true exception", () => {
-      const result = newZDT("2022-01-08T00:00:00.000Z").addBusinessDays(5, {
+      const result = addBusinessDays(newZDT("2022-01-08T00:00:00.000Z"), 5, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-08": true },
       });
@@ -140,7 +140,7 @@ describe("addBusinessDays", () => {
     });
 
     it("starts and ends on false exceptions, should move to the following working day", () => {
-      const result = newZDT("2022-01-08T00:00:00.000Z").addBusinessDays(6, {
+      const result = addBusinessDays(newZDT("2022-01-08T00:00:00.000Z"), 6, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: { "2022-01-08": false, "2022-01-15": false },
       });
@@ -148,7 +148,7 @@ describe("addBusinessDays", () => {
     });
 
     it("starts and ends on true exceptions", () => {
-      const result = newZDT("2022-01-08T00:00:00.000Z").addBusinessDays(6, {
+      const result = addBusinessDays(newZDT("2022-01-08T00:00:00.000Z"), 6, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: { "2022-01-08": true, "2022-01-15": true },
       });
@@ -156,7 +156,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles a large number of working Saturday exceptions, including some out of range", () => {
-      const result = newZDT("2022-01-03T00:00:00.000Z").addBusinessDays(36, {
+      const result = addBusinessDays(newZDT("2022-01-03T00:00:00.000Z"), 36, {
         businessDays: [1, 2, 3, 4, 5], // M-F
         exceptions: {
           "2022-01-08": true,
@@ -172,7 +172,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles a large number of working Saturday exceptions when Sundays are working days", () => {
-      const result = newZDT("2022-01-03T00:00:00.000Z").addBusinessDays(40, {
+      const result = addBusinessDays(newZDT("2022-01-03T00:00:00.000Z"), 40, {
         businessDays: [7, 1, 2, 3, 4, 5], // Sun-F
         exceptions: {
           "2022-01-08": true,
@@ -188,7 +188,7 @@ describe("addBusinessDays", () => {
     });
 
     it("handles a large number of excluded Saturday exceptions, including some out of range", () => {
-      const result = newZDT("2022-01-03T00:00:00.000Z").addBusinessDays(36, {
+      const result = addBusinessDays(newZDT("2022-01-03T00:00:00.000Z"), 36, {
         businessDays: [1, 2, 3, 4, 5, 6], // M-Sat
         exceptions: {
           "2022-01-08": false,

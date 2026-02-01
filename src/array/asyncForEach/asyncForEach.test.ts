@@ -1,4 +1,4 @@
-import "./asyncForEach.global";
+import { asyncForEach } from "./asyncForEach.impl";
 
 describe("asyncForEach", () => {
   it("awaits the callback for each element in the array ", async () => {
@@ -6,7 +6,7 @@ describe("asyncForEach", () => {
     const a = ["a", "b", "c"];
     // when we call asyncForEach with a callback
     const callback = jest.fn(() => Promise.resolve());
-    await a.asyncForEach(callback);
+    await asyncForEach(a, callback);
     // then we expect that callback to have been called for every number
     expect(callback).toHaveBeenCalledTimes(3);
     expect(callback).toHaveBeenCalledWith("a", 0, a);

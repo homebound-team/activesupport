@@ -1,4 +1,5 @@
-import { findFirstImpl } from "src/array/findFirst/findFirst.impl";
+import { findFirst } from "src/array/findFirst/findFirst.impl";
+import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
   interface Array<T> {
@@ -11,7 +12,7 @@ declare global {
      * @example ["not a number", "42", "100"].findFirst(s => { const n = parseInt(s); return isNaN(n) ? undefined : n }) //=> 42
      * @example [].findFirst(s => s) //=> undefined
      */
-    findFirst<U>(fn: (element: T) => U | undefined): U | undefined;
+    findFirst<U>(fn: CallbackFn<T, U | undefined>): U | undefined;
   }
 
   interface ReadonlyArray<T> {
@@ -24,8 +25,10 @@ declare global {
      * @example ["not a number", "42", "100"].findFirst(s => { const n = parseInt(s); return isNaN(n) ? undefined : n }) //=> 42
      * @example [].findFirst(s => s) //=> undefined
      */
-    findFirst<U>(fn: (element: T) => U | undefined): U | undefined;
+    findFirst<U>(fn: CallbackFnRO<T, U | undefined>): U | undefined;
   }
 }
 
-Array.prototype.findFirst = findFirstImpl;
+Array.prototype.findFirst = function <T, U>(this: T[], fn: CallbackFn<T, U | undefined>) {
+  return findFirst(this, fn);
+};

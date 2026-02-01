@@ -1,8 +1,8 @@
-import "./sortBy.global";
+import { sortBy } from "./sortBy.impl";
 
 describe("sortBy", () => {
   it("sorts using specified the specified function", () => {
-    expect([1, 2, 3].sortBy((n: number) => -n)).toEqual([3, 2, 1]);
+    expect(sortBy([1, 2, 3], (n: number) => -n)).toEqual([3, 2, 1]);
   });
 
   it("sorts by two values", () => {
@@ -12,14 +12,14 @@ describe("sortBy", () => {
       { foo: 3, bar: 1 },
       { foo: 2, bar: 0 },
     ];
-    expect(foos.sortBy((f) => [f.foo, f.bar])).toEqual([
+    expect(sortBy(foos, (f) => [f.foo, f.bar])).toEqual([
       { foo: 1, bar: 0 },
       { foo: 2, bar: 0 },
       { foo: 3, bar: 1 },
       { foo: 3, bar: 2 },
     ]);
     // And the types work for readonly arrays
-    expect((foos as Readonly<typeof foos>).sortBy((f) => [f.foo, f.bar])).toEqual([
+    expect(sortBy(foos as Readonly<typeof foos>, (f) => [f.foo, f.bar])).toEqual([
       { foo: 1, bar: 0 },
       { foo: 2, bar: 0 },
       { foo: 3, bar: 1 },
@@ -36,7 +36,7 @@ describe("sortBy", () => {
       { foo: 3, bar: 0, zaz: 0 }, // last
     ];
     expect(
-      foos.sortBy((f) => {
+      sortBy(foos, (f) => {
         return [f.foo, f.bar ?? Infinity, f.zaz ?? Infinity];
       }),
     ).toEqual([
@@ -54,7 +54,7 @@ describe("sortBy", () => {
       { foo: 1, bar: 0 },
     ];
     expect(() => {
-      foos.sortBy((f) => {
+      sortBy(foos, (f) => {
         return f.foo === 3 ? [f.foo] : [f.foo, f.bar];
       });
     }).toThrow("cannot compare arrays of different lengths");
@@ -63,17 +63,17 @@ describe("sortBy", () => {
   it("works for bigint fields", () => {
     // Using `any` here as an easy case for the compiler not being able to catch the error
     const foos: { foo: bigint }[] = [{ foo: 3n }, { foo: -1n }, { foo: 2n }];
-    expect(foos.sortBy((f) => f.foo)).toEqual([{ foo: -1n }, { foo: 2n }, { foo: 3n }]);
+    expect(sortBy(foos, (f) => f.foo)).toEqual([{ foo: -1n }, { foo: 2n }, { foo: 3n }]);
   });
 
   it("handles NaN values consistently", () => {
     // NaN should sort to the end (similar to how nullish values often do)
     const nums = [3, NaN, 1, NaN, 2];
-    expect(nums.sortBy((n) => n)).toEqual([1, 2, 3, NaN, NaN]);
+    expect(sortBy(nums, (n) => n)).toEqual([1, 2, 3, NaN, NaN]);
   });
 
   it("handles Infinity values consistently", () => {
     const nums = [3, Infinity, 1, -Infinity, 2];
-    expect(nums.sortBy((n) => n)).toEqual([-Infinity, 1, 2, 3, Infinity]);
+    expect(sortBy(nums, (n) => n)).toEqual([-Infinity, 1, 2, 3, Infinity]);
   });
 });

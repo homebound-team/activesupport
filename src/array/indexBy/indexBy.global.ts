@@ -1,4 +1,4 @@
-import { indexByImpl } from "src/array/indexBy/indexBy.impl";
+import { indexBy } from "src/array/indexBy/indexBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -31,4 +31,6 @@ declare global {
   }
 }
 
-Array.prototype.indexBy = indexByImpl;
+Array.prototype.indexBy = function <T, O, Y = T>(this: T[], fn: CallbackFn<T, O[]>, valueFn?: CallbackFn<T, Y>) {
+  return indexBy(this, fn, valueFn);
+};

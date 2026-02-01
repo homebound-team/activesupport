@@ -1,4 +1,4 @@
-import { groupByObjectImpl } from "src/array/groupByObject/groupByObject.impl";
+import { groupByObject } from "src/array/groupByObject/groupByObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -27,4 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.groupByObject = groupByObjectImpl;
+Array.prototype.groupByObject = function <T, O, Y = T>(this: T[], fn: CallbackFn<T, O>, valueFn?: CallbackFn<T, Y>) {
+  return groupByObject(this, fn, valueFn);
+};

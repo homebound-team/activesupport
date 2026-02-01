@@ -1,8 +1,4 @@
-export function findAfterImpl<T>(this: T[], el: T): T | undefined {
-  const index = this.last === el ? -1 : this.indexOf(el);
-  return index === -1 ? undefined : this[index + 1];
-}
-
-export function findAfter<T>(arr: T[], el: T): T | undefined {
-  return findAfterImpl.call<T[], [T], T | undefined>(arr, el);
+export function findAfter<T>(arr: readonly T[], el: T): T | undefined {
+  const index = arr[arr.length - 1] === el ? -1 : arr.indexOf(el);
+  return index === -1 ? undefined : arr[index + 1];
 }

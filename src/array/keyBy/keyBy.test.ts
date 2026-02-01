@@ -1,4 +1,4 @@
-import "./keyBy.global";
+import { keyBy } from "./keyBy.impl";
 
 describe("keyBy", () => {
   it("returns a record keyed by the given field", () => {
@@ -9,7 +9,7 @@ describe("keyBy", () => {
       { foo: "c", bar: 3 },
     ];
     // When we call keyBy with a field
-    const result = a.keyBy("foo");
+    const result = keyBy(a, "foo");
     // Then we get back a record with each struct keyed by its value for that field
     expect(result).toEqual({
       a: { foo: "a", bar: 1 },
@@ -26,7 +26,7 @@ describe("keyBy", () => {
       { foo: "a", bar: 3 },
     ];
     // When we call keyBy with a field that collides
-    const result = () => a.keyBy("foo");
+    const result = () => keyBy(a, "foo");
     // Then we get an error
     expect(result).toThrow("a already had a value assigned");
   });
@@ -39,7 +39,8 @@ describe("keyBy", () => {
       { foo: "a", bar: 1 },
     ];
     // When we call keyBy with a callback that collides but produces the same values
-    const result = a.keyBy(
+    const result = keyBy(
+      a,
       (el) => el.foo,
       (el) => el.bar,
     );
@@ -55,7 +56,7 @@ describe("keyBy", () => {
       { foo: "c", bar: 3 },
     ];
     // When we call keyBy with a callback that returns a custom string
-    const result = a.keyBy((el) => `${el.foo}.${el.bar}`);
+    const result = keyBy(a, (el) => `${el.foo}.${el.bar}`);
     // Then we get back a record with each struct keyed by its return from the callback
     expect(result).toEqual({
       "a.1": { foo: "a", bar: 1 },
@@ -72,7 +73,8 @@ describe("keyBy", () => {
       { foo: "c", bar: 3 },
     ];
     // When we call keyBy with a callback that returns a custom string
-    const result = a.keyBy(
+    const result = keyBy(
+      a,
       (el) => el.foo,
       (el) => el.bar,
     );

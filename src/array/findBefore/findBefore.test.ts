@@ -1,11 +1,11 @@
-import "./findBefore.global";
+import { findBefore } from "./findBefore.impl";
 
 describe("findBefore", () => {
   it("returns the element that precedes the matched element in the array", async () => {
     // given an array of strings
     const a = ["a", "b", "c"];
     // when we call findBefore with an element
-    const result = a.findBefore("c");
+    const result = findBefore(a, "c");
     // then we get the element before the one we passed
     expect(result).toBe("b");
   });
@@ -14,7 +14,7 @@ describe("findBefore", () => {
     // given an array of strings
     const a = ["a", "b", "c"];
     // when we call findBefore with an element
-    const result = a.findBefore("a");
+    const result = findBefore(a, "a");
     // then we get undefined
     expect(result).toBeUndefined();
   });
@@ -23,7 +23,7 @@ describe("findBefore", () => {
     // given an array of strings
     const a = ["a", "b", "c"];
     // when we call findBefore with an element
-    const result = a.findBefore("d");
+    const result = findBefore(a, "d");
     // then we get undefined
     expect(result).toBeUndefined();
   });

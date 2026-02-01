@@ -1,4 +1,4 @@
-import "./keyByObject.global";
+import { keyByObject } from "./keyByObject.impl";
 
 describe("keyByObject", () => {
   it("throws when elements generate duplicate keys", () => {
@@ -10,7 +10,7 @@ describe("keyByObject", () => {
       { foo: duplicateFoo, bar: 3 },
     ];
     // When we call keyByObject with a callback that collides
-    const result = () => a.keyByObject((el) => el.foo);
+    const result = () => keyByObject(a, (el) => el.foo);
     // Then we get an error
     expect(result).toThrow("already had a value assigned");
   });
@@ -24,7 +24,8 @@ describe("keyByObject", () => {
       { foo: duplicateFoo, bar: 1 },
     ];
     // When we call keyByObject with a callback that collides but produces the same values
-    const result = a.keyByObject(
+    const result = keyByObject(
+      a,
       (el) => el.foo,
       (el) => el.bar,
     );
@@ -45,7 +46,7 @@ describe("keyByObject", () => {
       { foo: { a: 4 }, bar: 3 },
     ];
     // When we call keyByObject
-    const result = a.keyByObject((el) => el.foo);
+    const result = keyByObject(a, (el) => el.foo);
     // Then we get back a record with each struct keyed by its return from the callback
     expect(result).toEqual(
       new Map([
@@ -64,7 +65,8 @@ describe("keyByObject", () => {
       { foo: { a: 4 }, bar: 3 },
     ];
     // When we call keyByObject with key and value callbacks
-    const result = a.keyByObject(
+    const result = keyByObject(
+      a,
       (el) => el.foo,
       (el) => el.bar,
     );

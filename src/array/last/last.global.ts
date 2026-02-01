@@ -1,4 +1,4 @@
-import { lastImpl } from "src/array/last/last.impl";
+import { last } from "src/array/last/last.impl";
 
 declare global {
   interface Array<T> {
@@ -22,5 +22,7 @@ declare global {
 
 Object.defineProperty(Array.prototype, "last", {
   enumerable: false,
-  get: lastImpl,
+  get: function <T>(this: T[]) {
+    return last(this);
+  },
 });

@@ -1,4 +1,4 @@
-import "./groupByObject.global";
+import { groupByObject } from "./groupByObject.impl";
 
 describe("groupByObject", () => {
   it("can group objects as-is", () => {
@@ -10,7 +10,7 @@ describe("groupByObject", () => {
       [b, 2],
       [a, 1],
     ];
-    const grouped: Array<[HasName, number[]]> = list.groupByObject((a) => a[0]);
+    const grouped: Array<[HasName, number[]]> = groupByObject(list, (a) => a[0]);
     expect(grouped).toEqual([
       // a's entries
       [a, [list[0], list[1], list[3]]],
@@ -28,7 +28,8 @@ describe("groupByObject", () => {
       [b, 2],
       [a, 1],
     ];
-    const grouped: Array<[HasName, number[]]> = list.groupByObject(
+    const grouped: Array<[HasName, number[]]> = groupByObject(
+      list,
       (a) => a[0],
       (a) => a[1],
     );

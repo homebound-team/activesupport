@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { startOfDayImpl } from "./startOfDay.impl";
+import { startOfDay } from "./startOfDay.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -24,4 +24,6 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.startOfDay = startOfDayImpl;
+Temporal.ZonedDateTime.prototype.startOfDay = function (this: Temporal.ZonedDateTime): Temporal.ZonedDateTime {
+  return startOfDay(this);
+};

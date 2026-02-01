@@ -1,4 +1,4 @@
-import { batchedImpl } from "src/array/batched/batched.impl";
+import { batched } from "src/array/batched/batched.impl";
 
 declare global {
   interface Array<T> {
@@ -28,4 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.batched = batchedImpl;
+Array.prototype.batched = function <T>(this: T[], n: number) {
+  return batched(this, n);
+};

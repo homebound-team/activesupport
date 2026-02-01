@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { addBusinessDaysImpl } from "./addBusinessDays.impl";
+import { addBusinessDays } from "./addBusinessDays.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
@@ -29,4 +29,10 @@ declare module "temporal-polyfill" {
   }
 }
 
-Temporal.ZonedDateTime.prototype.addBusinessDays = addBusinessDaysImpl;
+Temporal.ZonedDateTime.prototype.addBusinessDays = function (
+  this: Temporal.ZonedDateTime,
+  days: number,
+  options?: Parameters<typeof addBusinessDays>[2],
+): Temporal.ZonedDateTime {
+  return addBusinessDays(this, days, options);
+};

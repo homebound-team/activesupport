@@ -1,4 +1,4 @@
-import { sentenceJoinImpl } from "src/array/sentenceJoin/sentenceJoin.impl";
+import { sentenceJoin } from "src/array/sentenceJoin/sentenceJoin.impl";
 
 declare global {
   interface Array<T> {
@@ -30,4 +30,6 @@ declare global {
   }
 }
 
-Array.prototype.sentenceJoin = sentenceJoinImpl;
+Array.prototype.sentenceJoin = function <T>(this: T[], opts?: { word?: "and" | "or"; separator?: string }) {
+  return sentenceJoin(this, opts);
+};

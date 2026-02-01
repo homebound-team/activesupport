@@ -1,4 +1,4 @@
-import { compactImpl } from "src/array/compact/compact.impl";
+import { compact } from "src/array/compact/compact.impl";
 
 declare global {
   interface Array<T> {
@@ -22,4 +22,6 @@ declare global {
   }
 }
 
-Array.prototype.compact = compactImpl;
+Array.prototype.compact = function <T>(this: T[]) {
+  return compact(this);
+};

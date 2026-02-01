@@ -1,20 +1,20 @@
-import "./getOrCreate.global";
+import { getOrCreate } from "./getOrCreate.impl";
 
 describe("getOrCreate", () => {
   it("returns existing entities", () => {
     const m = new Map();
     m.set("foo", "bar");
-    expect(m.getOrCreate("foo", () => "baz")).toBe("bar");
+    expect(getOrCreate(m, "foo", () => "baz")).toBe("bar");
   });
 
   it("returns new items", () => {
     const m = new Map();
-    expect(m.getOrCreate("foo", () => "baz")).toBe("baz");
+    expect(getOrCreate(m, "foo", () => "baz")).toBe("baz");
   });
 
   it("is set after creating a new item", () => {
     const m = new Map();
-    m.getOrCreate("foo", () => "baz");
+    getOrCreate(m, "foo", () => "baz");
     expect(m.has("foo")).toBe(true);
   });
 
@@ -23,7 +23,7 @@ describe("getOrCreate", () => {
     const key = "foo";
     m.set(key, "bar");
     const fn = jest.fn().mockReturnValue("baz");
-    m.getOrCreate(key, fn);
+    getOrCreate(m, key, fn);
     expect(fn).not.toHaveBeenCalled();
   });
 
@@ -33,9 +33,9 @@ describe("getOrCreate", () => {
     const key = "foo";
     const fn = jest.fn().mockReturnValue("baz");
     // once we getOrCreate the first time
-    m.getOrCreate(key, fn);
+    getOrCreate(m, key, fn);
     // then when we try it a second time
-    m.getOrCreate(key, fn);
+    getOrCreate(m, key, fn);
     // the fn is not invoked again
     expect(fn).toHaveBeenCalledTimes(1);
   });

@@ -1,4 +1,4 @@
-import { findAfterImpl } from "src/array/findAfter/findAfter.impl";
+import { findAfter } from "src/array/findAfter/findAfter.impl";
 
 declare global {
   interface Array<T> {
@@ -26,4 +26,6 @@ declare global {
   }
 }
 
-Array.prototype.findAfter = findAfterImpl;
+Array.prototype.findAfter = function <T>(this: T[], el: T) {
+  return findAfter(this, el);
+};

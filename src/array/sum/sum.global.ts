@@ -1,5 +1,6 @@
-import { sumImpl } from "src/array/sum/sum.impl";
+import { sum } from "src/array/sum/sum.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { MaybePromise } from "src/utils";
 
 declare global {
   interface Array<T> {
@@ -13,18 +14,18 @@ declare global {
     sum(this: (number | undefined)[]): number;
     /**
      * Sums values extracted by a callback, treating `undefined` as 0. Returns 0 for empty arrays.
-     * @param f A function that returns a number for each element
+     * @param fn A function that returns a number for each element
      * @returns The sum of all returned numbers
      * @example [{x: 1}, {x: 2}].sum(o => o.x) //=> 3
      */
-    sum(f: CallbackFn<T, number | undefined>): number;
+    sum(fn: CallbackFn<T, number | undefined>): number;
     /**
      * Sums values extracted by an async callback, treating `undefined` as 0.
-     * @param f An async function that returns a number for each element
+     * @param fn An async function that returns a number for each element
      * @returns A promise resolving to the sum of all returned numbers
      * @example await [{x: 1}, {x: 2}].sum(async o => o.x) //=> 3
      */
-    sum(f: CallbackFn<T, Promise<number | undefined>>): Promise<number>;
+    sum(fn: CallbackFn<T, Promise<number | undefined>>): Promise<number>;
     /**
      * Sums all bigints in the array, treating `undefined` as 0n. Returns 0n for empty arrays.
      * @returns The sum of all bigints
@@ -33,16 +34,16 @@ declare global {
     sum(this: (bigint | undefined)[]): bigint;
     /**
      * Sums bigint values extracted by a callback, treating `undefined` as 0n.
-     * @param f A function that returns a bigint for each element
+     * @param fn A function that returns a bigint for each element
      * @returns The sum of all returned bigints
      */
-    sum(f: CallbackFn<T, bigint | undefined>): bigint;
+    sum(fn: CallbackFn<T, bigint | undefined>): bigint;
     /**
      * Sums bigint values extracted by an async callback, treating `undefined` as 0n.
-     * @param f An async function that returns a bigint for each element
+     * @param fn An async function that returns a bigint for each element
      * @returns A promise resolving to the sum of all returned bigints
      */
-    sum(f: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
+    sum(fn: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
   }
 
   interface ReadonlyArray<T> {
@@ -56,18 +57,18 @@ declare global {
     sum(this: readonly (number | undefined)[]): number;
     /**
      * Sums values extracted by a callback, treating `undefined` as 0. Returns 0 for empty arrays.
-     * @param f A function that returns a number for each element
+     * @param fn A function that returns a number for each element
      * @returns The sum of all returned numbers
      * @example [{x: 1}, {x: 2}].sum(o => o.x) //=> 3
      */
-    sum(f: CallbackFnRO<T, number | undefined>): number;
+    sum(fn: CallbackFnRO<T, number | undefined>): number;
     /**
      * Sums values extracted by an async callback, treating `undefined` as 0.
-     * @param f An async function that returns a number for each element
+     * @param fn An async function that returns a number for each element
      * @returns A promise resolving to the sum of all returned numbers
      * @example await [{x: 1}, {x: 2}].sum(async o => o.x) //=> 3
      */
-    sum(f: CallbackFnRO<T, Promise<number | undefined>>): Promise<number>;
+    sum(fn: CallbackFnRO<T, Promise<number | undefined>>): Promise<number>;
     /**
      * Sums all bigints in the array, treating `undefined` as 0n. Returns 0n for empty arrays.
      * @returns The sum of all bigints
@@ -76,17 +77,30 @@ declare global {
     sum(this: (bigint | undefined)[]): bigint;
     /**
      * Sums bigint values extracted by a callback, treating `undefined` as 0n.
-     * @param f A function that returns a bigint for each element
+     * @param fn A function that returns a bigint for each element
      * @returns The sum of all returned bigints
      */
-    sum(f: CallbackFn<T, bigint | undefined>): bigint;
+    sum(fn: CallbackFn<T, bigint | undefined>): bigint;
     /**
      * Sums bigint values extracted by an async callback, treating `undefined` as 0n.
-     * @param f An async function that returns a bigint for each element
+     * @param fn An async function that returns a bigint for each element
      * @returns A promise resolving to the sum of all returned bigints
      */
-    sum(f: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
+    sum(fn: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
   }
 }
 
-Array.prototype.sum = sumImpl as (typeof Array.prototype)["sum"];
+export function impl(this: (number | undefined)[]): number;
+export function impl(this: (bigint | undefined)[]): bigint;
+export function impl<T>(this: T[], fn: CallbackFn<T, number | undefined>): number;
+export function impl<T>(this: T[], fn: CallbackFn<T, bigint | undefined>): bigint;
+export function impl<T>(this: T[], fn: CallbackFn<T, Promise<number | undefined>>): Promise<number>;
+export function impl<T>(this: T[], fn: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint>;
+export function impl<T>(
+  this: T[],
+  fn?: CallbackFn<T, MaybePromise<number | bigint | undefined>>,
+): MaybePromise<number | bigint> {
+  return sum(this, fn as CallbackFn<T>) as MaybePromise<number | bigint>;
+}
+
+Array.prototype.sum = impl;

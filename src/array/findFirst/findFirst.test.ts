@@ -1,11 +1,11 @@
-import "./findFirst.global";
+import { findFirst } from "./findFirst.impl";
 
 describe("findFirst", () => {
   it("returns the first defined result from the lambda", async () => {
     // given an array of strings
     const a = ["", "hello", "world"];
     // when we call findFirst with a function that returns non-empty strings
-    const result = a.findFirst((s) => s || undefined);
+    const result = findFirst(a, (s) => s || undefined);
     // then we get the first non-empty string
     expect(result).toBe("hello");
   });
@@ -14,7 +14,7 @@ describe("findFirst", () => {
     // given an array of strings
     const a = ["", "", ""];
     // when we call findFirst with a function that returns undefined for empty strings
-    const result = a.findFirst((s) => s || undefined);
+    const result = findFirst(a, (s) => s || undefined);
     // then we get undefined
     expect(result).toBeUndefined();
   });
@@ -23,7 +23,7 @@ describe("findFirst", () => {
     // given an empty array
     const a: string[] = [];
     // when we call findFirst
-    const result = a.findFirst((s) => s);
+    const result = findFirst(a, (s) => s);
     // then we get undefined
     expect(result).toBeUndefined();
   });
@@ -32,7 +32,7 @@ describe("findFirst", () => {
     // given an array of strings
     const a = ["not a number", "42", "100"];
     // when we call findFirst with a function that parses numbers
-    const result = a.findFirst((s) => {
+    const result = findFirst(a, (s) => {
       const num = parseInt(s);
       return isNaN(num) ? undefined : num;
     });
@@ -45,7 +45,7 @@ describe("findFirst", () => {
     const a = [1, 2, 3, 4, 5];
     const mockFn = jest.fn((n: number) => (n > 2 ? n * 10 : undefined));
     // when we call findFirst
-    const result = a.findFirst(mockFn);
+    const result = findFirst(a, mockFn);
     // then we get the first result and the function stops being called
     expect(result).toBe(30);
     expect(mockFn).toHaveBeenCalledTimes(3); // called for 1, 2, 3 only

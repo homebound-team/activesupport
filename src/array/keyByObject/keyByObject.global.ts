@@ -1,4 +1,4 @@
-import { keyByObjectImpl } from "src/array/keyByObject/keyByObject.impl";
+import { keyByObject } from "src/array/keyByObject/keyByObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 
 declare global {
@@ -29,4 +29,6 @@ declare global {
   }
 }
 
-Array.prototype.keyByObject = keyByObjectImpl;
+Array.prototype.keyByObject = function <T, O, Y = T>(this: T[], fn: CallbackFn<T, O>, valueFn?: CallbackFn<T, Y>) {
+  return keyByObject(this, fn, valueFn);
+};

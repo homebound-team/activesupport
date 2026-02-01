@@ -1,4 +1,4 @@
-import "./toObject.global";
+import { toObject } from "./toObject.impl";
 
 describe("toObject", () => {
   it("returns an object from an array of arrays of key/value pairs", () => {
@@ -9,7 +9,7 @@ describe("toObject", () => {
       ["c", 7],
     ] as const;
     // when we call toObject
-    const result = a.toObject();
+    const result = toObject(a);
     // then we get an object with those keys and values
     expect(result).toEqual({ a: 5, b: 6, c: 7 });
   });

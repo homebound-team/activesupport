@@ -15,13 +15,9 @@ export type CallbackFn<T, R = any> = (element: T, index: number, array: T[]) => 
 export type CallbackFnRO<T, R = any> = (element: T, index: number, array: readonly T[]) => R;
 
 /**
- * Utility type that converts a type to a mutable array type.
- * @template T The type to convert to an array
+ * A union of callback function types.  Mostly used for implementations of functions that support both mutable and
+ * readonly overload signatures.
+ * @template T The type of elements in the array
+ * @template R The return type of the callback (defaults to any)
  */
-export type ToArray<T> = T extends any ? T[] : never;
-
-/**
- * Utility type that converts a type to a readonly array type.
- * @template T The type to convert to a readonly array
- */
-export type ToReadonlyArray<T> = T extends any ? readonly T[] : never;
+export type CallbackFnEither<T, R = any> = CallbackFn<T, R> | CallbackFnRO<T, R>;

@@ -1,4 +1,4 @@
-import { differenceImpl } from "src/array/difference/difference.impl";
+import { difference } from "src/array/difference/difference.impl";
 
 declare global {
   interface Array<T> {
@@ -26,4 +26,6 @@ declare global {
   }
 }
 
-Array.prototype.difference = differenceImpl;
+Array.prototype.difference = function <T>(this: T[], other: readonly T[]) {
+  return difference(this, other as T[]);
+};

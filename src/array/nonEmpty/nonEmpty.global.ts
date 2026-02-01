@@ -1,4 +1,4 @@
-import { nonEmptyImpl } from "src/array/nonEmpty/nonEmpty.impl";
+import { nonEmpty } from "src/array/nonEmpty/nonEmpty.impl";
 
 declare global {
   interface Array<T> {
@@ -22,5 +22,7 @@ declare global {
 
 Object.defineProperty(Array.prototype, "nonEmpty", {
   enumerable: false,
-  get: nonEmptyImpl,
+  get: function <T>(this: T[]) {
+    return nonEmpty(this);
+  },
 });

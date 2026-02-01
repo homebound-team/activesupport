@@ -19,19 +19,12 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
   );
 }
 
-export function toStringImpl(
-  this: Temporal.PlainDate,
-  options?: Temporal.ShowCalendarOption | Intl.DateTimeFormatOptions,
-): string {
-  if (options && isDateTimeFormatOptions(options)) {
-    return this.toLocaleString("en-US", options);
-  }
-  return originalToString.call(this, options as Temporal.ShowCalendarOption);
-}
-
 export function toString(
   date: Temporal.PlainDate,
   options?: Temporal.ShowCalendarOption | Intl.DateTimeFormatOptions,
 ): string {
-  return toStringImpl.call(date, options);
+  if (options && isDateTimeFormatOptions(options)) {
+    return date.toLocaleString("en-US", options);
+  }
+  return originalToString.call(date, options as Temporal.ShowCalendarOption);
 }
