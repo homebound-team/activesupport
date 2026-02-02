@@ -1,3 +1,4 @@
+import "src/temporal/interval/interval.global";
 import { Temporal } from "temporal-polyfill";
 import { toInterval } from "./toInterval.impl";
 

@@ -1,3 +1,4 @@
+import "src/temporal/types.global";
 import { Temporal } from "temporal-polyfill";
 import { differenceInBusinessDays } from "./differenceInBusinessDays.impl";
 
@@ -62,7 +63,7 @@ declare module "temporal-polyfill" {
 Temporal.PlainDate.prototype.differenceInBusinessDays = function (
   this: Temporal.PlainDate,
   other: Temporal.PlainDate,
-  options?: Parameters<typeof differenceInBusinessDays>[2],
+  options?: Temporal.BusinessDayOptions,
 ): number {
   return differenceInBusinessDays(this, other, options);
 };

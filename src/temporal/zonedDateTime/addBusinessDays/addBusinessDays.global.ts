@@ -1,3 +1,4 @@
+import "src/temporal/types.global";
 import { Temporal } from "temporal-polyfill";
 import { addBusinessDays } from "./addBusinessDays.impl";
 
@@ -32,7 +33,7 @@ declare module "temporal-polyfill" {
 Temporal.ZonedDateTime.prototype.addBusinessDays = function (
   this: Temporal.ZonedDateTime,
   days: number,
-  options?: Parameters<typeof addBusinessDays>[2],
+  options?: Temporal.BusinessDayOptions,
 ): Temporal.ZonedDateTime {
   return addBusinessDays(this, days, options);
 };
