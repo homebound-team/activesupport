@@ -3,6 +3,7 @@ import { MaybePromise, maybePromiseAllThen } from "src/utils";
 
 function maybeSum(arr: (number | undefined)[]): number | undefined;
 function maybeSum(arr: (bigint | undefined)[]): number | undefined;
+function maybeSum(arr: (bigint | undefined)[]): bigint | undefined;
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, number | undefined>): number | undefined;
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, bigint | undefined>): bigint | undefined;
 function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, number | undefined>): number | undefined;
