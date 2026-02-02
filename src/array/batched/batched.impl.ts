@@ -9,9 +9,12 @@
  * @example batched([], 3) //=> []
  */
 export function batched<T>(arr: readonly T[], n: number): T[][] {
-  const result = [] as T[][];
-  for (let i = 0; i < arr.length; i += n) {
-    result.push(arr.slice(i, i + n));
+  const numArrays = Math.ceil(arr.length / n);
+  const result = new Array<T[]>(numArrays);
+  let offset = 0;
+  for (let i = 0; i < numArrays; i++) {
+    result[i] = arr.slice(offset, offset + n);
+    offset += n;
   }
   return result;
 }
