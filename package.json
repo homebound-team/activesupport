@@ -443,7 +443,7 @@
   "license": "MIT",
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=16384' tsdown",
+    "build": "NODE_OPTIONS='--max-old-space-size=12288' tsdown",
     "generate:barrels": "yarn tsx scripts/generate-barrels.ts",
     "lint": "eslint --ext js,ts,tsx src",
     "lint:fix": "eslint --ext js,ts,tsx --fix src",
