@@ -444,6 +444,7 @@
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "build": "NODE_OPTIONS='--max-old-space-size=16384' tsdown",
+    "generate:barrels": "yarn tsx scripts/generate-barrels.ts",
     "lint": "eslint --ext js,ts,tsx src",
     "lint:fix": "eslint --ext js,ts,tsx --fix src",
     "postinstall": "husky install",
@@ -468,6 +469,7 @@
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2",
     "tsdown": "^0.20.1",
+    "tsx": "^4.21.0",
     "typescript": "5.8.3"
   },
   "lint-staged": {
