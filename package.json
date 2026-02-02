@@ -13,233 +13,21 @@
       "require": "./dist/array.cjs",
       "import": "./dist/array.mjs"
     },
-    "./array/asyncFilter": {
-      "require": "./dist/array/asyncFilter.cjs",
-      "import": "./dist/array/asyncFilter.mjs"
-    },
-    "./array/asyncFlatMap": {
-      "require": "./dist/array/asyncFlatMap.cjs",
-      "import": "./dist/array/asyncFlatMap.mjs"
-    },
-    "./array/asyncForEach": {
-      "require": "./dist/array/asyncForEach.cjs",
-      "import": "./dist/array/asyncForEach.mjs"
-    },
-    "./array/asyncMap": {
-      "require": "./dist/array/asyncMap.cjs",
-      "import": "./dist/array/asyncMap.mjs"
-    },
-    "./array/asyncPartition": {
-      "require": "./dist/array/asyncPartition.cjs",
-      "import": "./dist/array/asyncPartition.mjs"
-    },
-    "./array/asyncSome": {
-      "require": "./dist/array/asyncSome.cjs",
-      "import": "./dist/array/asyncSome.mjs"
-    },
-    "./array/batched": {
-      "require": "./dist/array/batched.cjs",
-      "import": "./dist/array/batched.mjs"
-    },
-    "./array/compact": {
-      "require": "./dist/array/compact.cjs",
-      "import": "./dist/array/compact.mjs"
-    },
-    "./array/count": {
-      "require": "./dist/array/count.cjs",
-      "import": "./dist/array/count.mjs"
-    },
-    "./array/difference": {
-      "require": "./dist/array/difference.cjs",
-      "import": "./dist/array/difference.mjs"
-    },
-    "./array/each": {
-      "require": "./dist/array/each.cjs",
-      "import": "./dist/array/each.mjs"
-    },
-    "./array/everyHasSame": {
-      "require": "./dist/array/everyHasSame.cjs",
-      "import": "./dist/array/everyHasSame.mjs"
-    },
-    "./array/findAfter": {
-      "require": "./dist/array/findAfter.cjs",
-      "import": "./dist/array/findAfter.mjs"
-    },
-    "./array/findAndRemove": {
-      "require": "./dist/array/findAndRemove.cjs",
-      "import": "./dist/array/findAndRemove.mjs"
-    },
-    "./array/findBefore": {
-      "require": "./dist/array/findBefore.cjs",
-      "import": "./dist/array/findBefore.mjs"
-    },
-    "./array/findFirst": {
-      "require": "./dist/array/findFirst.cjs",
-      "import": "./dist/array/findFirst.mjs"
-    },
-    "./array/first": {
-      "require": "./dist/array/first.cjs",
-      "import": "./dist/array/first.mjs"
-    },
-    "./array/groupBy": {
-      "require": "./dist/array/groupBy.cjs",
-      "import": "./dist/array/groupBy.mjs"
-    },
-    "./array/groupByObject": {
-      "require": "./dist/array/groupByObject.cjs",
-      "import": "./dist/array/groupByObject.mjs"
-    },
-    "./array/hasSameElements": {
-      "require": "./dist/array/hasSameElements.cjs",
-      "import": "./dist/array/hasSameElements.mjs"
-    },
     "./array/impl": {
       "require": "./dist/array/impl.cjs",
       "import": "./dist/array/impl.mjs"
-    },
-    "./array/indexBy": {
-      "require": "./dist/array/indexBy.cjs",
-      "import": "./dist/array/indexBy.mjs"
-    },
-    "./array/intersection": {
-      "require": "./dist/array/intersection.cjs",
-      "import": "./dist/array/intersection.mjs"
-    },
-    "./array/isEmpty": {
-      "require": "./dist/array/isEmpty.cjs",
-      "import": "./dist/array/isEmpty.mjs"
-    },
-    "./array/keyBy": {
-      "require": "./dist/array/keyBy.cjs",
-      "import": "./dist/array/keyBy.mjs"
-    },
-    "./array/keyByObject": {
-      "require": "./dist/array/keyByObject.cjs",
-      "import": "./dist/array/keyByObject.mjs"
-    },
-    "./array/last": {
-      "require": "./dist/array/last.cjs",
-      "import": "./dist/array/last.mjs"
-    },
-    "./array/mapToObject": {
-      "require": "./dist/array/mapToObject.cjs",
-      "import": "./dist/array/mapToObject.mjs"
-    },
-    "./array/max": {
-      "require": "./dist/array/max.cjs",
-      "import": "./dist/array/max.mjs"
-    },
-    "./array/maxBy": {
-      "require": "./dist/array/maxBy.cjs",
-      "import": "./dist/array/maxBy.mjs"
-    },
-    "./array/maybeSum": {
-      "require": "./dist/array/maybeSum.cjs",
-      "import": "./dist/array/maybeSum.mjs"
-    },
-    "./array/min": {
-      "require": "./dist/array/min.cjs",
-      "import": "./dist/array/min.mjs"
-    },
-    "./array/minBy": {
-      "require": "./dist/array/minBy.cjs",
-      "import": "./dist/array/minBy.mjs"
-    },
-    "./array/nonEmpty": {
-      "require": "./dist/array/nonEmpty.cjs",
-      "import": "./dist/array/nonEmpty.mjs"
-    },
-    "./array/notSameElements": {
-      "require": "./dist/array/notSameElements.cjs",
-      "import": "./dist/array/notSameElements.mjs"
-    },
-    "./array/partition": {
-      "require": "./dist/array/partition.cjs",
-      "import": "./dist/array/partition.mjs"
-    },
-    "./array/remove": {
-      "require": "./dist/array/remove.cjs",
-      "import": "./dist/array/remove.mjs"
-    },
-    "./array/removeAll": {
-      "require": "./dist/array/removeAll.cjs",
-      "import": "./dist/array/removeAll.mjs"
-    },
-    "./array/sentenceJoin": {
-      "require": "./dist/array/sentenceJoin.cjs",
-      "import": "./dist/array/sentenceJoin.mjs"
-    },
-    "./array/sortBy": {
-      "require": "./dist/array/sortBy.cjs",
-      "import": "./dist/array/sortBy.mjs"
-    },
-    "./array/sortByKey": {
-      "require": "./dist/array/sortByKey.cjs",
-      "import": "./dist/array/sortByKey.mjs"
-    },
-    "./array/sum": {
-      "require": "./dist/array/sum.cjs",
-      "import": "./dist/array/sum.mjs"
-    },
-    "./array/toObject": {
-      "require": "./dist/array/toObject.cjs",
-      "import": "./dist/array/toObject.mjs"
-    },
-    "./array/unique": {
-      "require": "./dist/array/unique.cjs",
-      "import": "./dist/array/unique.mjs"
-    },
-    "./array/uniqueBy": {
-      "require": "./dist/array/uniqueBy.cjs",
-      "import": "./dist/array/uniqueBy.mjs"
-    },
-    "./array/uniqueByKey": {
-      "require": "./dist/array/uniqueByKey.cjs",
-      "import": "./dist/array/uniqueByKey.mjs"
-    },
-    "./array/without": {
-      "require": "./dist/array/without.cjs",
-      "import": "./dist/array/without.mjs"
-    },
-    "./array/withoutAll": {
-      "require": "./dist/array/withoutAll.cjs",
-      "import": "./dist/array/withoutAll.mjs"
-    },
-    "./array/xor": {
-      "require": "./dist/array/xor.cjs",
-      "import": "./dist/array/xor.mjs"
     },
     "./map": {
       "require": "./dist/map.cjs",
       "import": "./dist/map.mjs"
     },
-    "./map/getOrCreate": {
-      "require": "./dist/map/getOrCreate.cjs",
-      "import": "./dist/map/getOrCreate.mjs"
-    },
     "./map/impl": {
       "require": "./dist/map/impl.cjs",
       "import": "./dist/map/impl.mjs"
     },
-    "./map/toEntries": {
-      "require": "./dist/map/toEntries.cjs",
-      "import": "./dist/map/toEntries.mjs"
-    },
     "./object": {
       "require": "./dist/object.cjs",
       "import": "./dist/object.mjs"
-    },
-    "./object/toEntries": {
-      "require": "./dist/object/toEntries.cjs",
-      "import": "./dist/object/toEntries.mjs"
-    },
-    "./object/toKeys": {
-      "require": "./dist/object/toKeys.cjs",
-      "import": "./dist/object/toKeys.mjs"
-    },
-    "./object/toValues": {
-      "require": "./dist/object/toValues.cjs",
-      "import": "./dist/object/toValues.mjs"
     },
     "./temporal": {
       "require": "./dist/temporal.cjs",
@@ -261,93 +49,13 @@
       "require": "./dist/temporal/legacyDate/impl.cjs",
       "import": "./dist/temporal/legacyDate/impl.mjs"
     },
-    "./temporal/legacyDate/toInstant": {
-      "require": "./dist/temporal/legacyDate/toInstant.cjs",
-      "import": "./dist/temporal/legacyDate/toInstant.mjs"
-    },
-    "./temporal/legacyDate/toPlainDate": {
-      "require": "./dist/temporal/legacyDate/toPlainDate.cjs",
-      "import": "./dist/temporal/legacyDate/toPlainDate.mjs"
-    },
-    "./temporal/legacyDate/toZonedDateTime": {
-      "require": "./dist/temporal/legacyDate/toZonedDateTime.cjs",
-      "import": "./dist/temporal/legacyDate/toZonedDateTime.mjs"
-    },
     "./temporal/plainDate": {
       "require": "./dist/temporal/plainDate.cjs",
       "import": "./dist/temporal/plainDate.mjs"
     },
-    "./temporal/plainDate/addBusinessDays": {
-      "require": "./dist/temporal/plainDate/addBusinessDays.cjs",
-      "import": "./dist/temporal/plainDate/addBusinessDays.mjs"
-    },
-    "./temporal/plainDate/differenceInBusinessDays": {
-      "require": "./dist/temporal/plainDate/differenceInBusinessDays.cjs",
-      "import": "./dist/temporal/plainDate/differenceInBusinessDays.mjs"
-    },
-    "./temporal/plainDate/endOfMonth": {
-      "require": "./dist/temporal/plainDate/endOfMonth.cjs",
-      "import": "./dist/temporal/plainDate/endOfMonth.mjs"
-    },
-    "./temporal/plainDate/endOfWeek": {
-      "require": "./dist/temporal/plainDate/endOfWeek.cjs",
-      "import": "./dist/temporal/plainDate/endOfWeek.mjs"
-    },
-    "./temporal/plainDate/endOfYear": {
-      "require": "./dist/temporal/plainDate/endOfYear.cjs",
-      "import": "./dist/temporal/plainDate/endOfYear.mjs"
-    },
     "./temporal/plainDate/impl": {
       "require": "./dist/temporal/plainDate/impl.cjs",
       "import": "./dist/temporal/plainDate/impl.mjs"
-    },
-    "./temporal/plainDate/isAfter": {
-      "require": "./dist/temporal/plainDate/isAfter.cjs",
-      "import": "./dist/temporal/plainDate/isAfter.mjs"
-    },
-    "./temporal/plainDate/isBefore": {
-      "require": "./dist/temporal/plainDate/isBefore.cjs",
-      "import": "./dist/temporal/plainDate/isBefore.mjs"
-    },
-    "./temporal/plainDate/isDayOfWeek": {
-      "require": "./dist/temporal/plainDate/isDayOfWeek.cjs",
-      "import": "./dist/temporal/plainDate/isDayOfWeek.mjs"
-    },
-    "./temporal/plainDate/isWeekend": {
-      "require": "./dist/temporal/plainDate/isWeekend.cjs",
-      "import": "./dist/temporal/plainDate/isWeekend.mjs"
-    },
-    "./temporal/plainDate/isWithin": {
-      "require": "./dist/temporal/plainDate/isWithin.cjs",
-      "import": "./dist/temporal/plainDate/isWithin.mjs"
-    },
-    "./temporal/plainDate/startOfMonth": {
-      "require": "./dist/temporal/plainDate/startOfMonth.cjs",
-      "import": "./dist/temporal/plainDate/startOfMonth.mjs"
-    },
-    "./temporal/plainDate/startOfWeek": {
-      "require": "./dist/temporal/plainDate/startOfWeek.cjs",
-      "import": "./dist/temporal/plainDate/startOfWeek.mjs"
-    },
-    "./temporal/plainDate/startOfYear": {
-      "require": "./dist/temporal/plainDate/startOfYear.cjs",
-      "import": "./dist/temporal/plainDate/startOfYear.mjs"
-    },
-    "./temporal/plainDate/toInterval": {
-      "require": "./dist/temporal/plainDate/toInterval.cjs",
-      "import": "./dist/temporal/plainDate/toInterval.mjs"
-    },
-    "./temporal/plainDate/toLegacyDate": {
-      "require": "./dist/temporal/plainDate/toLegacyDate.cjs",
-      "import": "./dist/temporal/plainDate/toLegacyDate.mjs"
-    },
-    "./temporal/plainDate/toString": {
-      "require": "./dist/temporal/plainDate/toString.cjs",
-      "import": "./dist/temporal/plainDate/toString.mjs"
-    },
-    "./temporal/plainDate/toZonedDateTime": {
-      "require": "./dist/temporal/plainDate/toZonedDateTime.cjs",
-      "import": "./dist/temporal/plainDate/toZonedDateTime.mjs"
     },
     "./temporal/utils": {
       "require": "./dist/temporal/utils.cjs",
@@ -357,81 +65,9 @@
       "require": "./dist/temporal/zonedDateTime.cjs",
       "import": "./dist/temporal/zonedDateTime.mjs"
     },
-    "./temporal/zonedDateTime/addBusinessDays": {
-      "require": "./dist/temporal/zonedDateTime/addBusinessDays.cjs",
-      "import": "./dist/temporal/zonedDateTime/addBusinessDays.mjs"
-    },
-    "./temporal/zonedDateTime/differenceInBusinessDays": {
-      "require": "./dist/temporal/zonedDateTime/differenceInBusinessDays.cjs",
-      "import": "./dist/temporal/zonedDateTime/differenceInBusinessDays.mjs"
-    },
-    "./temporal/zonedDateTime/endOfDay": {
-      "require": "./dist/temporal/zonedDateTime/endOfDay.cjs",
-      "import": "./dist/temporal/zonedDateTime/endOfDay.mjs"
-    },
-    "./temporal/zonedDateTime/endOfMonth": {
-      "require": "./dist/temporal/zonedDateTime/endOfMonth.cjs",
-      "import": "./dist/temporal/zonedDateTime/endOfMonth.mjs"
-    },
-    "./temporal/zonedDateTime/endOfWeek": {
-      "require": "./dist/temporal/zonedDateTime/endOfWeek.cjs",
-      "import": "./dist/temporal/zonedDateTime/endOfWeek.mjs"
-    },
-    "./temporal/zonedDateTime/endOfYear": {
-      "require": "./dist/temporal/zonedDateTime/endOfYear.cjs",
-      "import": "./dist/temporal/zonedDateTime/endOfYear.mjs"
-    },
     "./temporal/zonedDateTime/impl": {
       "require": "./dist/temporal/zonedDateTime/impl.cjs",
       "import": "./dist/temporal/zonedDateTime/impl.mjs"
-    },
-    "./temporal/zonedDateTime/isAfter": {
-      "require": "./dist/temporal/zonedDateTime/isAfter.cjs",
-      "import": "./dist/temporal/zonedDateTime/isAfter.mjs"
-    },
-    "./temporal/zonedDateTime/isBefore": {
-      "require": "./dist/temporal/zonedDateTime/isBefore.cjs",
-      "import": "./dist/temporal/zonedDateTime/isBefore.mjs"
-    },
-    "./temporal/zonedDateTime/isDayOfWeek": {
-      "require": "./dist/temporal/zonedDateTime/isDayOfWeek.cjs",
-      "import": "./dist/temporal/zonedDateTime/isDayOfWeek.mjs"
-    },
-    "./temporal/zonedDateTime/isWeekend": {
-      "require": "./dist/temporal/zonedDateTime/isWeekend.cjs",
-      "import": "./dist/temporal/zonedDateTime/isWeekend.mjs"
-    },
-    "./temporal/zonedDateTime/isWithin": {
-      "require": "./dist/temporal/zonedDateTime/isWithin.cjs",
-      "import": "./dist/temporal/zonedDateTime/isWithin.mjs"
-    },
-    "./temporal/zonedDateTime/startOfDay": {
-      "require": "./dist/temporal/zonedDateTime/startOfDay.cjs",
-      "import": "./dist/temporal/zonedDateTime/startOfDay.mjs"
-    },
-    "./temporal/zonedDateTime/startOfMonth": {
-      "require": "./dist/temporal/zonedDateTime/startOfMonth.cjs",
-      "import": "./dist/temporal/zonedDateTime/startOfMonth.mjs"
-    },
-    "./temporal/zonedDateTime/startOfWeek": {
-      "require": "./dist/temporal/zonedDateTime/startOfWeek.cjs",
-      "import": "./dist/temporal/zonedDateTime/startOfWeek.mjs"
-    },
-    "./temporal/zonedDateTime/startOfYear": {
-      "require": "./dist/temporal/zonedDateTime/startOfYear.cjs",
-      "import": "./dist/temporal/zonedDateTime/startOfYear.mjs"
-    },
-    "./temporal/zonedDateTime/toInterval": {
-      "require": "./dist/temporal/zonedDateTime/toInterval.cjs",
-      "import": "./dist/temporal/zonedDateTime/toInterval.mjs"
-    },
-    "./temporal/zonedDateTime/toLegacyDate": {
-      "require": "./dist/temporal/zonedDateTime/toLegacyDate.cjs",
-      "import": "./dist/temporal/zonedDateTime/toLegacyDate.mjs"
-    },
-    "./temporal/zonedDateTime/toPlainDate": {
-      "require": "./dist/temporal/zonedDateTime/toPlainDate.cjs",
-      "import": "./dist/temporal/zonedDateTime/toPlainDate.mjs"
     },
     "./utils": {
       "require": "./dist/utils.cjs",
@@ -443,7 +79,7 @@
   "license": "MIT",
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=12288' tsdown",
+    "build": "tsdown",
     "generate:barrels": "yarn tsx scripts/generate-barrels.ts",
     "lint": "eslint --ext js,ts,tsx src",
     "lint:fix": "eslint --ext js,ts,tsx --fix src",
