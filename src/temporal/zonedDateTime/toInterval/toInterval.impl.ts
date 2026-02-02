@@ -4,14 +4,18 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name toInterval
  * @category Interval Helpers
- * @summary returns an interval between the gives dates
- *
- * @param end the end of the interval
+ * @summary Returns an interval between two dates.
  *
  * @description
- * Returns an interval between the gives dates
+ * Returns an interval between the given dates.
  *
- * @returns Temporal.Interval
+ * @param start - The start of the interval
+ * @param end - The end of the interval
+ * @returns An Interval from start to end
+ *
+ * @example
+ * toInterval(Temporal.ZonedDateTime.from("2024-01-01T00:00:00[UTC]"), Temporal.ZonedDateTime.from("2024-01-31T00:00:00[UTC]"))
+ * //=> Interval { start: 2024-01-01T00:00:00+00:00[UTC], end: 2024-01-31T00:00:00+00:00[UTC] }
  */
 export function toInterval(
   date: Temporal.ZonedDateTime,

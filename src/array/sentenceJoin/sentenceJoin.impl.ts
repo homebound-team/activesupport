@@ -1,12 +1,13 @@
 /**
  * Joins array elements into a grammatically correct sentence with commas and a conjunction.
+ * @param arr The array to join
  * @param opts Optional settings for the conjunction word and separator
  * @returns A string representation of the array as a sentence
- * @example [5, 7, 9, 11].sentenceJoin() //=> "5, 7, 9 and 11"
- * @example [5, 7].sentenceJoin() //=> "5 and 7"
- * @example [5].sentenceJoin() //=> "5"
- * @example [5, 7].sentenceJoin({word: "or"}) //=> "5 or 7"
- * @example [].sentenceJoin() //=> ""
+ * @example sentenceJoin([5, 7, 9, 11]) //=> "5, 7, 9 and 11"
+ * @example sentenceJoin([5, 7]) //=> "5 and 7"
+ * @example sentenceJoin([5]) //=> "5"
+ * @example sentenceJoin([5, 7], {word: "or"}) //=> "5 or 7"
+ * @example sentenceJoin([]) //=> ""
  */
 export function sentenceJoin<T>(arr: readonly T[], opts: { word?: "and" | "or"; separator?: string } = {}): string {
   const { word = "and", separator = ", " } = opts;

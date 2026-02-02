@@ -4,23 +4,24 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name endOfWeek
  * @category Week Helpers
- * @summary Return the end of a week for the given date.
+ * @summary Return the end of a week for a date.
  *
  * @description
- * Return the end of a week for the given date.
+ * Return the end of a week for a date.
  *
+ * @param date - the date to get the end of week for
  * @param options - An object with options
  *
  * @returns The end of a week
  *
  * @example
  * // The end of a week for 2 September 2014:
- * const result = Temporal.PlainDate.from("2014-09-02").endOfWeek()
+ * endOfWeek(Temporal.PlainDate.from("2014-09-02"))
  * //=> 2014-09-06
  *
  * @example
  * // If the week starts on Monday, the end of the week for 2 September 2014:
- * const result = Temporal.PlainDate.from("2014-09-02").endOfWeek({ weekStartsOn: 1 })
+ * endOfWeek(Temporal.PlainDate.from("2014-09-02"), { weekStartsOn: 1 })
  * //=> 2014-09-07
  */
 export function endOfWeek(date: Temporal.PlainDate, options: WeekOptions = {}): Temporal.PlainDate {

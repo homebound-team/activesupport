@@ -1,9 +1,10 @@
 /**
- * Removes all specified elements by mutating the array in place.
+ * Removes all specified elements from an array by mutating it in place.
  * Use `withoutAll` for a non-mutating version that returns a new array.
+ * @param arr The array to modify
  * @param elements An array of elements to remove
- * @example const arr = [1, 2, 3, 2, 4]; arr.removeAll([2, 4]); // arr is now [1, 3]
- * @example const arr = []; arr.removeAll([1]); // arr is still []
+ * @example const arr = [1, 2, 3, 2, 4]; removeAll(arr, [2, 4]); // arr is now [1, 3]
+ * @example const arr = []; removeAll(arr, [1]); // arr is still []
  */
 export function removeAll<T>(arr: T[], elements: readonly T[]) {
   if (arr.length === 0 || elements.length === 0) return;

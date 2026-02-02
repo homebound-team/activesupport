@@ -3,16 +3,17 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name startOfYear
  * @category Year Helpers
- * @summary Return the start of a year for the given date.
+ * @summary Return the start of a year for a given date.
  *
  * @description
- * Return the start of a year for the given date.
+ * Return the start of a year for a given date.
  *
+ * @param date - The date to get the start of year for
  * @returns The start of a year
  *
  * @example
  * // The start of a year for 2 September 2014
- * const result = Temporal.PlainDate.from("2014-09-02").startOfYear()
+ * startOfYear(Temporal.PlainDate.from("2014-09-02"))
  * //=> 2014-01-01
  */
 export function startOfYear(date: Temporal.PlainDate): Temporal.PlainDate {

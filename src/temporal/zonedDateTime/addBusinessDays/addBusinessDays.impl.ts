@@ -5,22 +5,20 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name addBusinessDays
  * @category Day Helpers
- * @summary Add the specified number of business days (mon - fri) to the given date.
+ * @summary Add the specified number of business days (mon - fri) to a given date.
  *
  * @description
- * Add the specified number of business days (mon - fri) to the given date, ignoring weekends.
+ * Add the specified number of business days (mon - fri) to a given date, ignoring weekends.
  *
- * @param {Number} businessDays - the amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
- * @param {Object} [options] - an object with options.
- * @param {Number[]} [options.businessDays=[1, 2, 3, 4, 5]] - the business days. default is Monday to Friday.
- * @param {Record<string, boolean>} [options.exceptions={}] - exceptions to the business days. Map of date string (with format "MM/DD/YY") to boolean.
- * @returns {Date} the new date with the business days added
- * @throws {TypeError} 2 arguments required
+ * @param date - The date to add business days to
+ * @param amount - The amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @param options - An object with options.
+ * @returns The new date with the business days added
  *
  * @example
  * // Add 10 business days to 1 September 2014:
- * const result = Temporal.ZonedDateTime.from("2014-09-01").addBusinessDays(10)
- * //=> Mon Sep 15 2014 (skipped weekend days)
+ * addBusinessDays(Temporal.ZonedDateTime.from("2014-09-01T00:00:00[UTC]"), 10)
+ * //=> 2014-09-15T00:00:00[UTC] (skipped weekend days)
  */
 export function addBusinessDays(
   date: Temporal.ZonedDateTime,

@@ -4,17 +4,18 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name endOfMonth
  * @category Month Helpers
- * @summary Return the end of a month for the given date.
+ * @summary Return the end of a month for a given date.
  *
  * @description
- * Return the end of a month for the given date.
+ * Return the end of a month for a given date.
  *
+ * @param date - The date to get the end of month for
  * @returns The end of a month
  *
  * @example
  * // The end of a month for 2 September 2014
- * const result = Temporal.ZonedDateTime.from("2014-09-02").endOfMonth()
- * //=> "2014-09-30"
+ * endOfMonth(Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]"))
+ * //=> 2014-09-30T23:59:59.999+00:00[UTC]
  */
 export function endOfMonth(date: Temporal.ZonedDateTime): Temporal.ZonedDateTime {
   return date.with({ day: date.daysInMonth, ...endOfDayOpts });

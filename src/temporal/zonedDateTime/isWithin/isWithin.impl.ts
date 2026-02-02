@@ -4,46 +4,30 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name isWithin
  * @category Interval Helpers
- * @summary Is the given date within the interval?
+ * @summary Is a given date within the interval?
  *
  * @description
- * Is the given date within the interval? (Including start and end.)
+ * Is a given date within the interval? (Including start and end.)
  *
- * @param interval - The interval to check
- *
+ * @param date - The date to check
+ * @param interval - The interval to check against
  * @returns The date is within the interval
  *
  * @example
  * // For the date within the interval:
- * Temporal.ZonedDateTime.from("2014-01-03").isWithin(
- *  Temporal.ZonedDateTime.Interval.from(
- *   Temporal.ZonedDateTime.from("2014-01-01"),
- *   Temporal.ZonedDateTime.from("2014-01-07")
- *  )
- * })
+ * isWithin(
+ *   Temporal.ZonedDateTime.from("2014-01-03T00:00:00[UTC]"),
+ *   Interval.from(Temporal.ZonedDateTime.from("2014-01-01T00:00:00[UTC]"), Temporal.ZonedDateTime.from("2014-01-07T00:00:00[UTC]"))
+ * )
  * //=> true
  *
  * @example
  * // For the date outside of the interval:
- * Temporal.ZonedDateTime.from("2014-01-10").isWithin(
- *  Temporal.ZonedDateTime.Interval.from(
- *   Temporal.ZonedDateTime.from("2014-01-01"),
- *   Temporal.ZonedDateTime.from("2014-01-07")
- *  )
- * })
+ * isWithin(
+ *   Temporal.ZonedDateTime.from("2014-01-10T00:00:00[UTC]"),
+ *   Interval.from(Temporal.ZonedDateTime.from("2014-01-01T00:00:00[UTC]"), Temporal.ZonedDateTime.from("2014-01-07T00:00:00[UTC]"))
+ * )
  * //=> false
- *
- * @example
- * // For date equal to interval start:
- * const start = Temporal.ZonedDateTime.from("2014-01-10")
- * start.isWithin(Temporal.ZonedDateTime.Interval.from(start, ...))
- * // => true
- *
- * @example
- * // For date equal to interval end:
- * const end = Temporal.ZonedDateTime.from("2014-01-10")
- * end.isWithin(Temporal.ZonedDateTime.Interval.from(..., end))
- * // => true
  */
 export function isWithin(date: Temporal.ZonedDateTime, interval: Interval<Temporal.ZonedDateTime>): boolean {
   return interval.contains(date);

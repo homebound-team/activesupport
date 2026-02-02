@@ -1,23 +1,25 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
 /**
- * Creates a Map indexed by any object key (not limited to property keys).
+ * Creates a Map from an array, indexed by any object key (not limited to property keys).
  * Throws an error if duplicate keys are found for different elements.
  * Useful when keys are objects or complex types.
+ * @param arr The array to index
  * @param fn A function that returns the key (can be any object) for each element
  * @param valueFn Optional function to transform each element before storing
  * @returns A Map from keys to values
- * @example [{id: 1, data: {x: 1}}].keyByObject(item => item.data) //=> Map{{x: 1} => {id: 1, data: {x: 1}}}
+ * @example keyByObject([{id: 1, data: {x: 1}}], item => item.data) //=> Map{{x: 1} => {id: 1, data: {x: 1}}}
  */
 export function keyByObject<O, T, R = T>(arr: T[], fn: CallbackFn<T, O>, valueFn?: CallbackFn<T, R>): Map<O, R>;
 /**
- * Creates a Map indexed by any object key (not limited to property keys).
+ * Creates a Map from an array, indexed by any object key (not limited to property keys).
  * Throws an error if duplicate keys are found for different elements.
  * Useful when keys are objects or complex types.
+ * @param arr The array to index
  * @param fn A function that returns the key (can be any object) for each element
  * @param valueFn Optional function to transform each element before storing
  * @returns A Map from keys to values
- * @example [{id: 1, data: {x: 1}}].keyByObject(item => item.data) //=> Map{{x: 1} => {id: 1, data: {x: 1}}}
+ * @example keyByObject([{id: 1, data: {x: 1}}], item => item.data) //=> Map{{x: 1} => {id: 1, data: {x: 1}}}
  */
 export function keyByObject<O, T, R = T>(
   arr: readonly T[],

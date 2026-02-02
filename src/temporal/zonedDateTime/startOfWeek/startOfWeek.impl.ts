@@ -5,24 +5,24 @@ import { Temporal } from "temporal-polyfill";
 /**
  * @name startOfWeek
  * @category Week Helpers
- * @summary Return the start of a week for the given date.
+ * @summary Return the start of a week for a given date.
  *
  * @description
- * Return the start of a week for the given date.
+ * Return the start of a week for a given date.
  *
+ * @param date - The date to get the start of week for
  * @param options - An object with options
- *
  * @returns The start of a week
  *
  * @example
  * // The start of a week for 2 September 2014:
- * const result = Temporal.ZonedDateTime.from("2014-09-02").startOfWeek()
- * //=> 2014-08-31
+ * startOfWeek(Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]"))
+ * //=> 2014-08-31T00:00:00+00:00[UTC]
  *
  * @example
  * // If the week starts on Monday, the start of the week for 2 September 2014:
- * const result = Temporal.ZonedDateTime.from("2014-09-02").startOfWeek({ weekStartsOn: 1 })
- * //=> 2014-09-01
+ * startOfWeek(Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]"), { weekStartsOn: 1 })
+ * //=> 2014-09-01T00:00:00+00:00[UTC]
  */
 export function startOfWeek(date: Temporal.ZonedDateTime, options: WeekOptions = {}): Temporal.ZonedDateTime {
   const { dayOfWeek, daysInWeek } = date;
