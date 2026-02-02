@@ -1,16 +1,70 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 import { MaybePromise, maybePromiseAllThen } from "src/utils";
 
+/**
+ * Sums numbers but returns `undefined` if the array is empty or contains only `null`/`undefined` values.
+ * This helps distinguish between "sum is zero" vs "no values to sum".
+ * @returns The sum of all numbers, or undefined if there are no defined values
+ * @example [1, 2, 3].maybeSum() //=> 6
+ * @example [undefined, null].maybeSum() //=> undefined1
+ * @example [].maybeSum() //=> undefined
+ */
 function maybeSum(arr: (number | undefined)[]): number | undefined;
-function maybeSum(arr: (bigint | undefined)[]): number | undefined;
+/**
+ * Sums all bigints in the array, returning `undefined` if empty or all values are `undefined`.
+ * @returns The sum of all bigints, or undefined if there are no defined values
+ * @example [1n, 2n, 3n].maybeSum() //=> 6n
+ */
 function maybeSum(arr: (bigint | undefined)[]): bigint | undefined;
+/**
+ * Sums values extracted by a callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn A function that returns a number for each element
+ * @returns The sum of all returned numbers, or undefined if there are no defined values
+ * @example [{x: 1}, {x: 2}].maybeSum(o => o.x) //=> 3
+ */
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, number | undefined>): number | undefined;
+/**
+ * Sums bigint values extracted by a callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn A function that returns a bigint for each element
+ * @returns The sum of all returned bigints, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, bigint | undefined>): bigint | undefined;
+/**
+ * Sums values extracted by a callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn A function that returns a number for each element
+ * @returns The sum of all returned numbers, or undefined if there are no defined values
+ * @example [{x: 1}, {x: 2}].maybeSum(o => o.x) //=> 3
+ */
 function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, number | undefined>): number | undefined;
+/**
+ * Sums bigint values extracted by a callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn A function that returns a bigint for each element
+ * @returns The sum of all returned bigints, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, bigint | undefined>): bigint | undefined;
+/**
+ * Sums values extracted by an async callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn An async function that returns a number for each element
+ * @returns A promise resolving to the sum, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, Promise<number | undefined>>): Promise<number | undefined>;
+/**
+ * Sums values extracted by an async callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn An async function that returns a number for each element
+ * @returns A promise resolving to the sum, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: T[], fn: CallbackFn<T, Promise<bigint | undefined>>): Promise<bigint | undefined>;
+/**
+ * Sums values extracted by an async callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn An async function that returns a number for each element
+ * @returns A promise resolving to the sum, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<number | undefined>>): Promise<number | undefined>;
+/**
+ * Sums values extracted by an async callback, returning `undefined` if empty or all values are `undefined`.
+ * @param fn An async function that returns a number for each element
+ * @returns A promise resolving to the sum, or undefined if there are no defined values
+ */
 function maybeSum<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<bigint | undefined>>): Promise<bigint | undefined>;
 function maybeSum<T>(
   arr: readonly T[],

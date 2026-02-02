@@ -1,3 +1,12 @@
+/**
+ * Returns true if the arrays have exactly the same elements (ignoring order).
+ * Treats duplicates strictly - arrays must have the same element counts to be considered equal.
+ * @param other The array to compare against
+ * @returns True if the arrays have the same elements
+ * @example [1, 2, 3].hasSameElements([3, 2, 1]) //=> true
+ * @example [1, 2, 3].hasSameElements([1, 2, 4]) //=> false
+ * @example [1, 1, 2].hasSameElements([1, 2]) //=> false
+ */
 export function hasSameElements<T>(arr: readonly T[], other: readonly T[]): boolean {
   if (arr.length !== other.length) return false;
   // Under 25 elements just do the linear scan / O(n^2) version

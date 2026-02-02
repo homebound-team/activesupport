@@ -42,5 +42,5 @@ declare global {
 }
 
 Array.prototype.partition = function <T, U = T>(this: T[], fn: CallbackFn<T, boolean>, valueFn?: CallbackFn<T, U>) {
-  return partition(this, fn, valueFn);
+  return partition(this, fn, valueFn!);
 };

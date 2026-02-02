@@ -1,7 +1,19 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 import { Temporal } from "temporal-polyfill";
 
+/**
+ * Returns a new array with duplicates removed based on the value returned by the callback.
+ * @param fn A function that returns the value to use for uniqueness comparison
+ * @returns A new array containing elements with unique callback values
+ * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
+ */
 export function uniqueBy<T>(arr: T[], fn: CallbackFn<T, unknown>): T[];
+/**
+ * Returns a new array with duplicates removed based on the value returned by the callback.
+ * @param fn A function that returns the value to use for uniqueness comparison
+ * @returns A new array containing elements with unique callback values
+ * @example [{id: 1}, {id: 2}, {id: 1}].uniqueBy(o => o.id) //=> [{id: 1}, {id: 2}]
+ */
 export function uniqueBy<T>(arr: readonly T[], fn: CallbackFnRO<T, unknown>): T[];
 export function uniqueBy<T>(arr: readonly T[], fn: CallbackFnEither<T, unknown>): T[] {
   if (arr.length === 0) return [];
