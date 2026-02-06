@@ -63,4 +63,22 @@ describe("sum", () => {
     // Then we get back the sum of the bigints as a bigint
     expect(result).toBe(18n);
   });
+
+  it("works for bigints with a sync callback", () => {
+    // Given an array of objects with bigint values
+    const a = [{ x: 5n }, { x: 6n }, { x: 7n }];
+    // When we call sum with a callback that extracts the bigint
+    const result = sum(a, (v) => v.x);
+    // Then we get back the sum as a bigint
+    expect(result).toBe(18n);
+  });
+
+  it("works for bigints with an async callback", async () => {
+    // Given an array of objects with bigint values
+    const a = [{ x: 5n }, { x: 6n }, { x: 7n }];
+    // When we call sum with an async callback that extracts the bigint
+    const result = await sum(a, (v) => Promise.resolve(v.x));
+    // Then we get back the sum as a bigint
+    expect(result).toBe(18n);
+  });
 });
