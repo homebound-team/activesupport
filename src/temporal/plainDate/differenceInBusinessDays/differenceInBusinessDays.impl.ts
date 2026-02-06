@@ -9,23 +9,15 @@ import { Temporal } from "temporal-polyfill";
 // Implementation converted from previous code located in businessDaysUtils.ts.  I'm not entirely sure it's
 // correct but the tests (also converted) all pass.
 /**
- * @name differenceInBusinessDays
- * @category Day Helpers
- * @summary Get the number of business days between two dates.
- *
- * @description
- * Get the number of business day periods between two dates.
+ * Returns the number of business day periods between two dates.
  * Business days being days that aren't in the weekend.
- *
- * @param date - the later date
- * @param other - the earlier date
- * @param options - an object with options.
- * @param options.businessDays - the business days. default is Monday to Friday.
- * @param options.exceptions - exceptions to the business days. Map of date string to boolean.
- * @returns the number of business days
- *
+ * @param date - The later date
+ * @param other - The earlier date
+ * @param options - An object with options.
+ * @param options.businessDays - The business days. Default is Monday to Friday.
+ * @param options.exceptions - Exceptions to the business days. Map of date string to boolean.
+ * @returns The number of business days
  * @example
- * // How many business days are between 10 January 2014 and 20 July 2014?
  * differenceInBusinessDays(
  *   Temporal.PlainDate.from("2014-07-20"),
  *   Temporal.PlainDate.from("2014-01-10")

@@ -2,24 +2,15 @@ import { BusinessDayOptions, DayOfWeek, assertValidBusinessDays } from "src/temp
 import { Temporal } from "temporal-polyfill";
 
 /**
- * @name isWeekend
- * @category Weekday Helpers
- * @summary Does a given date fall on a weekend?
- *
- * @description
- * Does a given date fall on a weekend?
- *
+ * Returns true if a given date falls on a weekend.
  * @param date - The date to check
  * @param options - An object with options
- * @returns The date falls on a weekend
- *
+ * @returns True if the date falls on a weekend
  * @example
- * // Does 5 October 2014 fall on a weekend?
  * isWeekend(Temporal.PlainDate.from("2014-10-05"))
  * //=> true
- *
  * @example
- * // Does 5 October 2014 fall on a weekend with inverted weekdays?
+ * // With custom business days:
  * isWeekend(Temporal.PlainDate.from("2014-10-05"), { businessDays: [6,7] })
  * //=> false
  */

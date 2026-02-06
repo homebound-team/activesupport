@@ -4,23 +4,15 @@ import { isDefined } from "src/utils";
 import { Temporal } from "temporal-polyfill";
 
 /**
- * @name addBusinessDays
- * @category Day Helpers
- * @summary Add the specified number of business days (mon - fri) to a date.
- *
- * @description
- * Add the specified number of business days (mon - fri) to a date, ignoring weekends.
- *
- * @param date - the date to add business days to
- * @param amount - the amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
- * @param options - an object with options.
- * @param options.businessDays - the business days. default is Monday to Friday.
- * @param options.exceptions - exceptions to the business days. Map of date string to boolean.
- * @returns the new date with the business days added
- *
+ * Adds the specified number of business days (mon - fri) to a given date, ignoring weekends.
+ * @param date - The date to add business days to
+ * @param amount - The amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @param options - An object with options.
+ * @param options.businessDays - The business days. Default is Monday to Friday.
+ * @param options.exceptions - Exceptions to the business days. Map of date string to boolean.
+ * @returns The new date with the business days added
  * @example
- * // Add 10 business days to 1 September 2014:
- * const result = addBusinessDays(Temporal.PlainDate.from("2014-09-01"), 10)
+ * addBusinessDays(Temporal.PlainDate.from("2014-09-01"), 10)
  * //=> Mon Sep 15 2014 (skipped weekend days)
  */
 export function addBusinessDays(

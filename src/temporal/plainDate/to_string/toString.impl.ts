@@ -20,24 +20,16 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
 }
 
 /**
- * @name toString
- * @category String Helpers
- * @summary Returns a string representation of a date.
- *
- * @description
  * Returns a string representation of a date. When called with no arguments
  * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
  * When called with Intl.DateTimeFormatOptions, formats using toLocaleString
  * with "en-US" locale.
- *
  * @param date - The date to format
  * @param options - Either ShowCalendarOption for ISO format or Intl.DateTimeFormatOptions for locale formatting
  * @returns The formatted date string
- *
  * @example
  * // ISO format (default)
  * toString(Temporal.PlainDate.from("2024-01-15")) //=> "2024-01-15"
- *
  * @example
  * // With locale formatting
  * toString(Temporal.PlainDate.from("2024-01-15"), { month: "long", year: "numeric" }) //=> "January 2024"

@@ -3,10 +3,12 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 /**
  * Creates a record from an array, indexed by a field value from each element.
  * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
- * @param arr The array to index
- * @param field The field name to use as the key
+ * @param arr - The array to index
+ * @param field - The field name to use as the key
  * @returns A record mapping field values to elements
- * @example keyBy([{name: "Alice", age: 25}], "name") //=> {Alice: {name: "Alice", age: 25}}
+ * @example
+ * keyBy([{name: "Alice", age: 25}], "name")
+ * //=> {Alice: {name: "Alice", age: 25}}
  */
 export function keyBy<T, K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(
   arr: readonly T[],
@@ -15,13 +17,19 @@ export function keyBy<T, K extends keyof T, TK extends T[K] extends PropertyKey 
 /**
  * Creates a record from an array, indexed by a key extracted from each element.
  * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
- * @param arr The array to index
- * @param fn A function that returns the key for each element
- * @param valueFn Optional function to transform each element before storing
+ * @param arr - The array to index
+ * @param fn - A function that returns the key for each element
+ * @param valueFn - Optional function to transform each element before storing
  * @returns A record mapping keys to values
- * @example keyBy([{name: "Alice", age: 25}], p => p.name) //=> {Alice: {name: "Alice", age: 25}}
- * @example keyBy([{name: "Alice", age: 25}], p => p.name, p => p.age) //=> {Alice: 25}
- * @example keyBy([{name: "a"}, {name: "a"}], p => p.name) // throws "a already had a value assigned"
+ * @example
+ * keyBy([{name: "Alice", age: 25}], p => p.name)
+ * //=> {Alice: {name: "Alice", age: 25}}
+ * @example
+ * keyBy([{name: "Alice", age: 25}], p => p.name, p => p.age)
+ * //=> {Alice: 25}
+ * @example
+ * keyBy([{name: "a"}, {name: "a"}], p => p.name)
+ * // throws "a already had a value assigned"
  */
 export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
   arr: T[],
@@ -31,13 +39,19 @@ export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
 /**
  * Creates a record from an array, indexed by a key extracted from each element.
  * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
- * @param arr The array to index
- * @param fn A function that returns the key for each element
- * @param valueFn Optional function to transform each element before storing
+ * @param arr - The array to index
+ * @param fn - A function that returns the key for each element
+ * @param valueFn - Optional function to transform each element before storing
  * @returns A record mapping keys to values
- * @example keyBy([{name: "Alice", age: 25}], p => p.name) //=> {Alice: {name: "Alice", age: 25}}
- * @example keyBy([{name: "Alice", age: 25}], p => p.name, p => p.age) //=> {Alice: 25}
- * @example keyBy([{name: "a"}, {name: "a"}], p => p.name) // throws "a already had a value assigned"
+ * @example
+ * keyBy([{name: "Alice", age: 25}], p => p.name)
+ * //=> {Alice: {name: "Alice", age: 25}}
+ * @example
+ * keyBy([{name: "Alice", age: 25}], p => p.name, p => p.age)
+ * //=> {Alice: 25}
+ * @example
+ * keyBy([{name: "a"}, {name: "a"}], p => p.name)
+ * // throws "a already had a value assigned"
  */
 export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
   arr: readonly T[],
