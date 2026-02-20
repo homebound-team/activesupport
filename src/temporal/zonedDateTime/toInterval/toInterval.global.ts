@@ -6,18 +6,12 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * @name toInterval
-       * @category Interval Helpers
-       * @summary returns an interval between the gives dates
-       *
-       * @param end the end of the interval
-       *
-       * @description
-       * Returns an interval between the gives dates
-       *
-       * @returns Temporal.Interval
+       * Returns an interval between the given dates.
+       * @param end The end of the interval
+       * @returns An Interval from start to end
+       * @example Temporal.ZonedDateTime.from("2024-01-01T00:00:00[UTC]").toInterval(Temporal.ZonedDateTime.from("2024-01-31T00:00:00[UTC]")) //=> Interval { start: 2024-01-01T00:00:00+00:00[UTC], end: 2024-01-31T00:00:00+00:00[UTC] }
        */
-      toInterval(end: Temporal.ZonedDateTime): Temporal.Interval<Temporal.ZonedDateTime>;
+      toInterval(end: Temporal.ZonedDateTime): Interval<Temporal.ZonedDateTime>;
     }
   }
 }

@@ -25,6 +25,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncFilter = function <T>(this: T[], fn: CallbackFn<T, Promise<boolean>>) {
+Array.prototype.asyncFilter = function <T>(this: T[], fn: CallbackFn<T, Promise<boolean>>): Promise<T[]> {
   return asyncFilter(this, fn);
 };

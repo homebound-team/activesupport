@@ -1,5 +1,5 @@
-import { uniqueBy } from "src/array/uniqueBy/uniqueBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { uniqueBy } from "./uniqueBy.impl";
 
 declare global {
   interface Array<T> {
@@ -23,6 +23,6 @@ declare global {
   }
 }
 
-Array.prototype.uniqueBy = function <T>(this: T[], fn: CallbackFn<T, unknown>) {
+Array.prototype.uniqueBy = function <T>(this: T[], fn: CallbackFn<T, unknown>): T[] {
   return uniqueBy(this, fn);
 };

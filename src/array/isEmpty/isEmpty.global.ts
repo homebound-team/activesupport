@@ -1,22 +1,24 @@
-import { isEmpty } from "src/array/isEmpty/isEmpty.impl";
+import { isEmpty } from "./isEmpty.impl";
 
 declare global {
   interface Array<T> {
     /**
      * Returns true if the array contains no elements.
+     * @returns True if the array is empty
      * @example [].isEmpty //=> true
      * @example ["a"].isEmpty //=> false
      */
-    isEmpty: boolean;
+    readonly isEmpty: boolean;
   }
 
   interface ReadonlyArray<T> {
     /**
      * Returns true if the array contains no elements.
+     * @returns True if the array is empty
      * @example [].isEmpty //=> true
      * @example ["a"].isEmpty //=> false
      */
-    isEmpty: boolean;
+    readonly isEmpty: boolean;
   }
 }
 

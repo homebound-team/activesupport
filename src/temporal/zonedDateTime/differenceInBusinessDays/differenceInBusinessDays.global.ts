@@ -6,56 +6,15 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * @name differenceInBusinessDays
-       * @category Day Helpers
-       * @summary Get the number of business days between the given dates.
-       *
-       * @description
-       * Get the number of business day periods between the given dates.
+       * Returns the number of business day periods between two dates.
        * Business days being days that aren't in the weekend.
-       * Like `differenceInCalendarDays`, the function removes the times from
-       * the dates before calculating the difference.
-       *
-       * @param {Date|Number} other - the earlier date
-       * @param {Object} [options] - an object with options.
-       * @param {Number[]} [options.businessDays=[1, 2, 3, 4, 5]] - the business days. default is Monday to Friday.
-       * @param {Record<string, boolean>} [options.exceptions={}] - exceptions to the business days. Map of date string (with format "MM/DD/YY") to boolean.
-       * @returns {Number} the number of business days
-       * @throws {TypeError} 2 arguments required
-       * @throws {RangeError} businessDays cannot include numbers greater than 6
-       *
-       * @example
-       * // How many business days are between
-       * // 10 January 2014 and 20 July 2014?
-       * const result = differenceInBusinessDays(
-       *   new Date(2014, 6, 20),
-       *   new Date(2014, 0, 10)
-       * )
-       * //=> 136
-       *
-       * // How many business days are between
-       * // 30 November 2021 and 1 November 2021?
-       * const result = differenceInBusinessDays(
-       *   new Date(2021, 10, 30),
-       *   new Date(2021, 10, 1)
-       * )
-       * //=> 21
-       *
-       * // How many business days are between
-       * // 1 November 2021 and 1 December 2021?
-       * const result = differenceInBusinessDays(
-       *   new Date(2021, 10, 1),
-       *   new Date(2021, 11, 1)
-       * )
-       * //=> -22
-       *
-       * // How many business days are between
-       * // 1 November 2021 and 1 November 2021 ?
-       * const result = differenceInBusinessDays(
-       *   new Date(2021, 10, 1),
-       *   new Date(2021, 10, 1)
-       * )
-       * //=> 0
+       * The function removes the times from the dates before calculating the difference.
+       * @param other The earlier date
+       * @param options An object with options.
+       * @param options.businessDays The business days. Default is Monday to Friday.
+       * @param options.exceptions Exceptions to the business days. Map of date string to boolean.
+       * @returns The number of business days
+       * @example Temporal.ZonedDateTime.from("2014-07-20T00:00:00[UTC]").differenceInBusinessDays(Temporal.ZonedDateTime.from("2014-01-10T00:00:00[UTC]")) //=> 136
        */
       differenceInBusinessDays(other: Temporal.ZonedDateTime, options?: BusinessDayOptions): number;
     }
@@ -65,7 +24,7 @@ declare module "temporal-polyfill" {
 Temporal.ZonedDateTime.prototype.differenceInBusinessDays = function (
   this: Temporal.ZonedDateTime,
   other: Temporal.ZonedDateTime,
-  options?: Temporal.BusinessDayOptions,
+  options: Temporal.BusinessDayOptions = {},
 ): number {
   return differenceInBusinessDays(this, other, options);
 };

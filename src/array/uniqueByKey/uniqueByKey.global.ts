@@ -1,4 +1,5 @@
-import { uniqueByKey } from "src/array/uniqueByKey/uniqueByKey.impl";
+import { KeysOfType } from "src/utils";
+import { uniqueByKey } from "./uniqueByKey.impl";
 
 declare global {
   interface Array<T> {
@@ -8,7 +9,7 @@ declare global {
      * @returns A new array containing elements with unique key values
      * @example [{id: 1, name: "a"}, {id: 1, name: "b"}].uniqueByKey("id") //=> [{id: 1, name: "a"}]
      */
-    uniqueByKey(key: keyof T): T[];
+    uniqueByKey<K extends KeysOfType<T, any>>(key: K): T[];
   }
 
   interface ReadonlyArray<T> {
@@ -18,10 +19,10 @@ declare global {
      * @returns A new array containing elements with unique key values
      * @example [{id: 1, name: "a"}, {id: 1, name: "b"}].uniqueByKey("id") //=> [{id: 1, name: "a"}]
      */
-    uniqueByKey(key: keyof T): T[];
+    uniqueByKey<K extends KeysOfType<T, any>>(key: K): T[];
   }
 }
 
-Array.prototype.uniqueByKey = function <T>(this: T[], key: keyof T) {
+Array.prototype.uniqueByKey = function <T, K extends KeysOfType<T, any>>(this: T[], key: K): T[] {
   return uniqueByKey(this, key);
 };

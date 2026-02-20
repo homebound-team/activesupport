@@ -1,5 +1,5 @@
-import { partition } from "src/array/partition/partition.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { partition } from "./partition.impl";
 
 declare global {
   interface Array<T> {
@@ -42,5 +42,5 @@ declare global {
 }
 
 Array.prototype.partition = function <T, U = T>(this: T[], fn: CallbackFn<T, boolean>, valueFn?: CallbackFn<T, U>) {
-  return partition(this, fn, valueFn!);
-};
+  return partition(this, fn as any, valueFn as any);
+} as any;

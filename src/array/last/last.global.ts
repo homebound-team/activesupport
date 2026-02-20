@@ -1,22 +1,24 @@
-import { last } from "src/array/last/last.impl";
+import { last } from "./last.impl";
 
 declare global {
   interface Array<T> {
     /**
      * Returns the last element of the array, or `undefined` if the array is empty.
+     * @returns The last element, or undefined if the array is empty
      * @example ["a", "b", "c"].last //=> "c"
      * @example [].last //=> undefined
      */
-    last: T | undefined;
+    readonly last: T | undefined;
   }
 
   interface ReadonlyArray<T> {
     /**
      * Returns the last element of the array, or `undefined` if the array is empty.
+     * @returns The last element, or undefined if the array is empty
      * @example ["a", "b", "c"].last //=> "c"
      * @example [].last //=> undefined
      */
-    last: T | undefined;
+    readonly last: T | undefined;
   }
 }
 

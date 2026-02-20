@@ -5,19 +5,9 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * @name endOfYear
-       * @category Year Helpers
-       * @summary Return the end of a year for the given date.
-       *
-       * @description
-       * Return the end of a year for the given date.
-       *
+       * Returns the end of a year for the date.
        * @returns The end of a year
-       *
-       * @example
-       * // The end of a year for 2 September 2014 11:55:00:
-       * const result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
-       * //=> Wed Dec 31 2014 23:59:59.999
+       * @example Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]").endOfYear() //=> 2014-12-31T23:59:59.999+00:00[UTC]
        */
       endOfYear(): Temporal.ZonedDateTime;
     }

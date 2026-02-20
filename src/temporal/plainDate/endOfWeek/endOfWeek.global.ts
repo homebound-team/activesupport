@@ -1,3 +1,4 @@
+import "src/temporal/types.global";
 import { Temporal } from "temporal-polyfill";
 import { endOfWeek } from "./endOfWeek.impl";
 
@@ -5,26 +6,11 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * @name endOfWeek
-       * @category Week Helpers
-       * @summary Return the end of a week for the given date.
-       *
-       * @description
-       * Return the end of a week for the given date.
-       *
-       * @param options - An object with options
-       *
+       * Returns the end of a week for the date.
+       * @param options An object with options
        * @returns The end of a week
-       *
-       * @example
-       * // The end of a week for 2 September 2014:
-       * const result = Temporal.PlainDate.from("2014-09-02").endOfWeek()
-       * //=> 2014-09-06
-       *
-       * @example
-       * // If the week starts on Monday, the end of the week for 2 September 2014:
-       * const result = Temporal.PlainDate.from("2014-09-02").endOfWeek({ weekStartsOn: 1 })
-       * //=> 2014-09-07
+       * @example Temporal.PlainDate.from("2014-09-02").endOfWeek() //=> 2014-09-06
+       * @example // If the week starts on Monday: Temporal.PlainDate.from("2014-09-02").endOfWeek({ weekStartsOn: 1 }) //=> 2014-09-07
        */
       endOfWeek(options?: WeekOptions): Temporal.PlainDate;
     }
@@ -33,7 +19,7 @@ declare module "temporal-polyfill" {
 
 Temporal.PlainDate.prototype.endOfWeek = function (
   this: Temporal.PlainDate,
-  options?: Temporal.WeekOptions,
+  options: Temporal.WeekOptions = {},
 ): Temporal.PlainDate {
   return endOfWeek(this, options);
 };

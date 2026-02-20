@@ -6,18 +6,12 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * @name toInterval
-       * @category Interval Helpers
-       * @summary returns an interval between the gives dates
-       *
-       * @param end the end of the interval
-       *
-       * @description
-       * Returns an interval between the gives dates
-       *
-       * @returns Temporal.Interval
+       * Returns an interval between the given dates.
+       * @param end The end of the interval
+       * @returns An Interval from start to end
+       * @example Temporal.PlainDate.from("2024-01-01").toInterval(Temporal.PlainDate.from("2024-01-31")) //=> Interval { start: 2024-01-01, end: 2024-01-31 }
        */
-      toInterval(end: Temporal.PlainDate): Temporal.Interval<Temporal.PlainDate>;
+      toInterval(end: Temporal.PlainDate): Interval<Temporal.PlainDate>;
     }
   }
 }

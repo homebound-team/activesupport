@@ -1,4 +1,4 @@
-import { unique } from "src/array/unique/unique.impl";
+import { unique } from "./unique.impl";
 
 declare global {
   interface Array<T> {
@@ -22,6 +22,6 @@ declare global {
   }
 }
 
-Array.prototype.unique = function <T>(this: T[]) {
+Array.prototype.unique = function <T>(this: T[]): T[] {
   return unique(this);
 };

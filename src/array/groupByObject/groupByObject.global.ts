@@ -1,11 +1,11 @@
-import { groupByObject } from "src/array/groupByObject/groupByObject.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { groupByObject } from "./groupByObject.impl";
 
 declare global {
   interface Array<T> {
     /**
-     * Groups array elements by any object key (not limited to property keys like strings/numbers).
-     * Returns an array of [key, values] tuples. Use this when grouping by objects or complex keys.
+     * Groups elements of the array by any object key (not limited to property keys like strings/numbers).
+     * Returns the array of [key, values] tuples. Use this when grouping by objects or complex keys.
      * @param fn A function that returns the grouping key (can be any object) for each element
      * @param valueFn Optional function to transform each element before grouping
      * @returns An array of [key, values[]] tuples
@@ -16,8 +16,8 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Groups array elements by any object key (not limited to property keys like strings/numbers).
-     * Returns an array of [key, values] tuples. Use this when grouping by objects or complex keys.
+     * Groups elements of the array by any object key (not limited to property keys like strings/numbers).
+     * Returns the array of [key, values] tuples. Use this when grouping by objects or complex keys.
      * @param fn A function that returns the grouping key (can be any object) for each element
      * @param valueFn Optional function to transform each element before grouping
      * @returns An array of [key, values[]] tuples
@@ -27,6 +27,10 @@ declare global {
   }
 }
 
-Array.prototype.groupByObject = function <T, O, Y = T>(this: T[], fn: CallbackFn<T, O>, valueFn?: CallbackFn<T, Y>) {
+Array.prototype.groupByObject = function <T, O, Y = T>(
+  this: T[],
+  fn: CallbackFn<T, O>,
+  valueFn?: CallbackFn<T, Y>,
+): [O, Y[]][] {
   return groupByObject(this, fn, valueFn);
 };

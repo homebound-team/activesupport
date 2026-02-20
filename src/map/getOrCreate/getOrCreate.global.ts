@@ -3,7 +3,7 @@ import { getOrCreate } from "./getOrCreate.impl";
 declare global {
   interface Map<K, V> {
     /**
-     * Returns the value for a key if it exists, otherwise creates and stores a new value using the provided function.
+     * Returns the value for a key in the Map if it exists, otherwise creates and stores a new value using the provided function.
      * The create function is only called if the key doesn't exist, making this ideal for lazy initialization.
      * @param key The key to look up or create
      * @param create A function that returns the value to create and store if the key doesn't exist

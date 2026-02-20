@@ -1,121 +1,58 @@
-import * as isDayOfWeek from "src/temporal/zonedDateTime/isDayOfWeek/isDayOfWeek.impl";
 import { Temporal } from "temporal-polyfill";
+import * as isDayOfWeek from "./isDayOfWeek.impl";
 
 declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * @name isMonday
-       * @category Weekday Helpers
-       * @summary Is the given date Monday?
-       *
-       * @description
-       * Is the given date Monday?
-       *
-       * @returns The date is Monday
-       *
-       * @example
-       * // Is 22 September 2014 Monday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-22").isMonday
-       * //=> true
+       * Returns true if the date is Monday, false otherwise.
+       * @returns True if the date is Monday
+       * @example Temporal.ZonedDateTime.from("2014-09-22T00:00:00.000+00:00[UTC]").isMonday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-23T00:00:00.000+00:00[UTC]").isMonday //=> false
        */
-      get isMonday(): boolean;
+      readonly isMonday: boolean;
       /**
-       * @name isTuesday
-       * @category Weekday Helpers
-       * @summary Is the given date Tuesday?
-       *
-       * @description
-       * Is the given date Tuesday?
-       *
-       * @returns The date is Tuesday
-       *
-       * @example
-       * // Is 23 September 2014 Tuesday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-23").isTuesday
-       * //=> true
+       * Returns true if the date is Tuesday, false otherwise.
+       * @returns True if the date is Tuesday
+       * @example Temporal.ZonedDateTime.from("2014-09-23T00:00:00.000+00:00[UTC]").isTuesday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-22T00:00:00.000+00:00[UTC]").isTuesday //=> false
        */
-      get isTuesday(): boolean;
+      readonly isTuesday: boolean;
       /**
-       * @name isWednesday
-       * @category Weekday Helpers
-       * @summary Is the given date Wednesday?
-       *
-       * @description
-       * Is the given date Wednesday?
-       *
-       * @returns The date is Wednesday
-       *
-       * @example
-       * // Is 24 September 2014 Wednesday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-24").isWednesday
-       * //=> true
+       * Returns true if the date is Wednesday, false otherwise.
+       * @returns True if the date is Wednesday
+       * @example Temporal.ZonedDateTime.from("2014-09-24T00:00:00.000+00:00[UTC]").isWednesday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-23T00:00:00.000+00:00[UTC]").isWednesday //=> false
        */
-      get isWednesday(): boolean;
+      readonly isWednesday: boolean;
       /**
-       * @name isThursday
-       * @category Weekday Helpers
-       * @summary Is the given date Thursday?
-       *
-       * @description
-       * Is the given date Thursday?
-       *
-       * @returns The date is Thursday
-       *
-       * @example
-       * // Is 25 September 2014 Thursday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-25").isThursday
-       * //=> true
+       * Returns true if the date is Thursday, false otherwise.
+       * @returns True if the date is Thursday
+       * @example Temporal.ZonedDateTime.from("2014-09-25T00:00:00.000+00:00[UTC]").isThursday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-24T00:00:00.000+00:00[UTC]").isThursday //=> false
        */
-      get isThursday(): boolean;
+      readonly isThursday: boolean;
       /**
-       * @name isFriday
-       * @category Weekday Helpers
-       * @summary Is the given date Friday?
-       *
-       * @description
-       * Is the given date Friday?
-       *
-       * @returns The date is Friday
-       *
-       * @example
-       * // Is 26 September 2014 Friday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-26").isFriday
-       * //=> true
+       * Returns true if the date is Friday, false otherwise.
+       * @returns True if the date is Friday
+       * @example Temporal.ZonedDateTime.from("2014-09-26T00:00:00.000+00:00[UTC]").isFriday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-25T00:00:00.000+00:00[UTC]").isFriday //=> false
        */
-      get isFriday(): boolean;
+      readonly isFriday: boolean;
       /**
-       * @name isSaturday
-       * @category Weekday Helpers
-       * @summary Is the given date Saturday?
-       *
-       * @description
-       * Is the given date Saturday?
-       *
-       * @returns The date is Saturday
-       *
-       * @example
-       * // Is 27 September 2014 Saturday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-27").isSaturday
-       * //=> true
+       * Returns true if the date is Saturday, false otherwise.
+       * @returns True if the date is Saturday
+       * @example Temporal.ZonedDateTime.from("2014-09-27T00:00:00.000+00:00[UTC]").isSaturday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-26T00:00:00.000+00:00[UTC]").isSaturday //=> false
        */
-      get isSaturday(): boolean;
+      readonly isSaturday: boolean;
       /**
-       * @name isSunday
-       * @category Weekday Helpers
-       * @summary Is the given date Sunday?
-       *
-       * @description
-       * Is the given date Sunday?
-       *
-       * @returns The date is Sunday
-       *
-       * @example
-       * // Is 28 September 2014 Sunday?
-       * const result = Temporal.ZonedDateTime.from("2014-09-28").isSunday
-       * //=> true
+       * Returns true if the date is Sunday, false otherwise.
+       * @returns True if the date is Sunday
+       * @example Temporal.ZonedDateTime.from("2014-09-28T00:00:00.000+00:00[UTC]").isSunday //=> true
+       * @example Temporal.ZonedDateTime.from("2014-09-27T00:00:00.000+00:00[UTC]").isSunday //=> false
        */
-      get isSunday(): boolean;
+      readonly isSunday: boolean;
     }
   }
 }

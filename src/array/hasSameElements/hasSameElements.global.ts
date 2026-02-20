@@ -1,11 +1,11 @@
-import { hasSameElements } from "src/array/hasSameElements/hasSameElements.impl";
+import { hasSameElements } from "./hasSameElements.impl";
 
 declare global {
   interface Array<T> {
     /**
-     * Returns true if the arrays have exactly the same elements (ignoring order).
+     * Returns true if two arrays have exactly the same elements (ignoring order).
      * Treats duplicates strictly - arrays must have the same element counts to be considered equal.
-     * @param other The array to compare against
+     * @param other The second array to compare
      * @returns True if the arrays have the same elements
      * @example [1, 2, 3].hasSameElements([3, 2, 1]) //=> true
      * @example [1, 2, 3].hasSameElements([1, 2, 4]) //=> false
@@ -16,9 +16,9 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns true if the arrays have exactly the same elements (ignoring order).
+     * Returns true if two arrays have exactly the same elements (ignoring order).
      * Treats duplicates strictly - arrays must have the same element counts to be considered equal.
-     * @param other The array to compare against
+     * @param other The second array to compare
      * @returns True if the arrays have the same elements
      * @example [1, 2, 3].hasSameElements([3, 2, 1]) //=> true
      * @example [1, 2, 3].hasSameElements([1, 2, 4]) //=> false
@@ -28,6 +28,6 @@ declare global {
   }
 }
 
-Array.prototype.hasSameElements = function <T>(this: T[], other: readonly T[]) {
+Array.prototype.hasSameElements = function <T>(this: T[], other: readonly T[]): boolean {
   return hasSameElements(this, other);
 };

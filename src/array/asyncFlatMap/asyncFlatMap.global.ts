@@ -1,11 +1,11 @@
-import { asyncFlatMap } from "src/array/asyncFlatMap/asyncFlatMap.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { asyncFlatMap } from "./asyncFlatMap.impl";
 
 declare global {
   interface Array<T> {
     /**
-     * Maps each element using an async callback, then flattens the results by one level.
-     * Similar to `Promise.all(array.map(fn)).then(result => result.flat(1))`.
+     * Maps each element of the array using an async callback, then flattens the results by one level.
+     * Similar to `Promise.all(arr.map(fn)).then(result => result.flat(1))`.
      * @param fn An async function that returns either a single value or an array of values
      * @returns A promise resolving to the flattened array of results
      * @example await [1, 2, 3].asyncFlatMap(async n => [n, n * 2]) //=> [1, 2, 2, 4, 3, 6]
@@ -16,8 +16,8 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Maps each element using an async callback, then flattens the results by one level.
-     * Similar to `Promise.all(array.map(fn)).then(result => result.flat(1))`.
+     * Maps each element of the array using an async callback, then flattens the results by one level.
+     * Similar to `Promise.all(arr.map(fn)).then(result => result.flat(1))`.
      * @param fn An async function that returns either a single value or an array of values
      * @returns A promise resolving to the flattened array of results
      * @example await [1, 2, 3].asyncFlatMap(async n => [n, n * 2]) //=> [1, 2, 2, 4, 3, 6]
@@ -27,6 +27,6 @@ declare global {
   }
 }
 
-Array.prototype.asyncFlatMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V | V[]>>) {
+Array.prototype.asyncFlatMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V | V[]>>): Promise<V[]> {
   return asyncFlatMap(this, fn);
 };

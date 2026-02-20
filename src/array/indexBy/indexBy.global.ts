@@ -1,10 +1,10 @@
-import { indexBy } from "src/array/indexBy/indexBy.impl";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { indexBy } from "./indexBy.impl";
 
 declare global {
   interface Array<T> {
     /**
-     * Creates a Map index where each element can be associated with multiple keys.
+     * Creates a Map index from the array where each element can be associated with multiple keys.
      * Unlike `groupBy`, elements can appear under multiple keys (e.g., tags, categories).
      * @param fn A function that returns an array of keys for each element
      * @param valueFn Optional function to transform each element before indexing
@@ -18,7 +18,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Creates a Map index where each element can be associated with multiple keys.
+     * Creates a Map index from the array where each element can be associated with multiple keys.
      * Unlike `groupBy`, elements can appear under multiple keys (e.g., tags, categories).
      * @param fn A function that returns an array of keys for each element
      * @param valueFn Optional function to transform each element before indexing
@@ -31,6 +31,10 @@ declare global {
   }
 }
 
-Array.prototype.indexBy = function <T, O, Y = T>(this: T[], fn: CallbackFn<T, O[]>, valueFn?: CallbackFn<T, Y>) {
+Array.prototype.indexBy = function <T, O, Y = T>(
+  this: T[],
+  fn: CallbackFn<T, O[]>,
+  valueFn?: CallbackFn<T, Y>,
+): Map<O, Y[]> {
   return indexBy(this, fn, valueFn);
 };

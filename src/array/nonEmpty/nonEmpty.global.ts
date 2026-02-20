@@ -1,22 +1,24 @@
-import { nonEmpty } from "src/array/nonEmpty/nonEmpty.impl";
+import { nonEmpty } from "./nonEmpty.impl";
 
 declare global {
   interface Array<T> {
     /**
      * Returns true if the array contains at least one element.
+     * @returns True if the array has one or more elements
      * @example ["a"].nonEmpty //=> true
      * @example [].nonEmpty //=> false
      */
-    nonEmpty: boolean;
+    readonly nonEmpty: boolean;
   }
 
   interface ReadonlyArray<T> {
     /**
      * Returns true if the array contains at least one element.
+     * @returns True if the array has one or more elements
      * @example ["a"].nonEmpty //=> true
      * @example [].nonEmpty //=> false
      */
-    nonEmpty: boolean;
+    readonly nonEmpty: boolean;
   }
 }
 

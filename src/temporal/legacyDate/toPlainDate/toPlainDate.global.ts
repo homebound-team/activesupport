@@ -1,5 +1,5 @@
-import { toPlainDate } from "src/temporal/legacyDate/toPlainDate/toPlainDate.impl";
 import { Temporal } from "temporal-polyfill";
+import { toPlainDate } from "./toPlainDate.impl";
 
 declare global {
   interface Date {
@@ -15,6 +15,6 @@ declare global {
   }
 }
 
-Date.prototype.toPlainDate = function (this: Date, tzLike: Temporal.TimeZoneLike) {
+Date.prototype.toPlainDate = function (this: Date, tzLike: Temporal.TimeZoneLike): Temporal.PlainDate {
   return toPlainDate(this, tzLike);
 };

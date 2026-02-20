@@ -51,5 +51,5 @@ Array.prototype.asyncPartition = function <T, U = T>(
   fn: CallbackFn<T, Promise<boolean>>,
   valueFn?: CallbackFn<T, MaybePromise<U>>,
 ) {
-  return asyncPartition(this, fn, valueFn!);
-};
+  return asyncPartition(this, fn as any, valueFn as any);
+} as any;

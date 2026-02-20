@@ -1,5 +1,5 @@
-import { findAndRemove } from "src/array/findAndRemove/findAndRemove.impl";
 import { CallbackFn } from "src/array/utils";
+import { findAndRemove } from "./findAndRemove.impl";
 
 declare global {
   interface Array<T> {
@@ -11,10 +11,10 @@ declare global {
      * @example const arr = [1, 2, 3, 4]; arr.findAndRemove(n => n === 2) //=> 2, arr is now [1, 3, 4]
      * @example [1, 2, 3].findAndRemove(n => n === 5) //=> undefined
      */
-    findAndRemove: (fn: CallbackFn<T, boolean>) => T | undefined;
+    findAndRemove(fn: CallbackFn<T, boolean>): T | undefined;
   }
 }
 
-Array.prototype.findAndRemove = function <T>(this: T[], fn: CallbackFn<T, boolean>) {
+Array.prototype.findAndRemove = function <T>(this: T[], fn: CallbackFn<T, boolean>): T | undefined {
   return findAndRemove(this, fn);
 };
