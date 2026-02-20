@@ -67,4 +67,13 @@ describe("max", () => {
     // Then we get back the largest number
     expect(result).toBe(222);
   });
+
+  it("returns a defined value when undefined is present", () => {
+    // Given an array of numbers and undefined values
+    const a = [undefined, 4, 1, undefined, 2, 3, undefined];
+    // When we call max
+    const result = max(a);
+    // Then we get back the largest number
+    expect(result).toBe(4);
+  });
 });

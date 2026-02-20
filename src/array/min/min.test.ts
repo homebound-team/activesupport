@@ -67,4 +67,13 @@ describe("min", () => {
     // Then we get back the smallest number
     expect(result).toBe(-222);
   });
+
+  it("returns a defined value when undefined is present", () => {
+    // Given an array of numbers and undefined values
+    const a = [undefined, 4, 1, undefined, 2, 3, undefined];
+    // When we call min
+    const result = min(a);
+    // Then we get back the smallest number
+    expect(result).toBe(1);
+  });
 });

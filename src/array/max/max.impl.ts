@@ -1,5 +1,5 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
-import { Comparable, compare } from "src/utils";
+import { Comparable, compare, isDefined } from "src/utils";
 
 /**
  * Returns the maximum value from an array of comparable elements (numbers, strings, dates, etc.).
@@ -41,7 +41,8 @@ export function max<T, R extends Comparable>(arr: readonly T[], fn?: CallbackFnE
   let max = values[0];
   for (let i = 1; i < values.length; i++) {
     const value = values[i];
-    if (compare(value, max!) > 0) max = value;
+    // compare will sort undefined/null as more than any other value, so we need to ensure they're defined before comparing
+    if (!isDefined(max) || (isDefined(value) && compare(value, max!) > 0)) max = value;
   }
   return max!;
 }
