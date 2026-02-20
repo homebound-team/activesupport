@@ -21,6 +21,7 @@
  */
 import * as fs from "fs";
 import * as path from "path";
+import * as prettier from "prettier";
 
 const SRC_DIR = path.join(__dirname, "..", "src");
 const CHECK_MODE = process.argv.includes("--check");
@@ -1498,14 +1499,17 @@ function parseSignature(sig: string, _funcName: string): { params: string[]; gen
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-function main(): void {
+async function main(): Promise<void> {
   const implFiles = discoverImplFiles();
+  const prettierConfig = await prettier.resolveConfig(path.join(SRC_DIR, "index.ts"));
+  const prettierOpts = { ...prettierConfig, parser: "typescript" as const };
   let allMatch = true;
   let count = 0;
 
   for (const impl of implFiles) {
     try {
-      const generated = generateGlobal(impl);
+      const raw = generateGlobal(impl);
+      const generated = await prettier.format(raw, prettierOpts);
 
       if (CHECK_MODE) {
         if (fs.existsSync(impl.globalPath)) {
@@ -1543,4 +1547,4 @@ function main(): void {
   }
 }
 
-main();
+void main();
