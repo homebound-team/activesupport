@@ -7,7 +7,8 @@ import { CallbackFn } from "src/array/utils";
  * @param fn - A function to test each element
  * @returns The removed element, or undefined if no element matches
  * @example
- * const arr = [1, 2, 3, 4]; findAndRemove(arr, n => n === 2)
+ * const arr = [1, 2, 3, 4];
+ * findAndRemove(arr, n => n === 2)
  * //=> 2, arr is now [1, 3, 4]
  * @example
  * findAndRemove([1, 2, 3], n => n === 5)

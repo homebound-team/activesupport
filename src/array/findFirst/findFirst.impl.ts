@@ -10,7 +10,10 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
  * findFirst(["", "hello", "world"], s => s || undefined)
  * //=> "hello"
  * @example
- * findFirst(["not a number", "42", "100"], s => { const n = parseInt(s); return isNaN(n) ? undefined : n })
+ * findFirst(["not a number", "42", "100"], s => {
+ *   const n = parseInt(s);
+ *   return isNaN(n) ? undefined : n;
+ * })
  * //=> 42
  * @example
  * findFirst([], s => s)
@@ -27,7 +30,10 @@ export function findFirst<T, U>(arr: T[], fn: CallbackFn<T, U | undefined>): U |
  * findFirst(["", "hello", "world"], s => s || undefined)
  * //=> "hello"
  * @example
- * findFirst(["not a number", "42", "100"], s => { const n = parseInt(s); return isNaN(n) ? undefined : n })
+ * findFirst(["not a number", "42", "100"], s => {
+ *   const n = parseInt(s);
+ *   return isNaN(n) ? undefined : n;
+ * })
  * //=> 42
  * @example
  * findFirst([], s => s)

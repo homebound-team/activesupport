@@ -12,7 +12,9 @@
  * getOrCreate(new Map(), "foo", () => "baz")
  * //=> "baz"
  * @example
- * const m = new Map(); getOrCreate(m, "x", () => 1); m.has("x")
+ * const m = new Map();
+ * getOrCreate(m, "x", () => 1);
+ * m.has("x")
  * //=> true
  */
 export function getOrCreate<K, V>(map: Map<K, V>, key: K, create: () => V): V {

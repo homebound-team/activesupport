@@ -4,9 +4,13 @@
  * @param arr - The array to modify
  * @param elements - An array of elements to remove
  * @example
- * const arr = [1, 2, 3, 2, 4]; removeAll(arr, [2, 4]); // arr is now [1, 3]
+ * const arr = [1, 2, 3, 2, 4];
+ * removeAll(arr, [2, 4]);
+ * // arr is now [1, 3]
  * @example
- * const arr = []; removeAll(arr, [1]); // arr is still []
+ * const arr = [];
+ * removeAll(arr, [1]);
+ * // arr is still []
  */
 export function removeAll<T>(arr: T[], elements: readonly T[]) {
   if (arr.length === 0 || elements.length === 0) return;
