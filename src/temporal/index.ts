@@ -38,3 +38,44 @@ export function withValidBusinessDays<T>(options: T & { businessDays?: number[] 
   // Throw a RangeError if businessDays includes a number outside of 1-7
   throw new RangeError("business days must be between 1 and 7");
 }
+
+/**
+ * Generates a Temporal.PlainDate for the current date in UTC. Currently unused but added for uniformity.
+ */
+export function todayUTC() {
+  return Temporal.Now.plainDateISO("UTC");
+}
+
+/**
+ * Generates a Temporal.PlainDate for the current date in the Pacific time zone. Should be used when setting a field that
+ * will become a date in the database or when calculating dates for a user with an unknown time zone.
+ */
+export function todayPT() {
+  return Temporal.Now.plainDateISO("America/Los_Angeles");
+}
+
+/**
+ * Generates a Temporal.ZonedDateTime for the current time in UTC. Should be used when setting a field that will become
+ * a timestamptz in the database.
+ */
+export function nowUTC() {
+  return Temporal.Now.zonedDateTimeISO("UTC");
+}
+
+/**
+ * Generates a Temporal.ZonedDateTime for the current time in the Pacific time zone. Should be used when calculating
+ * times for a user with an unknown time zone that involves date time boundaries (eg, startOfDay / startOfWeek).
+ */
+export function nowPT() {
+  return Temporal.Now.zonedDateTimeISO("America/Los_Angeles");
+}
+
+/**
+ * Converts a string date representation into a Temporal.PlainDate object.
+ * Used for parsing date strings in a calendar-independent way without time zone information.
+ * @param value - The date string in ISO 8601 format (e.g., "2024-02-14")
+ * @returns A Temporal.PlainDate object representing the input date
+ */
+export function plainDate(value: string) {
+  return Temporal.PlainDate.from(value);
+}
