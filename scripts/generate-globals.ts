@@ -382,27 +382,11 @@ function transformJsdoc(jsdocLines: string[], funcName: string, target: TargetIn
 }
 
 function removeFirstParam(lines: string[]): string[] {
-  const result: string[] = [];
-  let removingParam = false;
-  let foundFirst = false;
-
-  for (const line of lines) {
-    if (line.startsWith("@param ") && !foundFirst) {
-      foundFirst = true;
-      removingParam = true;
-      continue;
-    }
-    if (removingParam) {
-      if (line.startsWith("@") || line === "") {
-        removingParam = false;
-        result.push(line);
-      }
-      continue;
-    }
-    result.push(line);
-  }
-
-  return result;
+  const startIndex = lines.findIndex((line) => line.startsWith("@param"));
+  if (startIndex === -1) return lines;
+  let endOffset = lines.slice(startIndex + 1).findIndex((line) => line.startsWith("@") || line === "");
+  if (endOffset === -1) endOffset = lines.length - startIndex - 1;
+  return lines.toSpliced(startIndex, endOffset + 1);
 }
 
 /** Rewrites "a/an X" → "the X" in descriptions, per target kind. Order matters: earlier entries win. */
@@ -410,8 +394,6 @@ const DESCRIPTION_REPLACEMENTS: Record<TargetKind, [RegExp, string][]> = {
   array: [
     [/\ban array\b/g, "the array"],
     [/\bAn array\b/g, "The array"],
-    [/\bof an array\b/g, "of the array"],
-    [/\bin an array\b/g, "in the array"],
   ],
   map: [
     [/\ba Map\b/g, "the Map"],
@@ -444,34 +426,20 @@ function transformDescription(line: string, target: TargetInfo): string {
 }
 
 function transformExamples(lines: string[], funcName: string, target: TargetInfo, isMultiExport: boolean): string[] {
-  const result: string[] = [];
-  let i = 0;
-
-  while (i < lines.length) {
-    if (!lines[i].startsWith("@example")) {
-      result.push(lines[i]);
-      i++;
-      continue;
-    }
-
-    const exampleLines: string[] = [];
-    const firstLine = lines[i].replace("@example", "").trim();
-    i++;
-
-    if (firstLine) {
-      exampleLines.push(firstLine);
-    }
-    while (i < lines.length && !lines[i].startsWith("@")) {
-      exampleLines.push(lines[i]);
-      i++;
-    }
-
-    const transformed = transformSingleExample(exampleLines, funcName, target, isMultiExport);
-    const collapsed = transformed.join(" ").replace(/\s+/g, " ").trim();
-
-    result.push(`@example ${collapsed}`);
+  let i = lines.findIndex((line) => line.startsWith("@example"));
+  let result: string[] = i === -1 ? lines.slice() : [];
+  while (i !== -1) {
+    result = result.concat(lines.slice(0, i));
+    lines = lines.slice(i);
+    const line = lines.shift()!;
+    const offset = lines.findIndex((l) => l.startsWith("@"));
+    const end = offset === -1 ? lines.length : offset;
+    const body = [line.replace("@example", "").trim(), ...lines.slice(0, end)].filter(Boolean);
+    lines = lines.slice(end);
+    const transformed = transformSingleExample(body, funcName, target, isMultiExport);
+    result.push(`@example ${transformed.join(" ").replace(/\s+/g, " ").trim()}`);
+    i = lines.findIndex((line) => line.startsWith("@example"));
   }
-
   return result;
 }
 
