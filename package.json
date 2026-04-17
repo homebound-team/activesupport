@@ -82,7 +82,12 @@
       "import": "./dist/utils.mjs"
     }
   },
-  "sideEffects": true,
+  "sideEffects": [
+    "./dist/global.cjs",
+    "./dist/global.mjs",
+    "./dist/**/global.cjs",
+    "./dist/**/global.mjs"
+  ],
   "repository": "git@github.com:homebound-team/activesupport.git",
   "license": "MIT",
   "packageManager": "yarn@4.9.1",
