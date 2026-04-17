@@ -13,49 +13,57 @@
       "require": "./dist/array.cjs",
       "import": "./dist/array.mjs"
     },
-    "./array/impl": {
-      "require": "./dist/array/impl.cjs",
-      "import": "./dist/array/impl.mjs"
+    "./array/global": {
+      "require": "./dist/array/global.cjs",
+      "import": "./dist/array/global.mjs"
+    },
+    "./global": {
+      "require": "./dist/global.cjs",
+      "import": "./dist/global.mjs"
     },
     "./map": {
       "require": "./dist/map.cjs",
       "import": "./dist/map.mjs"
     },
-    "./map/impl": {
-      "require": "./dist/map/impl.cjs",
-      "import": "./dist/map/impl.mjs"
+    "./map/global": {
+      "require": "./dist/map/global.cjs",
+      "import": "./dist/map/global.mjs"
     },
-    "./object": {
-      "require": "./dist/object.cjs",
-      "import": "./dist/object.mjs"
+    "./object/global": {
+      "require": "./dist/object/global.cjs",
+      "import": "./dist/object/global.mjs"
     },
     "./temporal": {
       "require": "./dist/temporal.cjs",
       "import": "./dist/temporal.mjs"
     },
+    "./temporal/global": {
+      "require": "./dist/temporal/global.cjs",
+      "import": "./dist/temporal/global.mjs"
+    },
     "./temporal/interval": {
       "require": "./dist/temporal/interval.cjs",
       "import": "./dist/temporal/interval.mjs"
     },
-    "./temporal/interval/impl": {
-      "require": "./dist/temporal/interval/impl.cjs",
-      "import": "./dist/temporal/interval/impl.mjs"
+    "./temporal/interval/global": {
+      "require": "./dist/temporal/interval/global.cjs",
+      "import": "./dist/temporal/interval/global.mjs"
     },
     "./temporal/legacyDate": {
       "require": "./dist/temporal/legacyDate.cjs",
       "import": "./dist/temporal/legacyDate.mjs"
     },
-    "./temporal/legacyDate/impl": {
-      "require": "./dist/temporal/legacyDate/impl.cjs",
-      "import": "./dist/temporal/legacyDate/impl.mjs"
+    "./temporal/legacyDate/global": {
+      "require": "./dist/temporal/legacyDate/global.cjs",
+      "import": "./dist/temporal/legacyDate/global.mjs"
     },
     "./temporal/plainDate": {
       "require": "./dist/temporal/plainDate.cjs",
       "import": "./dist/temporal/plainDate.mjs"
     },
-    "./temporal/plainDate/impl": {
-      "require": "./dist/temporal/plainDate/impl.cjs",
-      "import": "./dist/temporal/plainDate/impl.mjs"
+    "./temporal/plainDate/global": {
+      "require": "./dist/temporal/plainDate/global.cjs",
+      "import": "./dist/temporal/plainDate/global.mjs"
     },
     "./temporal/utils": {
       "require": "./dist/temporal/utils.cjs",
@@ -65,9 +73,9 @@
       "require": "./dist/temporal/zonedDateTime.cjs",
       "import": "./dist/temporal/zonedDateTime.mjs"
     },
-    "./temporal/zonedDateTime/impl": {
-      "require": "./dist/temporal/zonedDateTime/impl.cjs",
-      "import": "./dist/temporal/zonedDateTime/impl.mjs"
+    "./temporal/zonedDateTime/global": {
+      "require": "./dist/temporal/zonedDateTime/global.cjs",
+      "import": "./dist/temporal/zonedDateTime/global.mjs"
     },
     "./utils": {
       "require": "./dist/utils.cjs",
