@@ -45,6 +45,7 @@ jobs:
       - run: yarn lint
       - run: yarn build
       - run: yarn generate:globals --check
+      - run: yarn generate:barrels --check
   publish:
     docker:
       - image: cimg/node:22.15.0
