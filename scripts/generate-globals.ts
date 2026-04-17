@@ -23,7 +23,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
 import { getOrCreate } from "src/map/getOrCreate/getOrCreate.impl";
-import { FunctionDeclaration, Project, ScriptTarget, SourceFile } from "ts-morph";
+import { FunctionDeclaration, Project, ScriptTarget, SourceFile, SyntaxKind } from "ts-morph";
 
 const SRC_DIR = path.join(__dirname, "..", "src");
 const CHECK_MODE = process.argv.includes("--check");
@@ -335,7 +335,12 @@ function qualifyTemporalTypes(s: string, target: TargetInfo): string {
 
 // ─── JSDoc transformation ────────────────────────────────────────────────────
 
-function transformJsdoc(jsdocLines: string[], funcName: string, target: TargetInfo, isMultiExport: boolean): string[] {
+function transformJsdoc(
+  jsdocLines: string[],
+  funcName: string,
+  target: TargetInfo,
+  rewriteableNames: Set<string>,
+): string[] {
   if (jsdocLines.length === 0) return [];
 
   // Parse the JSDoc content
@@ -366,7 +371,7 @@ function transformJsdoc(jsdocLines: string[], funcName: string, target: TargetIn
   });
 
   // 4. Transform @example
-  bodyLines = transformExamples(bodyLines, funcName, target, isMultiExport);
+  bodyLines = transformExamples(bodyLines, funcName, target, rewriteableNames);
 
   // Filter out empty leading/trailing lines
   while (bodyLines.length > 0 && bodyLines[0] === "") bodyLines.shift();
@@ -425,7 +430,12 @@ function transformDescription(line: string, target: TargetInfo): string {
   return line;
 }
 
-function transformExamples(lines: string[], funcName: string, target: TargetInfo, isMultiExport: boolean): string[] {
+function transformExamples(
+  lines: string[],
+  funcName: string,
+  target: TargetInfo,
+  rewriteableNames: Set<string>,
+): string[] {
   let i = lines.findIndex((line) => line.startsWith("@example"));
   let result: string[] = i === -1 ? lines.slice() : [];
   while (i !== -1) {
@@ -436,120 +446,74 @@ function transformExamples(lines: string[], funcName: string, target: TargetInfo
     const end = offset === -1 ? lines.length : offset;
     const body = [line.replace("@example", "").trim(), ...lines.slice(0, end)].filter(Boolean);
     lines = lines.slice(end);
-    const transformed = transformSingleExample(body, funcName, target, isMultiExport);
+    const transformed = transformSingleExample(body, funcName, target, rewriteableNames);
     result.push(`@example ${transformed.join(" ").replace(/\s+/g, " ").trim()}`);
     i = lines.findIndex((line) => line.startsWith("@example"));
   }
   return result;
 }
 
+/** Reusable ts-morph project for parsing example snippets. */
+const exampleProject = new Project({ useInMemoryFileSystem: true });
+
+/**
+ * Rewrites function calls in a JSDoc example to method/property form:
+ *   `foo(arr, x)`        →  `arr.foo(x)`
+ *   `isEmpty(arr)`       →  `arr.isEmpty`           (when fn is a property)
+ * Only top-level identifier calls (not member-access) for names in
+ * `rewriteableNames` are touched. Examples are wrapped in an async function so
+ * top-level `await` and multi-statement bodies parse cleanly.
+ */
 function transformSingleExample(
   exampleLines: string[],
   funcName: string,
   _target: TargetInfo,
-  isMultiExport: boolean,
+  rewriteableNames: Set<string>,
 ): string[] {
-  let text = exampleLines.join("\n");
+  const text = exampleLines.join("\n");
+  // Wrap in an async function so top-level `await` and multi-statement example
+  // bodies (e.g. `const arr = [...]; remove(arr, 2);`) parse without errors.
+  const wrapper = "async function _w() {\n";
+  const sf = exampleProject.createSourceFile("__example.ts", `${wrapper}${text}\n}`, { overwrite: true });
 
   const isProperty = PROPERTY_NAMES.has(funcName);
 
-  const fnNames = isMultiExport ? findFunctionNamesInExample(text) : [funcName];
-
-  for (const fn of fnNames) {
-    if (isProperty || PROPERTY_NAMES.has(fn)) {
-      text = rewriteCallSites(text, fn, (args) => `${args.trim()}.${fn}`);
-    } else {
-      text = rewriteCallSites(text, fn, (args) => {
-        const { first, rest } = splitFirstArg(args);
-        return rest !== undefined ? `${first}.${fn}(${rest})` : `${first}.${fn}()`;
-      });
-    }
+  // Mutate innermost calls first by repeatedly finding a match and re-collecting,
+  // so an outer call's first-arg text reflects the already-rewritten inner.
+  while (true) {
+    const calls = sf.getDescendantsOfKind(SyntaxKind.CallExpression);
+    // Process in reverse document order: inner calls appear after their parents.
+    const target = [...calls].reverse().find((c) => {
+      const callee = c.getExpression();
+      return callee.getKind() === SyntaxKind.Identifier && rewriteableNames.has(callee.getText());
+    });
+    if (!target) break;
+    const name = target.getExpression().getText();
+    const args = target.getArguments();
+    if (args.length === 0) break;
+    const firstArg = args[0].getText();
+    const restArgs = args
+      .slice(1)
+      .map((a) => a.getText())
+      .join(", ");
+    const rewriteAsProperty = isProperty || PROPERTY_NAMES.has(name);
+    const replacement = rewriteAsProperty
+      ? `${firstArg}.${name}`
+      : restArgs
+        ? `${firstArg}.${name}(${restArgs})`
+        : `${firstArg}.${name}()`;
+    target.replaceWithText(replacement);
   }
 
-  return text.split("\n");
-}
-
-/**
- * Scans `text` for top-level calls to `funcName(...)` (skipping member access
- * and word-boundary false matches) and replaces each `funcName(args)` with
- * `rewrite(args)`. Handles nested parens inside the args.
- */
-function rewriteCallSites(text: string, funcName: string, rewrite: (args: string) => string): string {
-  let result = "";
-  let idx = 0;
-
-  while (idx < text.length) {
-    const fnIdx = text.indexOf(funcName + "(", idx);
-    if (fnIdx === -1) {
-      result += text.slice(idx);
-      break;
-    }
-    const prev = fnIdx > 0 ? text[fnIdx - 1] : "";
-    if (/\w/.test(prev) || prev === ".") {
-      result += text.slice(idx, fnIdx + funcName.length);
-      idx = fnIdx + funcName.length;
-      continue;
-    }
-
-    result += text.slice(idx, fnIdx);
-
-    const argsStart = fnIdx + funcName.length + 1;
-    let depth = 1;
-    let argsEnd = argsStart;
-    while (argsEnd < text.length && depth > 0) {
-      if (text[argsEnd] === "(") depth++;
-      if (text[argsEnd] === ")") depth--;
-      if (depth > 0) argsEnd++;
-    }
-
-    result += rewrite(text.slice(argsStart, argsEnd));
-    idx = argsEnd + 1;
-  }
-
-  return result;
-}
-
-function splitFirstArg(argsStr: string): { first: string; rest: string | undefined } {
-  let depth = 0;
-  for (let i = 0; i < argsStr.length; i++) {
-    const ch = argsStr[i];
-    if (ch === "(" || ch === "[" || ch === "{" || ch === "<") depth++;
-    if (ch === ")" || ch === "]" || ch === "}" || ch === ">") depth--;
-    if (ch === "," && depth === 0) {
-      return {
-        first: argsStr.slice(0, i).trim(),
-        rest: argsStr.slice(i + 1).trim(),
-      };
-    }
-  }
-  return { first: argsStr.trim(), rest: undefined };
-}
-
-function findFunctionNamesInExample(text: string): string[] {
-  const names: string[] = [];
-  const matches = text.matchAll(/\b([a-zA-Z]\w*)\s*\(/g);
-  for (const m of matches) {
-    if (
-      ![
-        "from",
-        "new",
-        "function",
-        "if",
-        "for",
-        "while",
-        "switch",
-        "catch",
-        "Map",
-        "Date",
-        "Array",
-        "parseInt",
-        "isNaN",
-      ].includes(m[1])
-    ) {
-      if (!names.includes(m[1])) names.push(m[1]);
-    }
-  }
-  return names;
+  // Slice the body text out of the wrapped source — using full text preserves
+  // line comments like `//=> result` that getBodyText() drops as trailing trivia.
+  const full = sf.getFullText();
+  const bodyStart = full.indexOf("{") + 1;
+  const bodyEnd = full.lastIndexOf("}");
+  return full
+    .slice(bodyStart, bodyEnd)
+    .replace(/^\n|\n$/g, "")
+    .split("\n");
 }
 
 // ─── Code generation ─────────────────────────────────────────────────────────
@@ -561,6 +525,7 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
 
   // Determine if multi-export
   const isMultiExport = functions.length > 1;
+  const allFuncNames = new Set(functions.map((f) => f.name));
 
   // Generate the file
   const outputLines: string[] = [];
@@ -573,7 +538,7 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
       const members: string[] = [];
       for (const func of functions) {
         for (const overload of func.overloads) {
-          const jsdoc = transformJsdoc(overload.jsdoc, func.name, target, isMultiExport);
+          const jsdoc = transformJsdoc(overload.jsdoc, func.name, target, allFuncNames);
           const transformed = transformSignatureForGlobal(overload, func.name, target, iface);
 
           if (jsdoc.length > 0) {
@@ -596,7 +561,7 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
       const overloadsForInterface = getOverloadsForInterface(func, iface, target);
 
       for (const overload of overloadsForInterface) {
-        const jsdoc = transformJsdoc(overload.jsdoc, func.name, target, false);
+        const jsdoc = transformJsdoc(overload.jsdoc, func.name, target, new Set([func.name]));
         const transformed = transformSignatureForGlobal(overload, func.name, target, iface);
 
         if (jsdoc.length > 0) {
