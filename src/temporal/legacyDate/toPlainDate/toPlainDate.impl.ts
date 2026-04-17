@@ -13,6 +13,6 @@ import { Temporal, toTemporalInstant } from "temporal-polyfill";
  * toPlainDate(new Date("2023-05-02T23:00:00Z"), "America/New_York")
  * //=> PlainDate("2023-05-02")
  */
-export function toPlainDate(date: Date, tzLike: Temporal.TimeZoneLike) {
+export function toPlainDate(date: Date, tzLike: Temporal.TimeZoneLike): Temporal.PlainDate {
   return toTemporalInstant.call(date).toZonedDateTimeISO(tzLike).toPlainDate();
 }

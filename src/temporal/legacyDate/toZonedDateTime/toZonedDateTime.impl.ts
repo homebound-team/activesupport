@@ -13,6 +13,6 @@ import { Temporal, toTemporalInstant } from "temporal-polyfill";
  * toZonedDateTime(new Date("2023-05-02T12:00:00Z"), "UTC")
  * //=> ZonedDateTime in UTC
  */
-export function toZonedDateTime(date: Date, tzLike: Temporal.TimeZoneLike) {
+export function toZonedDateTime(date: Date, tzLike: Temporal.TimeZoneLike): Temporal.ZonedDateTime {
   return toTemporalInstant.call(date).toZonedDateTimeISO(tzLike);
 }

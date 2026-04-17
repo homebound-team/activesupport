@@ -14,6 +14,6 @@ import { removeAll } from "src/array/removeAll/removeAll.impl";
  * remove(arr, 1, 3);
  * // arr is now [2]
  */
-export function remove<T>(arr: T[], ...elements: readonly T[]) {
+export function remove<T>(arr: T[], ...elements: readonly T[]): void {
   removeAll(arr, elements);
 }

@@ -11,7 +11,7 @@ import { Temporal } from "temporal-polyfill";
  * isMonday(Temporal.PlainDate.from("2014-09-23"))
  * //=> false
  */
-export function isMonday(date: Temporal.PlainDate) {
+export function isMonday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 1;
 }
 
@@ -26,7 +26,7 @@ export function isMonday(date: Temporal.PlainDate) {
  * isTuesday(Temporal.PlainDate.from("2014-09-22"))
  * //=> false
  */
-export function isTuesday(date: Temporal.PlainDate) {
+export function isTuesday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 2;
 }
 
@@ -41,7 +41,7 @@ export function isTuesday(date: Temporal.PlainDate) {
  * isWednesday(Temporal.PlainDate.from("2014-09-23"))
  * //=> false
  */
-export function isWednesday(date: Temporal.PlainDate) {
+export function isWednesday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 3;
 }
 
@@ -56,7 +56,7 @@ export function isWednesday(date: Temporal.PlainDate) {
  * isThursday(Temporal.PlainDate.from("2014-09-24"))
  * //=> false
  */
-export function isThursday(date: Temporal.PlainDate) {
+export function isThursday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 4;
 }
 
@@ -71,7 +71,7 @@ export function isThursday(date: Temporal.PlainDate) {
  * isFriday(Temporal.PlainDate.from("2014-09-25"))
  * //=> false
  */
-export function isFriday(date: Temporal.PlainDate) {
+export function isFriday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 5;
 }
 
@@ -86,7 +86,7 @@ export function isFriday(date: Temporal.PlainDate) {
  * isSaturday(Temporal.PlainDate.from("2014-09-26"))
  * //=> false
  */
-export function isSaturday(date: Temporal.PlainDate) {
+export function isSaturday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 6;
 }
 
@@ -101,6 +101,6 @@ export function isSaturday(date: Temporal.PlainDate) {
  * isSunday(Temporal.PlainDate.from("2014-09-27"))
  * //=> false
  */
-export function isSunday(date: Temporal.PlainDate) {
+export function isSunday(date: Temporal.PlainDate): boolean {
   return date.dayOfWeek === 7;
 }

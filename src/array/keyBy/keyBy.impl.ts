@@ -62,7 +62,7 @@ export function keyBy<T, K extends PropertyKey, TK extends keyof T, TKK extends 
   arr: readonly T[],
   fnOrKey: CallbackFnEither<T, K> | TKK,
   valueFn?: CallbackFnEither<T, R>,
-) {
+): Record<K, R> {
   const result = {} as Record<K, R>;
   const fn = typeof fnOrKey === "function" ? fnOrKey : undefined;
   const key = typeof fnOrKey === "function" ? undefined : fnOrKey;

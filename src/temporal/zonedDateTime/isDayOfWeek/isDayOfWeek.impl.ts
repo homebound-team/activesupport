@@ -11,7 +11,7 @@ import { Temporal } from "temporal-polyfill";
  * isMonday(Temporal.ZonedDateTime.from("2014-09-23T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isMonday(date: Temporal.ZonedDateTime) {
+export function isMonday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 1;
 }
 
@@ -26,7 +26,7 @@ export function isMonday(date: Temporal.ZonedDateTime) {
  * isTuesday(Temporal.ZonedDateTime.from("2014-09-22T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isTuesday(date: Temporal.ZonedDateTime) {
+export function isTuesday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 2;
 }
 
@@ -41,7 +41,7 @@ export function isTuesday(date: Temporal.ZonedDateTime) {
  * isWednesday(Temporal.ZonedDateTime.from("2014-09-23T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isWednesday(date: Temporal.ZonedDateTime) {
+export function isWednesday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 3;
 }
 
@@ -56,7 +56,7 @@ export function isWednesday(date: Temporal.ZonedDateTime) {
  * isThursday(Temporal.ZonedDateTime.from("2014-09-24T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isThursday(date: Temporal.ZonedDateTime) {
+export function isThursday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 4;
 }
 
@@ -71,7 +71,7 @@ export function isThursday(date: Temporal.ZonedDateTime) {
  * isFriday(Temporal.ZonedDateTime.from("2014-09-25T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isFriday(date: Temporal.ZonedDateTime) {
+export function isFriday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 5;
 }
 
@@ -86,7 +86,7 @@ export function isFriday(date: Temporal.ZonedDateTime) {
  * isSaturday(Temporal.ZonedDateTime.from("2014-09-26T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isSaturday(date: Temporal.ZonedDateTime) {
+export function isSaturday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 6;
 }
 
@@ -101,6 +101,6 @@ export function isSaturday(date: Temporal.ZonedDateTime) {
  * isSunday(Temporal.ZonedDateTime.from("2014-09-27T00:00:00.000+00:00[UTC]"))
  * //=> false
  */
-export function isSunday(date: Temporal.ZonedDateTime) {
+export function isSunday(date: Temporal.ZonedDateTime): boolean {
   return date.dayOfWeek === 7;
 }

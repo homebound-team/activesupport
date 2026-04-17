@@ -12,7 +12,7 @@
  * removeAll(arr, [1]);
  * // arr is still []
  */
-export function removeAll<T>(arr: T[], elements: readonly T[]) {
+export function removeAll<T>(arr: T[], elements: readonly T[]): void {
   if (arr.length === 0 || elements.length === 0) return;
   let index = 0;
   for (let i = 0; i < arr.length; i++) {

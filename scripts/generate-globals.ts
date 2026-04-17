@@ -189,7 +189,11 @@ function extractOverloadFromDecl(fn: FunctionDeclaration): ParsedOverload {
   });
 
   const retNode = fn.getReturnTypeNode();
-  const returnType = retNode ? retNode.getText() : "";
+  if (!retNode) {
+    const loc = `${fn.getSourceFile().getFilePath()}:${fn.getStartLineNumber()}`;
+    throw new Error(`${fn.getName() ?? "<anon>"} at ${loc} is missing an explicit return type`);
+  }
+  const returnType = retNode.getText();
 
   const isAsync = fn.isAsync();
 
@@ -212,7 +216,7 @@ function parseImplFile(sourceFile: SourceFile): ParsedFunction[] {
     .values()
     .filter((fn) => fn.hasBody())
     .filter((fn) => fn.getName())
-    .filter((fn) => fn.isExported() && exportedNames.has(fn.getName()!))
+    .filter((fn) => fn.isExported() || exportedNames.has(fn.getName()!))
     .map((fn) => {
       const name = fn.getName()!;
 
@@ -292,17 +296,8 @@ function transformSignatureForGlobal(
   // Build method signature
   const isProperty = PROPERTY_NAMES.has(funcName);
 
-  // Determine effective return type — infer when no explicit annotation
-  let effectiveReturnType = overload.returnType;
-  if (!effectiveReturnType) {
-    if (isProperty) {
-      effectiveReturnType = "boolean";
-    } else {
-      effectiveReturnType = inferReturnType(funcName, target);
-    }
-  }
-
   // Strip readonly from return types for array targets
+  let effectiveReturnType = overload.returnType;
   if (target.kind === "array" && effectiveReturnType.startsWith("readonly ")) {
     effectiveReturnType = effectiveReturnType.slice("readonly ".length);
   }
@@ -327,26 +322,6 @@ function transformSignatureForGlobal(
   return { methodSig, needsThisConstraint, thisType };
 }
 
-function inferReturnType(funcName: string, target: TargetInfo): string {
-  if (funcName === "remove" || funcName === "removeAll") return "void";
-  if (target.kind === "plainDate") {
-    if (funcName.startsWith("to") && funcName.includes("ZonedDateTime")) return "Temporal.ZonedDateTime";
-    if (funcName.startsWith("to") && !funcName.includes("Interval")) return "Temporal.ZonedDateTime";
-    return "Temporal.PlainDate";
-  }
-  if (target.kind === "zonedDateTime") {
-    if (funcName.startsWith("toPlainDate")) return "Temporal.PlainDate";
-    if (funcName.startsWith("toLegacyDate")) return "Date";
-    return "Temporal.ZonedDateTime";
-  }
-  if (target.kind === "legacyDate") {
-    if (funcName === "toPlainDate") return "Temporal.PlainDate";
-    if (funcName === "toZonedDateTime") return "Temporal.ZonedDateTime";
-    return "void";
-  }
-  return "void";
-}
-
 function isGenericArrayType(type: string): boolean {
   const stripped = type.replace(/^readonly\s+/, "");
   return stripped === "T[]" || stripped === "readonly T[]";
@@ -355,10 +330,7 @@ function isGenericArrayType(type: string): boolean {
 /** Qualify temporal-specific types with Temporal. prefix for use outside declare module blocks */
 function qualifyTemporalTypes(s: string, target: TargetInfo): string {
   if (target.declareStyle !== "module") return s;
-  s = s.replace(/(?<!Temporal\.)(?<!\w)BusinessDayOptions/g, "Temporal.BusinessDayOptions");
-  s = s.replace(/(?<!Temporal\.)(?<!\w)WeekOptions/g, "Temporal.WeekOptions");
-  s = s.replace(/(?<!Temporal\.)(?<!\w)Interval</g, "Temporal.Interval<");
-  return s;
+  return s.replace(/(?<!Temporal\.)(?<!\w)(BusinessDayOptions|WeekOptions|Interval<)/g, "Temporal.$1");
 }
 
 // ─── JSDoc transformation ────────────────────────────────────────────────────
@@ -433,29 +405,40 @@ function removeFirstParam(lines: string[]): string[] {
   return result;
 }
 
+/** Rewrites "a/an X" → "the X" in descriptions, per target kind. Order matters: earlier entries win. */
+const DESCRIPTION_REPLACEMENTS: Record<TargetKind, [RegExp, string][]> = {
+  array: [
+    [/\ban array\b/g, "the array"],
+    [/\bAn array\b/g, "The array"],
+    [/\bof an array\b/g, "of the array"],
+    [/\bin an array\b/g, "in the array"],
+  ],
+  map: [
+    [/\ba Map\b/g, "the Map"],
+    [/\bA Map\b/g, "The Map"],
+  ],
+  plainDate: [
+    [/\ba PlainDate\b/g, "the PlainDate"],
+    [/\ba given date\b/g, "the date"],
+    [/\ba date\b/g, "the date"],
+    [/\bA date\b/g, "The date"],
+  ],
+  zonedDateTime: [
+    [/\ba ZonedDateTime\b/g, "the ZonedDateTime"],
+    [/\ba given date\b/g, "the date"],
+    [/\ba date\b/g, "the date"],
+    [/\bA date\b/g, "The date"],
+  ],
+  legacyDate: [
+    [/\ba legacy Date\b/g, "the legacy Date"],
+    [/\bA legacy Date\b/g, "The legacy Date"],
+    [/\ba Date\b/g, "the Date"],
+  ],
+};
+
 function transformDescription(line: string, target: TargetInfo): string {
-  if (target.kind === "array") {
-    line = line.replace(/\ban array\b/g, "the array");
-    line = line.replace(/\bAn array\b/g, "The array");
-    line = line.replace(/\bof an array\b/g, "of the array");
-    line = line.replace(/\bin an array\b/g, "in the array");
-  } else if (target.kind === "map") {
-    line = line.replace(/\ba Map\b/g, "the Map");
-    line = line.replace(/\bA Map\b/g, "The Map");
-  } else if (target.kind === "plainDate") {
-    line = line.replace(/\ba PlainDate\b/g, "the PlainDate");
-    line = line.replace(/\ba date\b/g, "the date");
-    line = line.replace(/\bA date\b/g, "The date");
-    line = line.replace(/\ba given date\b/g, "the date");
-  } else if (target.kind === "zonedDateTime") {
-    line = line.replace(/\ba ZonedDateTime\b/g, "the ZonedDateTime");
-    line = line.replace(/\ba date\b/g, "the date");
-    line = line.replace(/\bA date\b/g, "The date");
-    line = line.replace(/\ba given date\b/g, "the date");
-  } else if (target.kind === "legacyDate") {
-    line = line.replace(/\ba legacy Date\b/g, "the legacy Date");
-    line = line.replace(/\bA legacy Date\b/g, "The legacy Date");
-    line = line.replace(/\ba Date\b/g, "the Date");
+  for (const [pat, rep] of DESCRIPTION_REPLACEMENTS[target.kind]) {
+    line = line.replace(pat, rep);
   }
   return line;
 }
@@ -506,16 +489,24 @@ function transformSingleExample(
 
   for (const fn of fnNames) {
     if (isProperty || PROPERTY_NAMES.has(fn)) {
-      text = transformFunctionCallToGetter(text, fn);
+      text = rewriteCallSites(text, fn, (args) => `${args.trim()}.${fn}`);
     } else {
-      text = transformFunctionCallToMethod(text, fn);
+      text = rewriteCallSites(text, fn, (args) => {
+        const { first, rest } = splitFirstArg(args);
+        return rest !== undefined ? `${first}.${fn}(${rest})` : `${first}.${fn}()`;
+      });
     }
   }
 
   return text.split("\n");
 }
 
-function transformFunctionCallToGetter(text: string, funcName: string): string {
+/**
+ * Scans `text` for top-level calls to `funcName(...)` (skipping member access
+ * and word-boundary false matches) and replaces each `funcName(args)` with
+ * `rewrite(args)`. Handles nested parens inside the args.
+ */
+function rewriteCallSites(text: string, funcName: string, rewrite: (args: string) => string): string {
   let result = "";
   let idx = 0;
 
@@ -525,12 +516,8 @@ function transformFunctionCallToGetter(text: string, funcName: string): string {
       result += text.slice(idx);
       break;
     }
-    if (fnIdx > 0 && /\w/.test(text[fnIdx - 1])) {
-      result += text.slice(idx, fnIdx + funcName.length);
-      idx = fnIdx + funcName.length;
-      continue;
-    }
-    if (fnIdx > 0 && text[fnIdx - 1] === ".") {
+    const prev = fnIdx > 0 ? text[fnIdx - 1] : "";
+    if (/\w/.test(prev) || prev === ".") {
       result += text.slice(idx, fnIdx + funcName.length);
       idx = fnIdx + funcName.length;
       continue;
@@ -547,58 +534,7 @@ function transformFunctionCallToGetter(text: string, funcName: string): string {
       if (depth > 0) argsEnd++;
     }
 
-    const argsStr = text.slice(argsStart, argsEnd);
-    result += `${argsStr.trim()}.${funcName}`;
-    idx = argsEnd + 1;
-  }
-
-  return result;
-}
-
-function transformFunctionCallToMethod(text: string, funcName: string): string {
-  let result = "";
-  let idx = 0;
-
-  while (idx < text.length) {
-    const fnIdx = text.indexOf(funcName + "(", idx);
-    if (fnIdx === -1) {
-      result += text.slice(idx);
-      break;
-    }
-
-    if (fnIdx > 0 && /\w/.test(text[fnIdx - 1])) {
-      result += text.slice(idx, fnIdx + funcName.length);
-      idx = fnIdx + funcName.length;
-      continue;
-    }
-
-    if (fnIdx > 0 && text[fnIdx - 1] === ".") {
-      result += text.slice(idx, fnIdx + funcName.length);
-      idx = fnIdx + funcName.length;
-      continue;
-    }
-
-    result += text.slice(idx, fnIdx);
-
-    const argsStart = fnIdx + funcName.length + 1;
-    let depth = 1;
-    let argsEnd = argsStart;
-    while (argsEnd < text.length && depth > 0) {
-      if (text[argsEnd] === "(") depth++;
-      if (text[argsEnd] === ")") depth--;
-      if (depth > 0) argsEnd++;
-    }
-
-    const argsStr = text.slice(argsStart, argsEnd);
-
-    const { first, rest } = splitFirstArg(argsStr);
-
-    if (rest !== undefined) {
-      result += `${first}.${funcName}(${rest})`;
-    } else {
-      result += `${first}.${funcName}()`;
-    }
-
+    result += rewrite(text.slice(argsStart, argsEnd));
     idx = argsEnd + 1;
   }
 
@@ -854,11 +790,11 @@ function generateDirectAssignment(
   // Build return type (skip for needsCast)
   let retType = "";
   if (!needsCast) {
-    let effectiveRetType = impl.returnType || inferReturnType(funcName, target);
+    let effectiveRetType = impl.returnType;
     if (target.kind === "array" && effectiveRetType.startsWith("readonly ")) {
       effectiveRetType = effectiveRetType.slice("readonly ".length);
     }
-    retType = effectiveRetType ? `: ${qualifyType(effectiveRetType)}` : "";
+    retType = `: ${qualifyType(effectiveRetType)}`;
   }
 
   // Special case: isWithin needs Interval cast

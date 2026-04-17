@@ -8,7 +8,7 @@ import { Temporal } from "temporal-polyfill";
  * toET(Temporal.PlainDate.from("2024-05-02"))
  * //=> ZonedDateTime("2024-05-02T04:00:00.000Z")
  */
-export function toET(date: Temporal.PlainDate) {
+export function toET(date: Temporal.PlainDate): Temporal.ZonedDateTime {
   return date.toZonedDateTime("America/New_York");
 }
 
@@ -20,7 +20,7 @@ export function toET(date: Temporal.PlainDate) {
  * toCT(Temporal.PlainDate.from("2024-05-02"))
  * //=> ZonedDateTime("2024-05-02T05:00:00.000Z")
  */
-export function toCT(date: Temporal.PlainDate) {
+export function toCT(date: Temporal.PlainDate): Temporal.ZonedDateTime {
   return date.toZonedDateTime("America/Chicago");
 }
 
@@ -32,7 +32,7 @@ export function toCT(date: Temporal.PlainDate) {
  * toMT(Temporal.PlainDate.from("2024-05-02"))
  * //=> ZonedDateTime("2024-05-02T06:00:00.000Z")
  */
-export function toMT(date: Temporal.PlainDate) {
+export function toMT(date: Temporal.PlainDate): Temporal.ZonedDateTime {
   return date.toZonedDateTime("America/Denver");
 }
 
@@ -44,7 +44,7 @@ export function toMT(date: Temporal.PlainDate) {
  * toPT(Temporal.PlainDate.from("2024-05-02"))
  * //=> ZonedDateTime("2024-05-02T07:00:00.000Z")
  */
-export function toPT(date: Temporal.PlainDate) {
+export function toPT(date: Temporal.PlainDate): Temporal.ZonedDateTime {
   return date.toZonedDateTime("America/Los_Angeles");
 }
 
@@ -56,6 +56,6 @@ export function toPT(date: Temporal.PlainDate) {
  * toUTC(Temporal.PlainDate.from("2024-05-02"))
  * //=> ZonedDateTime("2024-05-02T00:00:00.000Z")
  */
-export function toUTC(date: Temporal.PlainDate) {
+export function toUTC(date: Temporal.PlainDate): Temporal.ZonedDateTime {
   return date.toZonedDateTime("UTC");
 }
