@@ -4,7 +4,7 @@ import { groupBy } from "./groupBy.impl";
 declare global {
   interface Array<T> {
     /**
-     * Groups elements of the array into a record by a key extracted from each element.
+     * Groups elements of an array into a record by a key extracted from each element.
      * Optionally transforms values using a value function.
      * @param fn A function that returns the grouping key for each element
      * @param valueFn Optional function to transform each element before grouping
@@ -15,7 +15,7 @@ declare global {
      */
     groupBy<K extends PropertyKey>(fn: CallbackFn<T, K>): Record<K, T[]>;
     /**
-     * Groups elements of the array into a record by a key extracted from each element.
+     * Groups elements of an array into a record by a key extracted from each element.
      * Optionally transforms values using a value function.
      * @param fn A function that returns the grouping key for each element
      * @param valueFn Optional function to transform each element before grouping
@@ -29,7 +29,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Groups elements of the array into a record by a key extracted from each element.
+     * Groups elements of an array into a record by a key extracted from each element.
      * Optionally transforms values using a value function.
      * @param fn A function that returns the grouping key for each element
      * @param valueFn Optional function to transform each element before grouping
@@ -40,7 +40,7 @@ declare global {
      */
     groupBy<K extends PropertyKey>(fn: CallbackFnRO<T, K>): Record<K, T[]>;
     /**
-     * Groups elements of the array into a record by a key extracted from each element.
+     * Groups elements of an array into a record by a key extracted from each element.
      * Optionally transforms values using a value function.
      * @param fn A function that returns the grouping key for each element
      * @param valueFn Optional function to transform each element before grouping

@@ -4,7 +4,7 @@ import { findAndRemove } from "./findAndRemove.impl";
 declare global {
   interface Array<T> {
     /**
-     * Finds the first element matching the callback and removes it from the array.
+     * Finds the first element matching the callback and removes it from an array.
      * This mutates the original array.
      * @param fn A function to test each element
      * @returns The removed element, or undefined if no element matches

@@ -2,7 +2,7 @@ import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns true if a given date is within the interval. (Including start and end.)
+ * Returns true if a ZonedDateTime is within the interval. (Including start and end.)
  * @param date - The date to check
  * @param interval - The interval to check against
  * @returns True if the date is within the interval

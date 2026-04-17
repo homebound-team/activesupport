@@ -4,7 +4,7 @@ import { asyncFlatMap } from "./asyncFlatMap.impl";
 declare global {
   interface Array<T> {
     /**
-     * Maps each element of the array using an async callback, then flattens the results by one level.
+     * Maps each element of an array using an async callback, then flattens the results by one level.
      * Similar to `Promise.all(arr.map(fn)).then(result => result.flat(1))`.
      * @param fn An async function that returns either a single value or an array of values
      * @returns A promise resolving to the flattened array of results
@@ -16,7 +16,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Maps each element of the array using an async callback, then flattens the results by one level.
+     * Maps each element of an array using an async callback, then flattens the results by one level.
      * Similar to `Promise.all(arr.map(fn)).then(result => result.flat(1))`.
      * @param fn An async function that returns either a single value or an array of values
      * @returns A promise resolving to the flattened array of results

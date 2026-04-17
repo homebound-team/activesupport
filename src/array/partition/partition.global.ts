@@ -4,7 +4,7 @@ import { partition } from "./partition.impl";
 declare global {
   interface Array<T> {
     /**
-     * Splits the array into two: elements that satisfy the callback and elements that don't.
+     * Splits an array into two: elements that satisfy the callback and elements that don't.
      * @param fn A function to test each element
      * @returns A tuple of [matches, non-matches]
      * @example ["foo1", "bar", "foo2"].partition(s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -12,7 +12,7 @@ declare global {
      */
     partition(fn: CallbackFn<T, boolean>): [T[], T[]];
     /**
-     * Splits the array into two after transforming elements with valueFn.
+     * Splits an array into two after transforming elements with valueFn.
      * @param fn A function to test each element
      * @param valueFn A function to transform each element before adding to result
      * @returns A tuple of [transformed matches, transformed non-matches]
@@ -23,7 +23,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Splits the array into two: elements that satisfy the callback and elements that don't.
+     * Splits an array into two: elements that satisfy the callback and elements that don't.
      * @param fn A function to test each element
      * @returns A tuple of [matches, non-matches]
      * @example ["foo1", "bar", "foo2"].partition(s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -31,7 +31,7 @@ declare global {
      */
     partition(fn: CallbackFnRO<T, boolean>): [T[], T[]];
     /**
-     * Splits the array into two after transforming elements with valueFn.
+     * Splits an array into two after transforming elements with valueFn.
      * @param fn A function to test each element
      * @param valueFn A function to transform each element before adding to result
      * @returns A tuple of [transformed matches, transformed non-matches]

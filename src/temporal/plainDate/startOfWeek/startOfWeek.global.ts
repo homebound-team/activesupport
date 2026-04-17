@@ -6,7 +6,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns the start of a week for the date.
+       * Returns the start of a week for the PlainDate.
        * @param options An object with options
        * @returns The start of a week
        * @example Temporal.PlainDate.from("2014-09-02").startOfWeek() //=> 2014-08-31

@@ -2,7 +2,7 @@ import { startOfDayOpts } from "src/temporal/zonedDateTime/startOfDay/startOfDay
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns the start of a month for a given date.
+ * Returns the start of a month for a ZonedDateTime.
  * @param date - The date to get the start of month for
  * @returns The start of a month
  * @example

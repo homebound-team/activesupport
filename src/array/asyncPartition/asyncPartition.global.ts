@@ -5,7 +5,7 @@ import { asyncPartition } from "./asyncPartition.impl";
 declare global {
   interface Array<T> {
     /**
-     * Splits the array into two using an async callback: elements that satisfy it and elements that don't.
+     * Splits an array into two using an async callback: elements that satisfy it and elements that don't.
      * @param fn An async function to test each element
      * @returns A promise resolving to a tuple of [matches, non-matches]
      * @example await ["foo1", "bar", "foo2"].asyncPartition(async s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -13,7 +13,7 @@ declare global {
      */
     asyncPartition(fn: CallbackFn<T, Promise<boolean>>): Promise<[T[], T[]]>;
     /**
-     * Splits the array into two using an async callback, transforming elements with valueFn.
+     * Splits an array into two using an async callback, transforming elements with valueFn.
      * @param fn An async function to test each element
      * @param valueFn A function to transform each element before adding to result
      * @returns A promise resolving to a tuple of [transformed matches, transformed non-matches]
@@ -26,7 +26,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Splits the array into two using an async callback: elements that satisfy it and elements that don't.
+     * Splits an array into two using an async callback: elements that satisfy it and elements that don't.
      * @param fn An async function to test each element
      * @returns A promise resolving to a tuple of [matches, non-matches]
      * @example await ["foo1", "bar", "foo2"].asyncPartition(async s => s.startsWith("foo")) //=> [["foo1", "foo2"], ["bar"]]
@@ -34,7 +34,7 @@ declare global {
      */
     asyncPartition(fn: CallbackFnRO<T, Promise<boolean>>): Promise<[T[], T[]]>;
     /**
-     * Splits the array into two using an async callback, transforming elements with valueFn.
+     * Splits an array into two using an async callback, transforming elements with valueFn.
      * @param fn An async function to test each element
      * @param valueFn A function to transform each element before adding to result
      * @returns A promise resolving to a tuple of [transformed matches, transformed non-matches]

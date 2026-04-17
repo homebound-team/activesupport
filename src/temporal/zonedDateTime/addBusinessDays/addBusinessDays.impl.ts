@@ -3,7 +3,7 @@ import { BusinessDayOptions } from "src/temporal/utils";
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Adds the specified number of business days (mon - fri) to a given date, ignoring weekends.
+ * Adds the specified number of business days (mon - fri) to a ZonedDateTime, ignoring weekends.
  * @param date - The date to add business days to
  * @param amount - The amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
  * @param options - An object with options.

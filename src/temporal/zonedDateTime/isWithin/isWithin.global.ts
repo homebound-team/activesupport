@@ -7,7 +7,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * Returns true if the date is within the interval. (Including start and end.)
+       * Returns true if the ZonedDateTime is within the interval. (Including start and end.)
        * @param interval The interval to check against
        * @returns True if the date is within the interval
        * @example Temporal.ZonedDateTime.from("2014-01-03T00:00:00[UTC]").isWithin(Interval.from(Temporal.ZonedDateTime.from("2014-01-01T00:00:00[UTC]"), Temporal.ZonedDateTime.from("2014-01-07T00:00:00[UTC]"))) //=> true

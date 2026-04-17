@@ -3,7 +3,7 @@ import { findAfter } from "./findAfter.impl";
 declare global {
   interface Array<T> {
     /**
-     * Returns the element that comes immediately after the specified element in the array.
+     * Returns the element that comes immediately after the specified element in an array.
      * @param el The element to find the successor of
      * @returns The element after the specified element, or undefined if el is last, not found, or the array is empty
      * @example ["a", "b", "c"].findAfter("a") //=> "b"
@@ -15,7 +15,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the element that comes immediately after the specified element in the array.
+     * Returns the element that comes immediately after the specified element in an array.
      * @param el The element to find the successor of
      * @returns The element after the specified element, or undefined if el is last, not found, or the array is empty
      * @example ["a", "b", "c"].findAfter("a") //=> "b"

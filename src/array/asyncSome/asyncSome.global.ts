@@ -4,7 +4,7 @@ import { asyncSome } from "./asyncSome.impl";
 declare global {
   interface Array<T> {
     /**
-     * Tests whether at least one element of the array passes an async callback.
+     * Tests whether at least one element of an array passes an async callback.
      * Returns true as soon as any callback resolves to true, or false if all resolve to false.
      * @param fn An async function to test each element
      * @returns A promise resolving to true if any element passes, false otherwise
@@ -17,7 +17,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Tests whether at least one element of the array passes an async callback.
+     * Tests whether at least one element of an array passes an async callback.
      * Returns true as soon as any callback resolves to true, or false if all resolve to false.
      * @param fn An async function to test each element
      * @returns A promise resolving to true if any element passes, false otherwise

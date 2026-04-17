@@ -2,7 +2,7 @@ import { BusinessDayOptions, DayOfWeek, assertValidBusinessDays } from "src/temp
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns true if a given date falls on a weekend.
+ * Returns true if a PlainDate falls on a weekend.
  * @param date - The date to check
  * @param options - An object with options
  * @returns True if the date falls on a weekend

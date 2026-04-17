@@ -4,7 +4,7 @@ import { asyncMap } from "./asyncMap.impl";
 declare global {
   interface Array<T> {
     /**
-     * Maps each element of the array using an async callback, waiting for all promises to resolve.
+     * Maps each element of an array using an async callback, waiting for all promises to resolve.
      * Equivalent to `Promise.all(arr.map(fn))`.
      * @param fn An async function to transform each element
      * @returns A promise resolving to an array of transformed values
@@ -16,7 +16,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Maps each element of the array using an async callback, waiting for all promises to resolve.
+     * Maps each element of an array using an async callback, waiting for all promises to resolve.
      * Equivalent to `Promise.all(arr.map(fn))`.
      * @param fn An async function to transform each element
      * @returns A promise resolving to an array of transformed values

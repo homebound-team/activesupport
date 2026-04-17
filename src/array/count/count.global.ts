@@ -5,7 +5,7 @@ import { count } from "./count.impl";
 declare global {
   interface Array<T> {
     /**
-     * Counts the number of elements in the array that satisfy the callback.
+     * Counts the number of elements in an array that satisfy the callback.
      * @param fn A function to test each element
      * @returns The number of elements for which the callback returns true
      * @example [1, 2, 3, 4, 5].count(n => n % 2 === 0) //=> 2
@@ -13,7 +13,7 @@ declare global {
      */
     count(fn: CallbackFn<T, boolean>): number;
     /**
-     * Counts the number of elements in the array that satisfy the async callback.
+     * Counts the number of elements in an array that satisfy the async callback.
      * @param fn An async function to test each element
      * @returns A promise resolving to the number of elements for which the callback returns true
      * @example await [1, 2, 3, 4, 5].count(async n => n % 2 === 0) //=> 2
@@ -23,7 +23,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Counts the number of elements in the array that satisfy the callback.
+     * Counts the number of elements in an array that satisfy the callback.
      * @param fn A function to test each element
      * @returns The number of elements for which the callback returns true
      * @example [1, 2, 3, 4, 5].count(n => n % 2 === 0) //=> 2
@@ -31,7 +31,7 @@ declare global {
      */
     count(fn: CallbackFnRO<T, boolean>): number;
     /**
-     * Counts the number of elements in the array that satisfy the async callback.
+     * Counts the number of elements in an array that satisfy the async callback.
      * @param fn An async function to test each element
      * @returns A promise resolving to the number of elements for which the callback returns true
      * @example await [1, 2, 3, 4, 5].count(async n => n % 2 === 0) //=> 2

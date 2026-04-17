@@ -5,7 +5,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns the start of a year for the date.
+       * Returns the start of a year for the PlainDate.
        * @returns The start of a year
        * @example Temporal.PlainDate.from("2014-09-02").startOfYear() //=> 2014-01-01
        */

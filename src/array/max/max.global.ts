@@ -5,7 +5,7 @@ import { max } from "./max.impl";
 declare global {
   interface Array<T> {
     /**
-     * Returns the maximum value from the array of comparable elements (numbers, strings, dates, etc.).
+     * Returns the maximum value from an array of comparable elements (numbers, strings, dates, etc.).
      * @returns The largest element in the array
      * @example [1, 5, 3].max() //=> 5
      * @example ["11", "23", "222"].max() //=> "23"
@@ -13,7 +13,7 @@ declare global {
      */
     max(): T;
     /**
-     * Returns the maximum value after transforming each element of the array with a callback.
+     * Returns the maximum value after transforming each element of an array with a callback.
      * @param fn A function that returns a comparable value for each element
      * @returns The largest value returned by the callback
      * @example ["11", "23", "222"].max(s => parseInt(s)) //=> 222
@@ -23,7 +23,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the maximum value from the array of comparable elements (numbers, strings, dates, etc.).
+     * Returns the maximum value from an array of comparable elements (numbers, strings, dates, etc.).
      * @returns The largest element in the array
      * @example [1, 5, 3].max() //=> 5
      * @example ["11", "23", "222"].max() //=> "23"
@@ -31,7 +31,7 @@ declare global {
      */
     max(): T;
     /**
-     * Returns the maximum value after transforming each element of the array with a callback.
+     * Returns the maximum value after transforming each element of an array with a callback.
      * @param fn A function that returns a comparable value for each element
      * @returns The largest value returned by the callback
      * @example ["11", "23", "222"].max(s => parseInt(s)) //=> 222

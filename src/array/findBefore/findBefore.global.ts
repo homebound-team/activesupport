@@ -3,7 +3,7 @@ import { findBefore } from "./findBefore.impl";
 declare global {
   interface Array<T> {
     /**
-     * Returns the element that comes immediately before the specified element in the array.
+     * Returns the element that comes immediately before the specified element in an array.
      * @param el The element to find the predecessor of
      * @returns The element before the specified element, or undefined if el is first, not found, or the array is empty
      * @example ["a", "b", "c"].findBefore("c") //=> "b"
@@ -15,7 +15,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the element that comes immediately before the specified element in the array.
+     * Returns the element that comes immediately before the specified element in an array.
      * @param el The element to find the predecessor of
      * @returns The element before the specified element, or undefined if el is first, not found, or the array is empty
      * @example ["a", "b", "c"].findBefore("c") //=> "b"

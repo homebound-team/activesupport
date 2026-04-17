@@ -4,8 +4,8 @@ import { groupByObject } from "./groupByObject.impl";
 declare global {
   interface Array<T> {
     /**
-     * Groups elements of the array by any object key (not limited to property keys like strings/numbers).
-     * Returns the array of [key, values] tuples. Use this when grouping by objects or complex keys.
+     * Groups elements of an array by any object key (not limited to property keys like strings/numbers).
+     * Returns an array of [key, values] tuples. Use this when grouping by objects or complex keys.
      * @param fn A function that returns the grouping key (can be any object) for each element
      * @param valueFn Optional function to transform each element before grouping
      * @returns An array of [key, values[]] tuples
@@ -16,8 +16,8 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Groups elements of the array by any object key (not limited to property keys like strings/numbers).
-     * Returns the array of [key, values] tuples. Use this when grouping by objects or complex keys.
+     * Groups elements of an array by any object key (not limited to property keys like strings/numbers).
+     * Returns an array of [key, values] tuples. Use this when grouping by objects or complex keys.
      * @param fn A function that returns the grouping key (can be any object) for each element
      * @param valueFn Optional function to transform each element before grouping
      * @returns An array of [key, values[]] tuples

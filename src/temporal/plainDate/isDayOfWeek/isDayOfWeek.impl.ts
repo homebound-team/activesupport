@@ -1,7 +1,7 @@
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns true if a date is Monday, false otherwise.
+ * Returns true if a PlainDate is Monday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Monday
  * @example
@@ -16,7 +16,7 @@ export function isMonday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Tuesday, false otherwise.
+ * Returns true if a PlainDate is Tuesday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Tuesday
  * @example
@@ -31,7 +31,7 @@ export function isTuesday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Wednesday, false otherwise.
+ * Returns true if a PlainDate is Wednesday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Wednesday
  * @example
@@ -46,7 +46,7 @@ export function isWednesday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Thursday, false otherwise.
+ * Returns true if a PlainDate is Thursday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Thursday
  * @example
@@ -61,7 +61,7 @@ export function isThursday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Friday, false otherwise.
+ * Returns true if a PlainDate is Friday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Friday
  * @example
@@ -76,7 +76,7 @@ export function isFriday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Saturday, false otherwise.
+ * Returns true if a PlainDate is Saturday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Saturday
  * @example
@@ -91,7 +91,7 @@ export function isSaturday(date: Temporal.PlainDate): boolean {
 }
 
 /**
- * Returns true if a date is Sunday, false otherwise.
+ * Returns true if a PlainDate is Sunday, false otherwise.
  * @param date - A PlainDate to check
  * @returns True if the date is Sunday
  * @example

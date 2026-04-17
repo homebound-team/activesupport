@@ -4,7 +4,7 @@ import { keyByObject } from "./keyByObject.impl";
 declare global {
   interface Array<T> {
     /**
-     * Creates a Map from the array, indexed by any object key (not limited to property keys).
+     * Creates a Map from an array, indexed by any object key (not limited to property keys).
      * Throws an error if duplicate keys are found for different elements.
      * Useful when keys are objects or complex types.
      * @param fn A function that returns the key (can be any object) for each element
@@ -17,7 +17,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Creates a Map from the array, indexed by any object key (not limited to property keys).
+     * Creates a Map from an array, indexed by any object key (not limited to property keys).
      * Throws an error if duplicate keys are found for different elements.
      * Useful when keys are objects or complex types.
      * @param fn A function that returns the key (can be any object) for each element

@@ -4,7 +4,7 @@ import { keyBy } from "./keyBy.impl";
 declare global {
   interface Array<T> {
     /**
-     * Creates a record from the array, indexed by a field value from each element.
+     * Creates a record from an array, indexed by a field value from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
      * @param field The field name to use as the key
      * @returns A record mapping field values to elements
@@ -12,7 +12,7 @@ declare global {
      */
     keyBy<K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(field: TK): Record<TK, T>;
     /**
-     * Creates a record from the array, indexed by a key extracted from each element.
+     * Creates a record from an array, indexed by a key extracted from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
      * @param fn A function that returns the key for each element
      * @param valueFn Optional function to transform each element before storing
@@ -29,7 +29,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Creates a record from the array, indexed by a field value from each element.
+     * Creates a record from an array, indexed by a field value from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
      * @param field The field name to use as the key
      * @returns A record mapping field values to elements
@@ -37,7 +37,7 @@ declare global {
      */
     keyBy<K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(field: TK): Record<TK, T>;
     /**
-     * Creates a record from the array, indexed by a key extracted from each element.
+     * Creates a record from an array, indexed by a key extracted from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
      * @param fn A function that returns the key for each element
      * @param valueFn Optional function to transform each element before storing

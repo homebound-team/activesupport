@@ -3,7 +3,7 @@ import { toObject } from "./toObject.impl";
 declare global {
   interface Array<T> {
     /**
-     * Converts the array of [key, value] tuples into an object.
+     * Converts an array of [key, value] tuples into an object.
      * Equivalent to `Object.fromEntries(arr)`.
      * @returns An object constructed from the key-value pairs
      * @example [["a", 5], ["b", 6], ["c", 7]].toObject() //=> {a: 5, b: 6, c: 7}
@@ -14,7 +14,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Converts the array of [key, value] tuples into an object.
+     * Converts an array of [key, value] tuples into an object.
      * Equivalent to `Object.fromEntries(arr)`.
      * @returns An object constructed from the key-value pairs
      * @example [["a", 5], ["b", 6], ["c", 7]].toObject() //=> {a: 5, b: 6, c: 7}

@@ -3,7 +3,7 @@ import { remove } from "./remove.impl";
 declare global {
   interface Array<T> {
     /**
-     * Removes the specified element(s) from the array by mutating it in place.
+     * Removes the specified element(s) from an array by mutating it in place.
      * Use `without` for a non-mutating version that returns a new array.
      * @param elements The element(s) to remove from the array
      * @example const arr = [1, 2, 3, 2]; arr.remove(2); // arr is now [1, 3]
@@ -14,7 +14,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Removes the specified element(s) from the array by mutating it in place.
+     * Removes the specified element(s) from an array by mutating it in place.
      * Use `without` for a non-mutating version that returns a new array.
      * @param elements The element(s) to remove from the array
      * @example const arr = [1, 2, 3, 2]; arr.remove(2); // arr is now [1, 3]

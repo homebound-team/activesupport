@@ -2,7 +2,7 @@ import { Temporal } from "temporal-polyfill";
 
 // TODO: update this for micro and nano seconds once available
 /**
- * Returns the end of a day for a given date.
+ * Returns the end of a day for a ZonedDateTime.
  * @param date - The date to get the end of day for
  * @returns The end of a day
  * @example

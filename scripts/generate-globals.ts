@@ -394,40 +394,26 @@ function removeFirstParam(lines: string[]): string[] {
   return lines.toSpliced(startIndex, endOffset + 1);
 }
 
-/** Rewrites "a/an X" → "the X" in descriptions, per target kind. Order matters: earlier entries win. */
-const DESCRIPTION_REPLACEMENTS: Record<TargetKind, [RegExp, string][]> = {
-  array: [
-    [/\ban array\b/g, "the array"],
-    [/\bAn array\b/g, "The array"],
-  ],
-  map: [
-    [/\ba Map\b/g, "the Map"],
-    [/\bA Map\b/g, "The Map"],
-  ],
-  plainDate: [
-    [/\ba PlainDate\b/g, "the PlainDate"],
-    [/\ba given date\b/g, "the date"],
-    [/\ba date\b/g, "the date"],
-    [/\bA date\b/g, "The date"],
-  ],
-  zonedDateTime: [
-    [/\ba ZonedDateTime\b/g, "the ZonedDateTime"],
-    [/\ba given date\b/g, "the date"],
-    [/\ba date\b/g, "the date"],
-    [/\bA date\b/g, "The date"],
-  ],
-  legacyDate: [
-    [/\ba legacy Date\b/g, "the legacy Date"],
-    [/\bA legacy Date\b/g, "The legacy Date"],
-    [/\ba Date\b/g, "the Date"],
-  ],
+/**
+ * The canonical noun for each target kind's subject. JSDoc in the impl files is
+ * standardized to use this word (e.g. plainDate impls always say "a PlainDate",
+ * not "a date" or "a given date"); the replacement below flips "a/An X" →
+ * "the/The X" so the generated method docs read naturally in method-call
+ * context ("Returns the start of a month for the PlainDate.").
+ */
+const SUBJECT_NOUN: Record<TargetKind, string> = {
+  array: "array",
+  map: "Map",
+  plainDate: "PlainDate",
+  zonedDateTime: "ZonedDateTime",
+  legacyDate: "legacy Date",
 };
 
 function transformDescription(line: string, target: TargetInfo): string {
-  for (const [pat, rep] of DESCRIPTION_REPLACEMENTS[target.kind]) {
-    line = line.replace(pat, rep);
-  }
-  return line;
+  const word = SUBJECT_NOUN[target.kind];
+  return line
+    .replace(new RegExp(`\\ba\\s+${word}\\b`, "g"), `the ${word}`)
+    .replace(new RegExp(`\\bA\\s+${word}\\b`, "g"), `The ${word}`);
 }
 
 function transformExamples(

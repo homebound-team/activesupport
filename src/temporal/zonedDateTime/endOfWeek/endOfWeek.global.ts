@@ -6,7 +6,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * Returns the end of a week for the date.
+       * Returns the end of a week for the ZonedDateTime.
        * @param options An object with options
        * @returns The end of a week
        * @example Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]").endOfWeek() //=> 2014-09-06T23:59:59.999+00:00[UTC]

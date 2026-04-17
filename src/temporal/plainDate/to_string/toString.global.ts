@@ -5,7 +5,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns a string representation of the date. When called with no arguments
+       * Returns a string representation of the PlainDate. When called with no arguments
        * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
        * When called with Intl.DateTimeFormatOptions, formats using toLocaleString
        * with "en-US" locale.

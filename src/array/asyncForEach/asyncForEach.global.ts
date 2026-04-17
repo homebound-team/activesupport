@@ -4,7 +4,7 @@ import { asyncForEach } from "./asyncForEach.impl";
 declare global {
   interface Array<T> {
     /**
-     * Executes an async callback for each element in the array, waiting for all to complete.
+     * Executes an async callback for each element in an array, waiting for all to complete.
      * Similar to `Promise.all(arr.map(fn))` but returns void instead of results.
      * @param fn An async function to execute for each element
      * @returns A promise that resolves when all callbacks complete
@@ -16,7 +16,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Executes an async callback for each element in the array, waiting for all to complete.
+     * Executes an async callback for each element in an array, waiting for all to complete.
      * Similar to `Promise.all(arr.map(fn))` but returns void instead of results.
      * @param fn An async function to execute for each element
      * @returns A promise that resolves when all callbacks complete

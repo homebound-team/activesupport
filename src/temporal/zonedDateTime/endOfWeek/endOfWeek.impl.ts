@@ -3,7 +3,7 @@ import { endOfDayOpts } from "src/temporal/zonedDateTime/endOfDay/endOfDay.impl"
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns the end of a week for a given date.
+ * Returns the end of a week for a ZonedDateTime.
  * @param date - The date to get the end of week for
  * @param options - An object with options
  * @returns The end of a week

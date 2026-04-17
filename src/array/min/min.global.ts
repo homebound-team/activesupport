@@ -5,7 +5,7 @@ import { min } from "./min.impl";
 declare global {
   interface Array<T> {
     /**
-     * Returns the minimum value from the array of comparable elements (numbers, strings, dates, etc.).
+     * Returns the minimum value from an array of comparable elements (numbers, strings, dates, etc.).
      * @returns The smallest element in the array
      * @example [1, 5, 3].min() //=> 1
      * @example ["-11", "-22", "-222"].min() //=> "-11"
@@ -13,7 +13,7 @@ declare global {
      */
     min(): T;
     /**
-     * Returns the minimum value after transforming each element of the array with a callback.
+     * Returns the minimum value after transforming each element of an array with a callback.
      * @param fn A function that returns a comparable value for each element
      * @returns The smallest value returned by the callback
      * @example ["-11", "-22", "-222"].min(s => parseInt(s)) //=> -222
@@ -23,7 +23,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the minimum value from the array of comparable elements (numbers, strings, dates, etc.).
+     * Returns the minimum value from an array of comparable elements (numbers, strings, dates, etc.).
      * @returns The smallest element in the array
      * @example [1, 5, 3].min() //=> 1
      * @example ["-11", "-22", "-222"].min() //=> "-11"
@@ -31,7 +31,7 @@ declare global {
      */
     min(): T;
     /**
-     * Returns the minimum value after transforming each element of the array with a callback.
+     * Returns the minimum value after transforming each element of an array with a callback.
      * @param fn A function that returns a comparable value for each element
      * @returns The smallest value returned by the callback
      * @example ["-11", "-22", "-222"].min(s => parseInt(s)) //=> -222

@@ -5,7 +5,7 @@ import { maxBy } from "./maxBy.impl";
 declare global {
   interface Array<T> {
     /**
-     * Returns the element from the array with the maximum value as determined by the callback function.
+     * Returns the element from an array with the maximum value as determined by the callback function.
      * @param fn A function that returns a comparable value for each element
      * @returns The element with the largest value
      * @example [{foo: 1}, {foo: 2}, {foo: 3}].maxBy(v => v.foo) //=> {foo: 3}
@@ -17,7 +17,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Returns the element from the array with the maximum value as determined by the callback function.
+     * Returns the element from an array with the maximum value as determined by the callback function.
      * @param fn A function that returns a comparable value for each element
      * @returns The element with the largest value
      * @example [{foo: 1}, {foo: 2}, {foo: 3}].maxBy(v => v.foo) //=> {foo: 3}

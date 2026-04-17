@@ -2,7 +2,7 @@ import { WeekOptions } from "src/temporal/utils";
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns the start of a week for a given date.
+ * Returns the start of a week for a PlainDate.
  * @param date - The date to get the start of week for
  * @param options - An object with options
  * @returns The start of a week

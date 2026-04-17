@@ -4,7 +4,7 @@ import { indexBy } from "./indexBy.impl";
 declare global {
   interface Array<T> {
     /**
-     * Creates a Map index from the array where each element can be associated with multiple keys.
+     * Creates a Map index from an array where each element can be associated with multiple keys.
      * Unlike `groupBy`, elements can appear under multiple keys (e.g., tags, categories).
      * @param fn A function that returns an array of keys for each element
      * @param valueFn Optional function to transform each element before indexing
@@ -18,7 +18,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Creates a Map index from the array where each element can be associated with multiple keys.
+     * Creates a Map index from an array where each element can be associated with multiple keys.
      * Unlike `groupBy`, elements can appear under multiple keys (e.g., tags, categories).
      * @param fn A function that returns an array of keys for each element
      * @param valueFn Optional function to transform each element before indexing

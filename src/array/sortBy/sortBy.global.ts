@@ -5,7 +5,7 @@ declare global {
   interface Array<T> {
     /**
      * Returns a new array sorted in ascending order based on the value returned by the callback.
-     * Supports sorting by multiple criteria by returning the array of values.
+     * Supports sorting by multiple criteria by returning an array of values.
      * @param fn A function that returns a comparable value (or array of values) for each element
      * @returns A new sorted array
      * @example [{name: "Bob", age: 30}, {name: "Alice", age: 25}].sortBy(p => p.age) //=> [{name: "Alice", age: 25}, {name: "Bob", age: 30}]
@@ -18,7 +18,7 @@ declare global {
   interface ReadonlyArray<T> {
     /**
      * Returns a new array sorted in ascending order based on the value returned by the callback.
-     * Supports sorting by multiple criteria by returning the array of values.
+     * Supports sorting by multiple criteria by returning an array of values.
      * @param fn A function that returns a comparable value (or array of values) for each element
      * @returns A new sorted array
      * @example [{name: "Bob", age: 30}, {name: "Alice", age: 25}].sortBy(p => p.age) //=> [{name: "Alice", age: 25}, {name: "Bob", age: 30}]

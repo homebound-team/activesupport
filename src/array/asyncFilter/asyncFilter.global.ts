@@ -4,7 +4,7 @@ import { asyncFilter } from "./asyncFilter.impl";
 declare global {
   interface Array<T> {
     /**
-     * Filters the array using an async callback, waiting for all callbacks to resolve.
+     * Filters an array using an async callback, waiting for all callbacks to resolve.
      * @param fn An async function to test each element
      * @returns A promise resolving to an array of elements that passed the callback
      * @example await [1, 2, 3, 4].asyncFilter(async n => n % 2 === 0) //=> [2, 4]
@@ -15,7 +15,7 @@ declare global {
 
   interface ReadonlyArray<T> {
     /**
-     * Filters the array using an async callback, waiting for all callbacks to resolve.
+     * Filters an array using an async callback, waiting for all callbacks to resolve.
      * @param fn An async function to test each element
      * @returns A promise resolving to an array of elements that passed the callback
      * @example await [1, 2, 3, 4].asyncFilter(async n => n % 2 === 0) //=> [2, 4]

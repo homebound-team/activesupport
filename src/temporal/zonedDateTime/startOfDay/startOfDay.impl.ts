@@ -2,7 +2,7 @@ import { Temporal } from "temporal-polyfill";
 
 // TODO: update this for micro and nano seconds once available
 /**
- * Returns the start of a day for a given date.
+ * Returns the start of a day for a ZonedDateTime.
  * @param date - The date to get the start of day for
  * @returns The start of a day
  * @example

@@ -6,7 +6,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Adds the specified number of business days (mon - fri) to the date, ignoring weekends.
+       * Adds the specified number of business days (mon - fri) to the PlainDate, ignoring weekends.
        * @param amount The amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
        * @param options An object with options.
        * @param options.businessDays The business days. Default is Monday to Friday.

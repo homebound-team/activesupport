@@ -20,7 +20,7 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
 }
 
 /**
- * Returns a string representation of a date. When called with no arguments
+ * Returns a string representation of a PlainDate. When called with no arguments
  * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
  * When called with Intl.DateTimeFormatOptions, formats using toLocaleString
  * with "en-US" locale.
