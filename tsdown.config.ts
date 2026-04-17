@@ -20,10 +20,6 @@ export default defineConfig(async (inlineConfig, context) => {
     const basename = path.basename(dir);
     if (dir !== "object") entries.push({ [dir]: `src/${dir}/${basename}.impl.ts` });
     entries.push({ [`${dir}/global`]: `src/${dir}/${basename}.global.ts` });
-    // TODO: figure out why this causes tsdown to have a memory leak and take 30+ seconds to process
-    // for await (const file of fs.glob(`src/${dir}/*/*.global.ts`)) {
-    //   entries.push({ [`${dir}/${path.basename(file, ".global.ts")}`]: file });
-    // }
   });
 
   entries.push({ "temporal/interval": "src/temporal/interval/interval.impl.ts" });
