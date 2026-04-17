@@ -24,7 +24,7 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
  * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
  * When called with Intl.DateTimeFormatOptions, formats using toLocaleString
  * with "en-US" locale.
- * @param date - The date to format
+ * @param date - The PlainDate to format
  * @param options - Either ShowCalendarOption for ISO format or Intl.DateTimeFormatOptions for locale formatting
  * @returns The formatted date string
  * @example

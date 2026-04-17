@@ -3,9 +3,9 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a PlainDate falls on a weekend.
- * @param date - The date to check
+ * @param date - The PlainDate to check
  * @param options - An object with options
- * @returns True if the date falls on a weekend
+ * @returns True if the PlainDate falls on a weekend
  * @example
  * isWeekend(Temporal.PlainDate.from("2014-10-05"))
  * //=> true

@@ -5,9 +5,9 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns true if the first date is after the second one.
-       * @param other The date to compare with
-       * @returns True if the first date is after the second date
+       * Returns true if the first PlainDate is after the second one.
+       * @param other The PlainDate to compare with
+       * @returns True if the first PlainDate is after the second PlainDate
        * @example Temporal.PlainDate.from("1989-07-10").isAfter(Temporal.PlainDate.from("1987-02-11")) //=> true
        */
       isAfter(other: Temporal.PlainDate): boolean;

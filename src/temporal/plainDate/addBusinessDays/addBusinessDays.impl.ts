@@ -5,12 +5,12 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Adds the specified number of business days (mon - fri) to a PlainDate, ignoring weekends.
- * @param date - The date to add business days to
+ * @param date - The PlainDate to add business days to
  * @param amount - The amount of business days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
  * @param options - An object with options.
  * @param options.businessDays - The business days. Default is Monday to Friday.
  * @param options.exceptions - Exceptions to the business days. Map of date string to boolean.
- * @returns The new date with the business days added
+ * @returns The new PlainDate with the business days added
  * @example
  * addBusinessDays(Temporal.PlainDate.from("2014-09-01"), 10)
  * //=> Mon Sep 15 2014 (skipped weekend days)

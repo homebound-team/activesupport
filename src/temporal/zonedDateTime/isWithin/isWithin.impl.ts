@@ -3,9 +3,9 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a ZonedDateTime is within the interval. (Including start and end.)
- * @param date - The date to check
+ * @param date - The ZonedDateTime to check
  * @param interval - The interval to check against
- * @returns True if the date is within the interval
+ * @returns True if the ZonedDateTime is within the interval
  * @example
  * isWithin(
  *   Temporal.ZonedDateTime.from("2014-01-03T00:00:00[UTC]"),

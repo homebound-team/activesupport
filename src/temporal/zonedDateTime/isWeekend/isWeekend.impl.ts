@@ -3,9 +3,9 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a ZonedDateTime falls on a weekend.
- * @param date - The date to check
+ * @param date - The ZonedDateTime to check
  * @param options - An object with options
- * @returns True if the date falls on a weekend
+ * @returns True if the ZonedDateTime falls on a weekend
  * @example
  * isWeekend(Temporal.ZonedDateTime.from("2014-10-05T00:00:00[UTC]"))
  * //=> true

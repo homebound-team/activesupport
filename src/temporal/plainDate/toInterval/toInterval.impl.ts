@@ -2,7 +2,7 @@ import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
 
 /**
- * Returns an interval between the given dates.
+ * Returns an interval between the given PlainDates.
  * @param start - The start of the interval
  * @param end - The end of the interval
  * @returns An Interval from start to end

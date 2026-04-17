@@ -3,7 +3,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the start of a week for a PlainDate.
- * @param date - The date to get the start of week for
+ * @param date - The PlainDate to get the start of week for
  * @param options - An object with options
  * @returns The start of a week
  * @example

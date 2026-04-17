@@ -3,7 +3,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the end of a month for a ZonedDateTime.
- * @param date - The date to get the end of month for
+ * @param date - The ZonedDateTime to get the end of month for
  * @returns The end of a month
  * @example
  * endOfMonth(Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]"))

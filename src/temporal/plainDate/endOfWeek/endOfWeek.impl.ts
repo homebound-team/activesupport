@@ -3,7 +3,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the end of a week for a PlainDate.
- * @param date - The date to get the end of week for
+ * @param date - The PlainDate to get the end of week for
  * @param options - An object with options
  * @returns The end of a week
  * @example

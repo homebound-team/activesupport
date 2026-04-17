@@ -6,9 +6,9 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns the number of business day periods between two dates.
+       * Returns the number of business day periods between two PlainDates.
        * Business days being days that aren't in the weekend.
-       * @param other The earlier date
+       * @param other The earlier PlainDate
        * @param options An object with options.
        * @param options.businessDays The business days. Default is Monday to Friday.
        * @param options.exceptions Exceptions to the business days. Map of date string to boolean.

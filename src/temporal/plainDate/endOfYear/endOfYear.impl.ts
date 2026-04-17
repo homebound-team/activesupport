@@ -2,7 +2,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the end of a year for a PlainDate.
- * @param date - The date to get the end of year for
+ * @param date - The PlainDate to get the end of year for
  * @returns The end of a year
  * @example
  * endOfYear(Temporal.PlainDate.from("2014-09-02"))

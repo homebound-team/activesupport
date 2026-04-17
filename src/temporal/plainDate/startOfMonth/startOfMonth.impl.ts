@@ -2,7 +2,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the start of a month for a PlainDate.
- * @param date - The date to get the start of month for
+ * @param date - The PlainDate to get the start of month for
  * @returns The start of a month
  * @example
  * startOfMonth(Temporal.PlainDate.from("2014-09-02"))

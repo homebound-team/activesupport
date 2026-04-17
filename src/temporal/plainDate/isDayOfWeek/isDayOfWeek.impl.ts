@@ -2,8 +2,8 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a PlainDate is Monday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Monday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Monday
  * @example
  * isMonday(Temporal.PlainDate.from("2014-09-22"))
  * //=> true
@@ -17,8 +17,8 @@ export function isMonday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Tuesday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Tuesday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Tuesday
  * @example
  * isTuesday(Temporal.PlainDate.from("2014-09-23"))
  * //=> true
@@ -32,8 +32,8 @@ export function isTuesday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Wednesday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Wednesday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Wednesday
  * @example
  * isWednesday(Temporal.PlainDate.from("2014-09-24"))
  * //=> true
@@ -47,8 +47,8 @@ export function isWednesday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Thursday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Thursday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Thursday
  * @example
  * isThursday(Temporal.PlainDate.from("2014-09-25"))
  * //=> true
@@ -62,8 +62,8 @@ export function isThursday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Friday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Friday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Friday
  * @example
  * isFriday(Temporal.PlainDate.from("2014-09-26"))
  * //=> true
@@ -77,8 +77,8 @@ export function isFriday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Saturday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Saturday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Saturday
  * @example
  * isSaturday(Temporal.PlainDate.from("2014-09-27"))
  * //=> true
@@ -92,8 +92,8 @@ export function isSaturday(date: Temporal.PlainDate): boolean {
 
 /**
  * Returns true if a PlainDate is Sunday, false otherwise.
- * @param date - A PlainDate to check
- * @returns True if the date is Sunday
+ * @param date - The PlainDate to check
+ * @returns True if the PlainDate is Sunday
  * @example
  * isSunday(Temporal.PlainDate.from("2014-09-28"))
  * //=> true

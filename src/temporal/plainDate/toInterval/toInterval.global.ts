@@ -6,7 +6,7 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface PlainDate {
       /**
-       * Returns an interval between the given dates.
+       * Returns an interval between the given PlainDates.
        * @param end The end of the interval
        * @returns An Interval from start to end
        * @example Temporal.PlainDate.from("2024-01-01").toInterval(Temporal.PlainDate.from("2024-01-31")) //=> Interval { start: 2024-01-01, end: 2024-01-31 }

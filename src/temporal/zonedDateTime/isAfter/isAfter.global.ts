@@ -5,9 +5,9 @@ declare module "temporal-polyfill" {
   namespace Temporal {
     interface ZonedDateTime {
       /**
-       * Returns true if the first date is after the second one.
-       * @param other The date to compare with
-       * @returns True if the first date is after the second date
+       * Returns true if the first ZonedDateTime is after the second one.
+       * @param other The ZonedDateTime to compare with
+       * @returns True if the first ZonedDateTime is after the second ZonedDateTime
        * @example Temporal.ZonedDateTime.from("1989-07-10T00:00:00[UTC]").isAfter(Temporal.ZonedDateTime.from("1987-02-11T00:00:00[UTC]")) //=> true
        */
       isAfter(other: Temporal.ZonedDateTime): boolean;

@@ -2,7 +2,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the end of a month for a PlainDate.
- * @param date - The date to get the end of month for
+ * @param date - The PlainDate to get the end of month for
  * @returns The end of a month
  * @example
  * endOfMonth(Temporal.PlainDate.from("2014-09-02"))

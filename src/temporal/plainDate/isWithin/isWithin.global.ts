@@ -9,7 +9,7 @@ declare module "temporal-polyfill" {
       /**
        * Returns true if the PlainDate is within the interval. (Including start and end.)
        * @param interval The interval to check against
-       * @returns True if the date is within the interval
+       * @returns True if the PlainDate is within the interval
        * @example Temporal.PlainDate.from("2014-01-03").isWithin(Interval.from(Temporal.PlainDate.from("2014-01-01"), Temporal.PlainDate.from("2014-01-07"))) //=> true
        * @example Temporal.PlainDate.from("2014-01-10").isWithin(Interval.from(Temporal.PlainDate.from("2014-01-01"), Temporal.PlainDate.from("2014-01-07"))) //=> false
        */

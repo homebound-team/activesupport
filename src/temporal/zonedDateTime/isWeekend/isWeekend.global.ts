@@ -8,7 +8,7 @@ declare module "temporal-polyfill" {
       /**
        * Returns true if the ZonedDateTime falls on a weekend.
        * @param options An object with options
-       * @returns True if the date falls on a weekend
+       * @returns True if the ZonedDateTime falls on a weekend
        * @example Temporal.ZonedDateTime.from("2014-10-05T00:00:00[UTC]").isWeekend() //=> true
        * @example // With custom business days: Temporal.ZonedDateTime.from("2014-10-05T00:00:00[UTC]").isWeekend({ businessDays: [6,7] }) //=> false
        */

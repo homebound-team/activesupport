@@ -9,10 +9,10 @@ import { Temporal } from "temporal-polyfill";
 // Implementation converted from previous code located in businessDaysUtils.ts.  I'm not entirely sure it's
 // correct but the tests (also converted) all pass.
 /**
- * Returns the number of business day periods between two dates.
+ * Returns the number of business day periods between two PlainDates.
  * Business days being days that aren't in the weekend.
- * @param date - The later date
- * @param other - The earlier date
+ * @param date - The later PlainDate
+ * @param other - The earlier PlainDate
  * @param options - An object with options.
  * @param options.businessDays - The business days. Default is Monday to Friday.
  * @param options.exceptions - Exceptions to the business days. Map of date string to boolean.

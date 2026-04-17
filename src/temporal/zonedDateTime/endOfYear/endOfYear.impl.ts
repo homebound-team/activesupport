@@ -3,7 +3,7 @@ import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the end of a year for a ZonedDateTime.
- * @param date - The date to get the end of year for
+ * @param date - The ZonedDateTime to get the end of year for
  * @returns The end of a year
  * @example
  * endOfYear(Temporal.ZonedDateTime.from("2014-09-02T00:00:00[UTC]"))
