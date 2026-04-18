@@ -89,6 +89,13 @@ interface ParsedFunction {
 
 // ─── Target classification ───────────────────────────────────────────────────
 
+/**
+ * Maps an impl file path to the metadata describing where its methods attach.
+ *
+ * The top-level directory under `src/` determines the target: `array/` attaches
+ * to `Array.prototype`, `map/` to `Map.prototype`, each `temporal/*` subdir to
+ * the corresponding `Temporal.*` interface.
+ */
 function classifyTarget(implPath: string): TargetInfo {
   const rel = path.relative(SRC_DIR, implPath).replace(/\\/g, "/");
 
@@ -151,6 +158,10 @@ interface ImplFile {
   target: TargetInfo;
 }
 
+/**
+ * Finds every `*.impl.ts` under `src/{array,map,temporal/*}/ * / *.impl.ts`
+ * and pairs each with its sibling `.global.ts` output path plus target metadata.
+ */
 function discoverImplFiles(): ImplFile[] {
   const temporalDirs = ["plainDate", "zonedDateTime", "legacyDate"].map((dir) => path.join("temporal", dir));
   const globPath = path.join(SRC_DIR, `{${["array", "map", ...temporalDirs].join(",")}}`, `*/*.impl.ts`);
@@ -163,6 +174,13 @@ function discoverImplFiles(): ImplFile[] {
 
 // ─── Parsing (ts-morph) ─────────────────────────────────────────────────────
 
+/**
+ * Pulls JSDoc, type parameters, parameter list, return type, and async flag off
+ * a single ts-morph `FunctionDeclaration` node. Used for both overload signatures
+ * (no body) and implementation signatures (with body). Throws if no explicit
+ * return type is present — impls must be annotated so the global signature can
+ * be derived without type inference.
+ */
 function extractOverloadFromDecl(fn: FunctionDeclaration): ParsedOverload {
   const jsdocNodes = fn.getJsDocs();
   const jsdoc: string[] = [];
@@ -200,6 +218,18 @@ function extractOverloadFromDecl(fn: FunctionDeclaration): ParsedOverload {
   return { jsdoc, typeParams, params, returnType, isAsync };
 }
 
+/**
+ * Parses an impl source file into a list of `ParsedFunction` records, one per
+ * exported function. Each record carries the implementation signature plus any
+ * overload signatures that precede it.
+ *
+ * Only functions that are either directly exported (`export function foo()`) or
+ * re-exported by name (`export { foo }`) are included.
+ *
+ * Note: ts-morph's `getFunctions()` returns only implementation declarations
+ * (the one with a body). Overload signatures are accessed separately via
+ * `fn.getOverloads()`.
+ */
 function parseImplFile(sourceFile: SourceFile): ParsedFunction[] {
   // Collect names from `export { name }` declarations
   const exportedNames = new Set<string>(
@@ -239,6 +269,25 @@ function parseImplFile(sourceFile: SourceFile): ParsedFunction[] {
 
 type ArrayOverloadKind = "mutable" | "readonly" | "both";
 
+/**
+ * Determines which `Array` interface(s) an overload belongs on, based solely on
+ * which `CallbackFn*` variant appears in its parameter types. Callers use this
+ * to partition overloads between the `Array<T>` and `ReadonlyArray<T>` declare
+ * blocks.
+ *
+ * @example
+ * // compact uses CallbackFnEither → usable from both
+ * classifyArrayOverload({ params: [{ typeText: "readonly T[]" }], ... });
+ * //=> "both"
+ * @example
+ * // groupBy mutable overload uses CallbackFn
+ * classifyArrayOverload({ params: [{ typeText: "T[]" }, { typeText: "CallbackFn<T, K>" }], ... });
+ * //=> "mutable"
+ * @example
+ * // groupBy readonly overload uses CallbackFnRO
+ * classifyArrayOverload({ params: [{ typeText: "readonly T[]" }, { typeText: "CallbackFnRO<T, K>" }], ... });
+ * //=> "readonly"
+ */
 function classifyArrayOverload(overload: ParsedOverload): ArrayOverloadKind {
   // Check all param type texts for CallbackFn variants
   const allParamText = overload.params.map((p) => p.typeText).join(" ");
@@ -257,6 +306,30 @@ function classifyArrayOverload(overload: ParsedOverload): ArrayOverloadKind {
 
 // ─── Signature transformation ────────────────────────────────────────────────
 
+/**
+ * Rewrites a standalone function signature into a prototype method signature
+ * for a specific interface declaration.
+ *
+ * The transformation:
+ * 1. Drops the first parameter (it becomes `this` on the interface)
+ * 2. Strips generics that the interface already provides (e.g. `T` on `Array<T>`, `K`/`V` on `Map<K, V>`)
+ * 3. For array targets, bridges readonly-ness between `Array<T>` and `ReadonlyArray<T>` via a `this:` constraint
+ * 4. Converts default-valued params into optional params (interface can't have defaults)
+ * 5. Emits property-style for names in `PROPERTY_NAMES`, method-style otherwise
+ *
+ * @example
+ * // Standalone: function compact<T>(arr: readonly T[]): T[]
+ * transformSignatureForGlobal(compactOverload, "compact", arrayTarget, "Array<T>");
+ * //=> { methodSig: "compact(this: T[]): T[];", ... }
+ * @example
+ * // Standalone: function getOrCreate<K, V>(map: Map<K, V>, key: K, make: () => V): V
+ * transformSignatureForGlobal(getOrCreateOverload, "getOrCreate", mapTarget, "Map<K, V>");
+ * //=> { methodSig: "getOrCreate(key: K, make: () => V): V;", ... }
+ * @example
+ * // Property-style (first is in PROPERTY_NAMES): function first<T>(arr: readonly T[]): T | undefined
+ * transformSignatureForGlobal(firstOverload, "first", arrayTarget, "Array<T>");
+ * //=> { methodSig: "readonly first: T | undefined;", ... }
+ */
 function transformSignatureForGlobal(
   overload: ParsedOverload,
   funcName: string,
@@ -322,12 +395,48 @@ function transformSignatureForGlobal(
   return { methodSig, needsThisConstraint, thisType };
 }
 
+/**
+ * True when the type text is exactly the generic array placeholder `T[]` (or
+ * the readonly flavor). Used by `transformSignatureForGlobal` to decide whether
+ * an array overload is generic enough to rely on the interface's `T`, or
+ * whether it's a concrete type (like `number[]`) that needs a narrowing
+ * `this:` constraint.
+ *
+ * @example
+ * isGenericArrayType("T[]");          //=> true
+ * isGenericArrayType("readonly T[]"); //=> true
+ * isGenericArrayType("number[]");     //=> false
+ * isGenericArrayType("T");            //=> false
+ */
 function isGenericArrayType(type: string): boolean {
   const stripped = type.replace(/^readonly\s+/, "");
   return stripped === "T[]" || stripped === "readonly T[]";
 }
 
-/** Qualify temporal-specific types with Temporal. prefix for use outside declare module blocks */
+/**
+ * Prefixes bare temporal type references with `Temporal.` so they resolve
+ * correctly outside a `declare module "temporal-polyfill"` block.
+ *
+ * Inside the temporal module declaration, `Temporal` is the enclosing
+ * namespace and names like `BusinessDayOptions` resolve directly. Once we
+ * leave that block (e.g. in the prototype assignment below it), the same
+ * names need the `Temporal.` prefix to resolve.
+ *
+ * No-op for non-temporal targets (whose code never leaves global scope).
+ *
+ * @example
+ * // target: plainDate
+ * qualifyTemporalTypes("options: BusinessDayOptions = {}", plainDateTarget);
+ * //=> "options: Temporal.BusinessDayOptions = {}"
+ * @example
+ * // already qualified — left alone
+ * qualifyTemporalTypes("Temporal.BusinessDayOptions", plainDateTarget);
+ * //=> "Temporal.BusinessDayOptions"
+ * @example
+ * // array target — no-op
+ * qualifyTemporalTypes("options: BusinessDayOptions", arrayTarget);
+ * //=> "options: BusinessDayOptions"
+ */
 function qualifyTemporalTypes(s: string, target: TargetInfo): string {
   if (target.declareStyle !== "module") return s;
   return s.replace(/(?<!Temporal\.)(?<!\w)(BusinessDayOptions|WeekOptions|Interval<)/g, "Temporal.$1");
@@ -335,6 +444,37 @@ function qualifyTemporalTypes(s: string, target: TargetInfo): string {
 
 // ─── JSDoc transformation ────────────────────────────────────────────────────
 
+/**
+ * Rewrites an impl-style JSDoc block into a method-style JSDoc block suitable
+ * for a prototype interface declaration.
+ *
+ * Pipeline:
+ * 1. Strip the outer `/** ... * /` wrappers to get plain body lines
+ * 2. Remove the first `@param` (it described the receiver, now implicit as `this`)
+ * 3. Strip `- ` dashes from remaining `@param` tags (`@param x - desc` → `@param x desc`)
+ * 4. Rewrite descriptions: "a/An <subject>" → "the/The <subject>" for the target's canonical noun
+ * 5. Rewrite `@example` call syntax from `fn(arr, x)` to `arr.fn(x)` (see `transformSingleExample`)
+ * 6. Re-wrap with `/** ... * /`
+ *
+ * @example
+ * // For `groupBy` on arrays:
+ * transformJsdoc([
+ *   "/** Groups an array by key.",
+ *   " * @param arr - the array",
+ *   " * @param fn - the key fn",
+ *   " * @returns a Map",
+ *   " * @example groupBy([1, 2], x => x > 1) //=> Map{false => [1], true => [2]}",
+ *   " * /",
+ * ], "groupBy", arrayTarget, rewriteableNames);
+ * //=> [
+ * //  "/**",
+ * //  " * Groups the array by key.",
+ * //  " * @param fn the key fn",
+ * //  " * @returns a Map",
+ * //  " * @example [1, 2].groupBy(x => x > 1) //=> Map{false => [1], true => [2]}",
+ * //  " * /",
+ * // ]
+ */
 function transformJsdoc(
   jsdocLines: string[],
   funcName: string,
@@ -386,6 +526,31 @@ function transformJsdoc(
   return result;
 }
 
+/**
+ * Removes the first `@param` tag (and any continuation lines that belong to it)
+ * from a JSDoc body. Used because the standalone function's first parameter
+ * becomes `this` on the prototype method and no longer needs documenting.
+ *
+ * A continuation runs from the `@param` line until the next `@` tag, blank
+ * line, or end of the body.
+ *
+ * @example
+ * removeFirstParam([
+ *   "Groups an array by key.",
+ *   "@param arr the array to group",
+ *   "@param fn the key function",
+ *   "@returns a grouped Map",
+ * ]);
+ * //=> ["Groups an array by key.", "@param fn the key function", "@returns a grouped Map"]
+ * @example
+ * // Continuation line — still belongs to the @param, so it's removed too
+ * removeFirstParam([
+ *   "@param arr the array",
+ *   "  (must be non-empty)",
+ *   "@returns something",
+ * ]);
+ * //=> ["@returns something"]
+ */
 function removeFirstParam(lines: string[]): string[] {
   const startIndex = lines.findIndex((line) => line.startsWith("@param"));
   if (startIndex === -1) return lines;
@@ -409,6 +574,26 @@ const SUBJECT_NOUN: Record<TargetKind, string> = {
   legacyDate: "legacy Date",
 };
 
+/**
+ * Rewrites "a/An <subject>" to "the/The <subject>" for the target's canonical
+ * noun, so impl docs ("Returns the start of a month for a PlainDate.") read
+ * naturally when the same text lives on a method and the receiver is implicit
+ * ("Returns the start of a month for the PlainDate.").
+ *
+ * Only the canonical noun defined in `SUBJECT_NOUN` is rewritten — other "a/an"
+ * occurrences are left alone.
+ *
+ * @example
+ * transformDescription("Returns the start of a month for a PlainDate.", plainDateTarget);
+ * //=> "Returns the start of a month for the PlainDate."
+ * @example
+ * transformDescription("Groups an array by key.", arrayTarget);
+ * //=> "Groups the array by key."
+ * @example
+ * // Non-subject "a" — untouched
+ * transformDescription("Returns a new Map.", mapTarget);
+ * //=> "Returns a new Map." (only "a Map" standalone would be rewritten)
+ */
 function transformDescription(line: string, target: TargetInfo): string {
   const word = SUBJECT_NOUN[target.kind];
   return line
@@ -416,6 +601,33 @@ function transformDescription(line: string, target: TargetInfo): string {
     .replace(new RegExp(`\\bA\\s+${word}\\b`, "g"), `The ${word}`);
 }
 
+/**
+ * Walks a JSDoc body and rewrites each `@example` block so function calls
+ * appear in method form. Multi-line examples are collapsed to a single line
+ * with runs of whitespace normalized to a single space — inline examples are
+ * the project convention.
+ *
+ * Delegates the actual call-site rewriting to `transformSingleExample`.
+ *
+ * @example
+ * transformExamples([
+ *   "Compacts an array.",
+ *   "@example compact([1, null, 2]) //=> [1, 2]",
+ *   "@example compact([null]) //=> []",
+ * ], "compact", arrayTarget, new Set(["compact"]));
+ * //=> [
+ * //  "Compacts an array.",
+ * //  "@example [1, null, 2].compact() //=> [1, 2]",
+ * //  "@example [null].compact() //=> []",
+ * // ]
+ * @example
+ * // Multi-line example collapses to one line
+ * transformExamples([
+ *   "@example const grouped = groupBy([1, 2, 3], x => x > 1);",
+ *   "  //=> Map{false => [1], true => [2, 3]}",
+ * ], "groupBy", arrayTarget, new Set(["groupBy"]));
+ * //=> ["@example const grouped = [1, 2, 3].groupBy(x => x > 1); //=> Map{false => [1], true => [2, 3]}"]
+ */
 function transformExamples(
   lines: string[],
   funcName: string,
@@ -504,6 +716,36 @@ function transformSingleExample(
 
 // ─── Code generation ─────────────────────────────────────────────────────────
 
+/**
+ * Orchestrates generation of a single `.global.ts` file from an `.impl.ts` file.
+ *
+ * Output structure:
+ * 1. Imports (resolved by `resolveImports` from the generated content)
+ * 2. Optional local type aliases (e.g. `TimeZoneAndTime` for plainDate)
+ * 3. `declare global { ... }` or `declare module "temporal-polyfill" { ... }` block
+ * 4. Prototype assignment(s)
+ *
+ * Single-export impls emit a direct `Proto.method = function...` assignment.
+ * Multi-export impls emit an `Object.entries(...).forEach(...)` loop.
+ *
+ * @example
+ * // Input: src/array/compact/compact.impl.ts with `export function compact<T>(arr: readonly T[]): T[]`
+ * // Output (roughly):
+ * //   import { compact } from "./compact.impl";
+ * //
+ * //   declare global {
+ * //     interface Array<T> {
+ * //       compact(this: T[]): T[];
+ * //     }
+ * //     interface ReadonlyArray<T> {
+ * //       compact(this: readonly T[]): T[];
+ * //     }
+ * //   }
+ * //
+ * //   Array.prototype.compact = function <T>(this: T[]): T[] {
+ * //     return compact(this);
+ * //   };
+ */
 function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
   const { implPath, target } = impl;
   const functions = parseImplFile(sourceFile);
@@ -624,6 +866,11 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
   return outputLines.join("\n");
 }
 
+/**
+ * Filters a function's overloads down to the ones that belong on a specific
+ * interface (`Array<T>` vs `ReadonlyArray<T>`). Non-array targets don't split
+ * overloads, so all overloads pass through unchanged.
+ */
 function getOverloadsForInterface(func: ParsedFunction, iface: string, target: TargetInfo): ParsedOverload[] {
   if (target.kind !== "array") {
     return func.overloads;
@@ -641,6 +888,13 @@ function getOverloadsForInterface(func: ParsedFunction, iface: string, target: T
   return result;
 }
 
+/**
+ * Emits the prototype assignment for an impl file that exports a single
+ * function. Branches on:
+ * - Property-style (name in `PROPERTY_NAMES`) → `Object.defineProperty` with getter
+ * - Multi-overload arrays → direct assignment with `as any` cast to bypass resolution
+ * - Everything else → plain direct assignment via `generateDirectAssignment`
+ */
 function generateSingleExportProto(func: ParsedFunction, target: TargetInfo, protoLines: string[]): void {
   const funcName = func.name;
   const isProperty = PROPERTY_NAMES.has(funcName);
@@ -665,6 +919,38 @@ function generateSingleExportProto(func: ParsedFunction, target: TargetInfo, pro
   generateDirectAssignment(func, target, protoLines, needsCast);
 }
 
+/**
+ * Emits a `Proto.method = function (...) { return impl(this, ...); }` assignment.
+ *
+ * Behavior details:
+ * - First impl parameter is dropped; `this` takes its place and is forwarded as the first arg
+ * - Rest parameters (`...args`) are forwarded with their spread preserved
+ * - For array targets, the return type is un-`readonly`'d (prototype methods on
+ *   `Array.prototype` always hand back mutable arrays)
+ * - `CallbackFnEither` is narrowed to `CallbackFn` (we're in mutable-array context)
+ * - `needsCast = true` emits `this` plus `arg as any` casts and trails with `} as any;`
+ *   to sidestep TypeScript's overload resolution when an array fn has multiple
+ *   `Array<T>`-facing overloads
+ * - Long signatures break onto multiple lines (>120 chars) for readability
+ *
+ * @example
+ * // Standalone: function compact<T>(arr: readonly T[]): T[]
+ * // Emits:
+ * //   Array.prototype.compact = function <T>(this: T[]): T[] {
+ * //     return compact(this);
+ * //   };
+ * @example
+ * // Standalone: function batched<T>(arr: readonly T[], size: number): T[][]
+ * // Emits:
+ * //   Array.prototype.batched = function <T>(this: T[], size: number): T[][] {
+ * //     return batched(this, size);
+ * //   };
+ * @example
+ * // With needsCast (e.g. `sortBy` with both sync and async overloads):
+ * //   Array.prototype.sortBy = function <T, K>(this: T[], fn: any) {
+ * //     return sortBy(this, fn as any);
+ * //   } as any;
+ */
 function generateDirectAssignment(
   func: ParsedFunction,
   target: TargetInfo,
@@ -751,6 +1037,35 @@ function generateDirectAssignment(
   }
 }
 
+/**
+ * Emits a prototype-installing loop for impl files that export multiple
+ * functions (e.g. `toEntries`, `toKeys`, `toValues` all living in one impl).
+ *
+ * Requires every exported fn to share a shape — either all properties or all
+ * methods — so one loop works for the whole module. Mixed property/method
+ * multi-exports throw.
+ *
+ * @example
+ * // Input: src/object/toEntries/toEntries.impl.ts with `export function toEntries(obj)` +
+ * //        similar `toKeys`, `toValues`
+ * // Emits (as methods):
+ * //   Object.entries(toEntries).forEach(
+ * //     ([name, impl]) =>
+ * //       (Object.prototype[name] = function (this: object) {
+ * //         return impl(this);
+ * //       }),
+ * //   );
+ * @example
+ * // All properties (like the `isMonday`...`isSunday` day-of-week group):
+ * //   Object.entries(isDayOfWeek).forEach(([name, impl]) =>
+ * //     Object.defineProperty(Temporal.PlainDate.prototype, name, {
+ * //       enumerable: false,
+ * //       get: function (this: Temporal.PlainDate) {
+ * //         return impl(this);
+ * //       },
+ * //     }),
+ * //   );
+ */
 function generateMultiExportProto(
   functions: ParsedFunction[],
   baseName: string,
@@ -801,6 +1116,30 @@ const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?:
   { pattern: "DayOfWeek", path: "src/temporal/utils", name: "DayOfWeek" },
 ];
 
+/**
+ * Scans the generated code for known patterns (type names, callback markers,
+ * etc.) and produces the matching import lines. Always adds an import from the
+ * sibling `.impl` file — named for single-export impls, `* as <baseName>` for
+ * multi-export.
+ *
+ * `declareCode` is the declare block alone; a few patterns (like `Interval<`)
+ * only trigger a side-effect import when they appear in the declare block,
+ * not when they appear in the prototype assignment.
+ *
+ * Prettier's `organize-imports` plugin runs after this and re-sorts lines, so
+ * emit order here doesn't matter.
+ *
+ * @example
+ * // Code contains `CallbackFn<` and `BusinessDayOptions`, baseName = "addBusinessDays"
+ * // Emits (pre-prettier):
+ * //   import "src/temporal/types.global";
+ * //   import { CallbackFn } from "src/array/utils";
+ * //   import { Temporal } from "temporal-polyfill";
+ * //   import { addBusinessDays } from "./addBusinessDays.impl";
+ * @example
+ * // Multi-export module (baseName = "toEntries", isMultiExport = true):
+ * //   import * as toEntries from "./toEntries.impl";
+ */
 function resolveImports(code: string, baseName: string, isMultiExport: boolean, declareCode: string): string[] {
   // Map from import path → set of named imports (empty set = side-effect import)
   const importMap = new Map<string, Set<string>>();
@@ -832,6 +1171,14 @@ function resolveImports(code: string, baseName: string, isMultiExport: boolean, 
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
+/**
+ * Entry point. Walks every impl file, generates its global counterpart,
+ * formats with prettier, and either writes the file (default) or compares it
+ * against the existing file on disk (`--check` mode, used by CI).
+ *
+ * In check mode, exits `0` when every generated output matches what's already
+ * on disk, or `1` otherwise.
+ */
 async function main(): Promise<void> {
   const implFiles = discoverImplFiles();
   const prettierConfig = await prettier.resolveConfig(path.join(SRC_DIR, "index.ts"));
