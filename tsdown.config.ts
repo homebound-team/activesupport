@@ -1,48 +1,38 @@
 import path from "node:path";
 import { defineConfig } from "tsdown";
 
-export default defineConfig(async (inlineConfig, context) => {
-  const entries: (string | Record<string, string>)[] = ["src/index.ts"];
-  entries.push({ utils: "src/utils.ts" });
+export default defineConfig(() => {
+  const entry: Record<string, string> = {
+    index: "src/index.ts",
+    utils: "src/utils.ts",
+    global: "src/global.ts",
+    "temporal/interval": "src/temporal/interval/interval.impl.ts",
+    "temporal/interval/global": "src/temporal/interval/interval.global.ts",
+    "temporal/utils": "src/temporal/utils.ts",
+    temporal: "src/temporal/temporal.impl.ts",
+    "temporal/global": "src/temporal/temporal.global.ts",
+  };
 
   // Convention: the unsuffixed path is impl-only (pure functions, no global side
   // effects). The "/global" suffix installs prototype augmentations. `object`
   // has no impl form (every helper is a pure prototype augmentation), so we
   // only emit its global entry.
-  const promises = [
-    "array",
-    "map",
-    "object",
-    "temporal/legacyDate",
-    "temporal/plainDate",
-    "temporal/zonedDateTime",
-  ].map(async (dir) => {
+  for (const dir of ["array", "map", "object", "temporal/legacyDate", "temporal/plainDate", "temporal/zonedDateTime"]) {
     const basename = path.basename(dir);
-    if (dir !== "object") entries.push({ [dir]: `src/${dir}/${basename}.impl.ts` });
-    entries.push({ [`${dir}/global`]: `src/${dir}/${basename}.global.ts` });
-  });
+    if (dir !== "object") entry[dir] = `src/${dir}/${basename}.impl.ts`;
+    entry[`${dir}/global`] = `src/${dir}/${basename}.global.ts`;
+  }
 
-  entries.push({ "temporal/interval": "src/temporal/interval/interval.impl.ts" });
-  entries.push({ "temporal/interval/global": "src/temporal/interval/interval.global.ts" });
-  entries.push({ "temporal/utils": "src/temporal/utils.ts" });
-  entries.push({ temporal: "src/temporal/temporal.impl.ts" });
-  entries.push({ "temporal/global": "src/temporal/temporal.global.ts" });
-  entries.push({ global: "src/global.ts" });
-
-  await Promise.all(promises);
-
-  const exports = {
-    customExports(pkg, context) {
-      delete pkg["./package.json"];
-      return pkg;
-    },
-  };
-
-  return entries.map((entry) => ({
+  return {
     entry,
-    exports,
+    exports: {
+      customExports(pkg) {
+        delete pkg["./package.json"];
+        return pkg;
+      },
+    },
     format: ["cjs", "esm"],
     sourcemap: true,
     dts: true,
-  }));
+  };
 });
