@@ -1,0 +1,20 @@
+import { Temporal } from "temporal-polyfill";
+import { toLegacyDate } from "./toLegacyDate.impl";
+
+declare module "temporal-polyfill" {
+  namespace Temporal {
+    interface ZonedDateTime {
+      /**
+       * Converts the ZonedDateTime to a legacy JavaScript Date object.
+       * The Date will represent the same instant in time by using the ZonedDateTime's epoch milliseconds.
+       * @returns A legacy Date representing the same instant in time
+       * @example Temporal.ZonedDateTime.from("2023-05-02T12:11:36.438+00:00[UTC]").toLegacyDate() //=> Date("2023-05-02T12:11:36.438Z")
+       */
+      toLegacyDate(): Date;
+    }
+  }
+}
+
+Temporal.ZonedDateTime.prototype.toLegacyDate = function (this: Temporal.ZonedDateTime): Date {
+  return toLegacyDate(this);
+};

@@ -12,4 +12,4 @@ junit-reports
 jest.config.ts
 release.config.js
 tsconfig.json
-tsup.config.ts
+tsdown.config.ts

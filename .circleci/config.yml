@@ -34,7 +34,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/node:20.9.0
+      - image: cimg/node:22.15.0
     steps:
       - checkout
       - run:
@@ -44,9 +44,11 @@ jobs:
           pkg-manager: yarn-berry
       - run: yarn lint
       - run: yarn build
+      - run: yarn generate:globals --check
+      - run: yarn generate:barrels --check
   publish:
     docker:
-      - image: cimg/node:20.9.0
+      - image: cimg/node:22.15.0
     steps:
       - checkout
       - run:

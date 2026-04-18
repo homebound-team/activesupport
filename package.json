@@ -1,27 +1,101 @@
 {
   "name": "@homebound/activesupport",
   "version": "1.1.0-alpha.1",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./array": {
+      "require": "./dist/array.cjs",
+      "import": "./dist/array.mjs"
+    },
+    "./array/global": {
+      "require": "./dist/array/global.cjs",
+      "import": "./dist/array/global.mjs"
+    },
+    "./global": {
+      "require": "./dist/global.cjs",
+      "import": "./dist/global.mjs"
+    },
+    "./map": {
+      "require": "./dist/map.cjs",
+      "import": "./dist/map.mjs"
+    },
+    "./map/global": {
+      "require": "./dist/map/global.cjs",
+      "import": "./dist/map/global.mjs"
+    },
+    "./object/global": {
+      "require": "./dist/object/global.cjs",
+      "import": "./dist/object/global.mjs"
+    },
+    "./temporal": {
+      "require": "./dist/temporal.cjs",
+      "import": "./dist/temporal.mjs"
+    },
+    "./temporal/global": {
+      "require": "./dist/temporal/global.cjs",
+      "import": "./dist/temporal/global.mjs"
+    },
+    "./temporal/interval": {
+      "require": "./dist/temporal/interval.cjs",
+      "import": "./dist/temporal/interval.mjs"
+    },
+    "./temporal/interval/global": {
+      "require": "./dist/temporal/interval/global.cjs",
+      "import": "./dist/temporal/interval/global.mjs"
+    },
+    "./temporal/legacyDate": {
+      "require": "./dist/temporal/legacyDate.cjs",
+      "import": "./dist/temporal/legacyDate.mjs"
+    },
+    "./temporal/legacyDate/global": {
+      "require": "./dist/temporal/legacyDate/global.cjs",
+      "import": "./dist/temporal/legacyDate/global.mjs"
+    },
+    "./temporal/plainDate": {
+      "require": "./dist/temporal/plainDate.cjs",
+      "import": "./dist/temporal/plainDate.mjs"
+    },
+    "./temporal/plainDate/global": {
+      "require": "./dist/temporal/plainDate/global.cjs",
+      "import": "./dist/temporal/plainDate/global.mjs"
+    },
+    "./temporal/utils": {
+      "require": "./dist/temporal/utils.cjs",
+      "import": "./dist/temporal/utils.mjs"
+    },
+    "./temporal/zonedDateTime": {
+      "require": "./dist/temporal/zonedDateTime.cjs",
+      "import": "./dist/temporal/zonedDateTime.mjs"
+    },
+    "./temporal/zonedDateTime/global": {
+      "require": "./dist/temporal/zonedDateTime/global.cjs",
+      "import": "./dist/temporal/zonedDateTime/global.mjs"
+    },
+    "./utils": {
+      "require": "./dist/utils.cjs",
+      "import": "./dist/utils.mjs"
     }
   },
-  "sideEffects": true,
+  "sideEffects": [
+    "./dist/global.cjs",
+    "./dist/global.mjs",
+    "./dist/**/global.cjs",
+    "./dist/**/global.mjs",
+    "./src/**/*.global.ts"
+  ],
   "repository": "git@github.com:homebound-team/activesupport.git",
   "license": "MIT",
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
+    "generate:barrels": "yarn tsx scripts/generate-barrels.ts",
+    "generate:globals": "yarn tsx scripts/generate-globals.ts",
     "lint": "eslint --ext js,ts,tsx src",
     "lint:fix": "eslint --ext js,ts,tsx --fix src",
     "postinstall": "husky install",
@@ -32,6 +106,7 @@
   "devDependencies": {
     "@homebound/eslint-config": "^2.2.1",
     "@types/jest": "^29.5.14",
+    "@types/node": "^25.2.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
     "eslint": "^9.27.0",
     "husky": "9.1.7",
@@ -43,8 +118,10 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "semantic-release": "^24.2.5",
     "ts-jest": "^29.3.4",
+    "ts-morph": "^27.0.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.20.1",
+    "tsx": "^4.21.0",
     "typescript": "5.8.3"
   },
   "lint-staged": {

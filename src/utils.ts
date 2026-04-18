@@ -31,22 +31,17 @@ type UnnestMaybePromise<T> = T extends Promise<infer U> ? Promise<U> : MaybeProm
  * @template T The type of the input value
  * @template U The type of the callback result
  * @param maybePromise A value or Promise to process
- * @param callback Function to apply to the resolved value
+ * @param fn Function to apply to the resolved value
  * @returns The result of the callback, maintaining Promise semantics
  * @example
  * maybePromiseThen(5, x => x * 2) //=> 10
  * maybePromiseThen(Promise.resolve(5), x => x * 2) //=> Promise.resolve(10)
  */
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => Promise<U>): Promise<U>;
-export function maybePromiseThen<T, U>(
-  maybePromise: MaybePromise<T>,
-  callback: (obj: T) => MaybePromise<U>,
-): MaybePromise<U>;
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => U): MaybePromise<U>;
-export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: (obj: T) => U): UnnestMaybePromise<U> {
-  return (
-    maybePromise instanceof Promise ? maybePromise.then(callback) : callback(maybePromise)
-  ) as UnnestMaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => Promise<U>): Promise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => MaybePromise<U>): MaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => U): MaybePromise<U>;
+export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, fn: (obj: T) => U): UnnestMaybePromise<U> {
+  return (maybePromise instanceof Promise ? maybePromise.then(fn) : fn(maybePromise)) as UnnestMaybePromise<U>;
 }
 
 /**
@@ -56,29 +51,26 @@ export function maybePromiseThen<T, U>(maybePromise: MaybePromise<T>, callback: 
  * @template T The type of the input values
  * @template U The type of the callback result
  * @param maybePromises An array of values or Promises to process
- * @param callback Function to apply to the array of resolved values
+ * @param fn Function to apply to the array of resolved values
  * @returns The result of the callback, maintaining Promise semantics
  * @example
  * maybePromiseAllThen([1, 2, 3], arr => arr.sum()) //=> 6
  * maybePromiseAllThen([Promise.resolve(1), 2, 3], arr => arr.sum()) //=> Promise.resolve(6)
  */
+export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], fn: (obj: T[]) => Promise<U>): Promise<U>;
 export function maybePromiseAllThen<T, U>(
   maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => Promise<U>,
-): Promise<U>;
-export function maybePromiseAllThen<T, U>(
-  maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => MaybePromise<U>,
+  fn: (obj: T[]) => MaybePromise<U>,
 ): MaybePromise<U>;
-export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], callback: (obj: T[]) => U): MaybePromise<U>;
+export function maybePromiseAllThen<T, U>(maybePromises: MaybePromise<T>[], fn: (obj: T[]) => U): MaybePromise<U>;
 export function maybePromiseAllThen<T, U>(
   maybePromises: MaybePromise<T>[],
-  callback: (obj: T[]) => U,
+  fn: (obj: T[]) => U,
 ): UnnestMaybePromise<U> {
   const maybePromise: MaybePromise<T[]> = maybePromises.some((v) => v instanceof Promise)
     ? (Promise.all(maybePromises) as Promise<T[]>)
     : (maybePromises as T[]);
-  return maybePromiseThen(maybePromise, callback) as UnnestMaybePromise<U>;
+  return maybePromiseThen(maybePromise, fn) as UnnestMaybePromise<U>;
 }
 
 /**
@@ -215,4 +207,51 @@ export function fail<T extends Error>(messageOrErrorOrClass?: string | Error | E
     args = args.length === 0 ? ["Failed"] : args;
     throw new messageOrErrorOrClass(...args);
   }
+}
+
+export type FixedSizeArray<L extends number, T> = L extends 0
+  ? never[]
+  : {
+      length: L;
+    } & Array<T>;
+
+/** Returns 0 inclusive to n exclusive. */
+export function zeroTo<L extends number, R>(n: L, fn: (i: number) => R): FixedSizeArray<L, R>;
+export function zeroTo<L extends number>(n: L): FixedSizeArray<L, number>;
+export function zeroTo<L extends number, R>(
+  n: L,
+  fn?: (i: number) => R,
+): FixedSizeArray<L, R> | FixedSizeArray<L, number> {
+  const array = [...Array(n).keys()] as FixedSizeArray<L, number>;
+  return fn ? (array.map((i) => fn(i)) as FixedSizeArray<L, R>) : array;
+}
+
+/** Returns a range of `[1..n]`, i.e. inclusive of 1 and `n`. */
+export function oneTo<L extends number, R>(n: L, fn: (i: number) => R): FixedSizeArray<L, R>;
+export function oneTo<L extends number>(n: L): FixedSizeArray<L, number>;
+export function oneTo<L extends number, R>(n: L, fn?: (i: number) => R) {
+  const array = [...Array(n).keys()].map((i) => i + 1) as FixedSizeArray<L, number>;
+  return fn ? (array.map((i) => fn(i)) as FixedSizeArray<L, R>) : array;
+}
+
+export function twoOf<T>(fn: (i: number) => T) {
+  return numberOf(2, (i) => fn(i));
+}
+
+export function threeOf<T>(fn: (i: number) => T) {
+  return numberOf(3, (i) => fn(i));
+}
+
+export function fourOf<T>(fn: (i: number) => T) {
+  return numberOf(4, (i) => fn(i));
+}
+
+/**
+ * Generic numberOf helper function which takes the number of items to create via
+ * the given function.
+ *
+ * This can replace twoOf, threeOf, fourOf, etc.
+ */
+export function numberOf<L extends number, T>(n: L, fn: (i: number) => T) {
+  return zeroTo(n).map((i) => fn(i)) as FixedSizeArray<L, T>;
 }

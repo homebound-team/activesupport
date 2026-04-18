@@ -4,6 +4,9 @@ const config: Config.InitialOptions = {
   preset: "ts-jest",
   testEnvironment: "node",
   cacheDirectory: "<rootDir>/.jest-cache",
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+  },
   reporters: [
     "default",
     [
