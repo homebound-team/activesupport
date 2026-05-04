@@ -93,7 +93,7 @@
   "license": "MIT",
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && yarn tsx scripts/fix-global-dts.ts",
     "generate:barrels": "yarn tsx scripts/generate-barrels.ts",
     "generate:globals": "yarn tsx scripts/generate-globals.ts",
     "lint": "eslint --ext js,ts,tsx src",
@@ -120,7 +120,7 @@
     "ts-jest": "^29.3.4",
     "ts-morph": "^27.0.2",
     "ts-node": "^10.9.2",
-    "tsdown": "^0.20.1",
+    "tsdown": "0.20.1",
     "tsx": "^4.21.0",
     "typescript": "5.8.3"
   },
