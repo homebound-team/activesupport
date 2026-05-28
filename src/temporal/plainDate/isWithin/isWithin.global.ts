@@ -1,9 +1,8 @@
 import "src/temporal/interval/interval.global";
 import { Interval } from "src/temporal/interval/interval.impl";
-import { Temporal } from "temporal-polyfill";
 import { isWithin } from "./isWithin.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

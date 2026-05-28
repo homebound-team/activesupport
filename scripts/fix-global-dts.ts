@@ -43,18 +43,38 @@ const BARRELS = ["array", "map", "object", "temporal"] as const;
 
 const MODULE_MARKER_FILES = ["map/global.d.cts", "map/global.d.mts", "object/global.d.cts", "object/global.d.mts"];
 
+/**
+ * Hashed temporal augmentation shards (e.g. `plainDate.global-XXX.d.mts`) also need
+ * the module marker. Their contents are pure `declare global { namespace Temporal { ... } }`
+ * blocks with no top-level imports/exports, so without an `export {};` TypeScript
+ * treats them as ambient scripts and their augmentations don't apply to consumers
+ * who reach them via `import` from the entry barrels.
+ */
+const TEMPORAL_SHARD_PREFIXES = [
+  "interval.global-",
+  "legacyDate.global-",
+  "plainDate.global-",
+  "zonedDateTime.global-",
+];
+
 function writeBarrel(file: string, ext: "cjs" | "mjs"): void {
   const body = BARRELS.map((b) => `import "./${b}/global.${ext}";`).join("\n") + "\n";
   fs.writeFileSync(file, body);
 }
 
-function ensureModule(file: string): void {
-  const abs = path.join(DIST_DIR, file);
-  const content = fs.readFileSync(abs, "utf8");
+function ensureModule(absPath: string): void {
+  const content = fs.readFileSync(absPath, "utf8");
   if (/^\s*(import|export)\b/m.test(content)) return;
-  fs.writeFileSync(abs, content + "\nexport {};\n");
+  fs.writeFileSync(absPath, content + "\nexport {};\n");
 }
 
 writeBarrel(path.join(DIST_DIR, "global.d.cts"), "cjs");
 writeBarrel(path.join(DIST_DIR, "global.d.mts"), "mjs");
-MODULE_MARKER_FILES.forEach(ensureModule);
+MODULE_MARKER_FILES.forEach((file) => ensureModule(path.join(DIST_DIR, file)));
+
+// Patch the hashed temporal augmentation shards.
+for (const name of fs.readdirSync(DIST_DIR)) {
+  if (!/\.d\.[cm]ts$/.test(name)) continue;
+  if (!TEMPORAL_SHARD_PREFIXES.some((p) => name.startsWith(p))) continue;
+  ensureModule(path.join(DIST_DIR, name));
+}

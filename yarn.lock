@@ -1148,6 +1148,7 @@ __metadata:
     prettier-plugin-organize-imports: "npm:^4.1.0"
     semantic-release: "npm:^24.2.5"
     temporal-polyfill: "npm:^0.3.0"
+    temporal-spec: "npm:^0.3.0"
     ts-jest: "npm:^29.3.4"
     ts-morph: "npm:^27.0.2"
     ts-node: "npm:^10.9.2"
@@ -10666,6 +10667,13 @@ __metadata:
   version: 0.3.0
   resolution: "temporal-spec@npm:0.3.0"
   checksum: 10/5863e3e3f364a5cf64bf999c85bf19b08924a91ee8d618489d9bf6cfff2452e4f916080c8ede93fc91de609200fc20002928e0146c7fc15375b123b20234799b
+  languageName: node
+  linkType: hard
+
+"temporal-spec@npm:^0.3.0":
+  version: 0.3.1
+  resolution: "temporal-spec@npm:0.3.1"
+  checksum: 10/69509d1a4162c834b76d1394a3a97cef57df9ec912b8aa549a989be8bd75f25a72c987fcc7747d566298b73d4264be9e48a8d0a91e60edcb71c7901aabfb00e7
   languageName: node
   linkType: hard
 

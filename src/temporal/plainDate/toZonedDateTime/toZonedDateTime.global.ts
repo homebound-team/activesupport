@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import * as toZonedDateTime from "./toZonedDateTime.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

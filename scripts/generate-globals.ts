@@ -56,12 +56,16 @@ interface TargetInfo {
   interfaceGenerics: string;
   /** Prototype to assign to, e.g. "Array.prototype" */
   prototype: string;
-  /** Whether we use `declare global` vs `declare module "temporal-spec"` */
-  declareStyle: "global" | "module";
   /** Self parameter type, e.g. "T[]" */
   selfType: string;
   /** Temporal type prefix for references, e.g. "Temporal.PlainDate" */
   temporalType?: string;
+  /**
+   * When set, the generated `interface X {}` declarations are wrapped inside a
+   * `namespace <name> { ... }` block. Used for Temporal targets so we can attach
+   * interfaces to `Temporal.PlainDate` etc. via global namespace augmentation.
+   */
+  namespaceWrap?: string;
 }
 
 interface ParsedParam {
@@ -105,7 +109,6 @@ function classifyTarget(implPath: string): TargetInfo {
       interfaces: ["Array<T>", "ReadonlyArray<T>"],
       interfaceGenerics: "<T>",
       prototype: "Array.prototype",
-      declareStyle: "global",
       selfType: "T[]",
     };
   } else if (rel.startsWith("map/")) {
@@ -114,7 +117,6 @@ function classifyTarget(implPath: string): TargetInfo {
       interfaces: ["Map<K, V>"],
       interfaceGenerics: "<K, V>",
       prototype: "Map.prototype",
-      declareStyle: "global",
       selfType: "Map<K, V>",
     };
   } else if (rel.startsWith("temporal/plainDate/")) {
@@ -123,9 +125,9 @@ function classifyTarget(implPath: string): TargetInfo {
       interfaces: ["PlainDate"],
       interfaceGenerics: "",
       prototype: "Temporal.PlainDate.prototype",
-      declareStyle: "module",
       selfType: "Temporal.PlainDate",
       temporalType: "Temporal.PlainDate",
+      namespaceWrap: "Temporal",
     };
   } else if (rel.startsWith("temporal/zonedDateTime/")) {
     return {
@@ -133,9 +135,9 @@ function classifyTarget(implPath: string): TargetInfo {
       interfaces: ["ZonedDateTime"],
       interfaceGenerics: "",
       prototype: "Temporal.ZonedDateTime.prototype",
-      declareStyle: "module",
       selfType: "Temporal.ZonedDateTime",
       temporalType: "Temporal.ZonedDateTime",
+      namespaceWrap: "Temporal",
     };
   } else if (rel.startsWith("temporal/legacyDate/")) {
     return {
@@ -143,7 +145,6 @@ function classifyTarget(implPath: string): TargetInfo {
       interfaces: ["Date"],
       interfaceGenerics: "",
       prototype: "Date.prototype",
-      declareStyle: "global",
       selfType: "Date",
     };
   }
@@ -415,14 +416,13 @@ function isGenericArrayType(type: string): boolean {
 
 /**
  * Prefixes bare temporal type references with `Temporal.` so they resolve
- * correctly outside a `declare module "temporal-spec"` block.
+ * correctly outside the `namespace Temporal { ... }` declare block.
  *
- * Inside the temporal module declaration, `Temporal` is the enclosing
- * namespace and names like `BusinessDayOptions` resolve directly. Once we
- * leave that block (e.g. in the prototype assignment below it), the same
- * names need the `Temporal.` prefix to resolve.
+ * Inside the namespace wrap, names like `BusinessDayOptions` resolve directly.
+ * Once we leave that block (e.g. in the prototype assignment below it), the
+ * same names need the `Temporal.` prefix to resolve.
  *
- * No-op for non-temporal targets (whose code never leaves global scope).
+ * No-op for non-temporal targets (whose code never sits inside a namespace).
  *
  * @example
  * // target: plainDate
@@ -438,7 +438,7 @@ function isGenericArrayType(type: string): boolean {
  * //=> "options: BusinessDayOptions"
  */
 function qualifyTemporalTypes(s: string, target: TargetInfo): string {
-  if (target.declareStyle !== "module") return s;
+  if (target.namespaceWrap !== "Temporal") return s;
   return s.replace(/(?<!Temporal\.)(?<!\w)(BusinessDayOptions|WeekOptions|Interval<)/g, "Temporal.$1");
 }
 
@@ -804,35 +804,28 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
     }
   }
 
-  // Build declare block
-  const memberIndent = target.declareStyle === "global" ? "    " : "      ";
+  // Build declare block. Everything goes inside `declare global { ... }`; Temporal
+  // targets additionally wrap their interfaces inside `namespace Temporal { ... }`
+  // so we're augmenting the global `Temporal` namespace (the only form of namespace
+  // augmentation that preserves the value-side of the original classes — see the
+  // long-form rationale in `src/temporal/types.global.ts`).
+  const hasNamespaceWrap = target.namespaceWrap !== undefined;
+  const memberIndent = hasNamespaceWrap ? "      " : "    ";
 
   const declareLines: string[] = [];
-  if (target.declareStyle === "global") {
-    declareLines.push("declare global {");
-    let first = true;
-    for (const [iface, members] of interfaceBlocks) {
-      if (!first) declareLines.push("");
-      first = false;
-      declareLines.push(`  interface ${iface} {`);
-      declareLines.push(...members.map((l) => `${memberIndent}${l}`));
-      declareLines.push("  }");
-    }
-    declareLines.push("}");
-  } else {
-    declareLines.push(`declare module "temporal-spec" {`);
-    declareLines.push("  namespace Temporal {");
-    let first = true;
-    for (const [iface, members] of interfaceBlocks) {
-      if (!first) declareLines.push("");
-      first = false;
-      declareLines.push(`    interface ${iface} {`);
-      declareLines.push(...members.map((l) => `${memberIndent}${l}`));
-      declareLines.push("    }");
-    }
-    declareLines.push("  }");
-    declareLines.push("}");
+  declareLines.push("declare global {");
+  if (hasNamespaceWrap) declareLines.push(`  namespace ${target.namespaceWrap} {`);
+  let first = true;
+  for (const [iface, members] of interfaceBlocks) {
+    if (!first) declareLines.push("");
+    first = false;
+    const ifaceIndent = hasNamespaceWrap ? "    " : "  ";
+    declareLines.push(`${ifaceIndent}interface ${iface} {`);
+    declareLines.push(...members.map((l) => `${memberIndent}${l}`));
+    declareLines.push(`${ifaceIndent}}`);
   }
+  if (hasNamespaceWrap) declareLines.push("  }");
+  declareLines.push("}");
 
   // Generate prototype assignment
   const protoLines: string[] = [];
@@ -1013,7 +1006,7 @@ function generateDirectAssignment(
   const funcCallExpr = `${funcName}(${callArgs})`;
   const closeBrace = needsCast ? "} as any;" : "};";
 
-  if (target.declareStyle === "module") {
+  if (target.namespaceWrap) {
     protoLines.push(`${target.prototype}.${funcName} = function ${protoGenerics}(`);
     protoLines.push(`  ${paramParts.join(",\n  ")},`);
     protoLines.push(`)${retType} {`);
@@ -1107,7 +1100,11 @@ const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?:
   { pattern: "Interval<", path: "src/temporal/interval/interval.global", declare: true },
   // Named imports
   { pattern: "as Interval<", path: "src/temporal/interval/interval.impl", name: "Interval" },
-  { pattern: "Temporal", path: "temporal-polyfill", name: "Temporal" },
+  // `Temporal` itself is intentionally NOT auto-imported: the generated globals augment
+  // and reference the *global* `Temporal` namespace, so at the type level it's resolved
+  // by the `/// <reference types="temporal-polyfill/global" />` in src/temporal/types.global.ts,
+  // and at runtime it resolves to `globalThis.Temporal` (native or polyfill — see
+  // src/temporal/temporalRuntime.global.ts).
   { pattern: "CallbackFn<", path: "src/array/utils", name: "CallbackFn" },
   { pattern: "CallbackFnRO<", path: "src/array/utils", name: "CallbackFnRO" },
   { pattern: "MaybePromise", path: "src/utils", name: "MaybePromise" },

@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import * as isDayOfWeek from "./isDayOfWeek.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

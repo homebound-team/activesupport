@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import { startOfMonth } from "./startOfMonth.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface ZonedDateTime {
       /**

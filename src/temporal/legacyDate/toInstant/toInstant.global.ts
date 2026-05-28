@@ -1,4 +1,5 @@
-import { Temporal, toTemporalInstant } from "temporal-polyfill";
+import "src/temporal/types.global";
+import { toTemporalInstant } from "temporal-polyfill";
 
 declare global {
   interface Date {
@@ -14,3 +15,5 @@ declare global {
 }
 
 Date.prototype.toInstant = toTemporalInstant;
+
+export {};

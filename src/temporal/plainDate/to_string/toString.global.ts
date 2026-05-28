@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import { toString } from "./toString.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

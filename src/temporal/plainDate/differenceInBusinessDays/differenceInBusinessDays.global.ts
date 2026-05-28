@@ -1,8 +1,7 @@
 import "src/temporal/types.global";
-import { Temporal } from "temporal-polyfill";
 import { differenceInBusinessDays } from "./differenceInBusinessDays.impl";
 
-declare module "temporal-spec" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**
