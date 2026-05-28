@@ -3,7 +3,7 @@ import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
 import { isWithin } from "./isWithin.impl";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface PlainDate {
       /**

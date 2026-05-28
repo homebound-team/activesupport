@@ -2,7 +2,7 @@ import "src/temporal/types.global";
 import { Temporal } from "temporal-polyfill";
 import { startOfWeek } from "./startOfWeek.impl";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface ZonedDateTime {
       /**

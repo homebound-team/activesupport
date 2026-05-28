@@ -3,7 +3,7 @@ import { toLegacyDate } from "./toLegacyDate.impl";
 
 type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface PlainDate {
       /**

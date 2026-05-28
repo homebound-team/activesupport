@@ -2,7 +2,7 @@ import "src/temporal/types.global";
 import { Temporal } from "temporal-polyfill";
 import { endOfWeek } from "./endOfWeek.impl";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface PlainDate {
       /**

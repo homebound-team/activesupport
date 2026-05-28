@@ -1,7 +1,7 @@
 import { Temporal } from "temporal-polyfill";
 import { startOfDay } from "./startOfDay.impl";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface ZonedDateTime {
       startOfDay(): Temporal.ZonedDateTime;

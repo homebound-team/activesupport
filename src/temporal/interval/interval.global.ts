@@ -1,7 +1,7 @@
 import { Interval } from "src/temporal/interval/interval.impl";
 import { Temporal } from "temporal-polyfill";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     /**
      * Represents a time interval between two dates (PlainDate or ZonedDateTime).

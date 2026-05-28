@@ -56,7 +56,7 @@ interface TargetInfo {
   interfaceGenerics: string;
   /** Prototype to assign to, e.g. "Array.prototype" */
   prototype: string;
-  /** Whether we use `declare global` vs `declare module "temporal-polyfill"` */
+  /** Whether we use `declare global` vs `declare module "temporal-spec"` */
   declareStyle: "global" | "module";
   /** Self parameter type, e.g. "T[]" */
   selfType: string;
@@ -415,7 +415,7 @@ function isGenericArrayType(type: string): boolean {
 
 /**
  * Prefixes bare temporal type references with `Temporal.` so they resolve
- * correctly outside a `declare module "temporal-polyfill"` block.
+ * correctly outside a `declare module "temporal-spec"` block.
  *
  * Inside the temporal module declaration, `Temporal` is the enclosing
  * namespace and names like `BusinessDayOptions` resolve directly. Once we
@@ -820,7 +820,7 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
     }
     declareLines.push("}");
   } else {
-    declareLines.push(`declare module "temporal-polyfill" {`);
+    declareLines.push(`declare module "temporal-spec" {`);
     declareLines.push("  namespace Temporal {");
     let first = true;
     for (const [iface, members] of interfaceBlocks) {

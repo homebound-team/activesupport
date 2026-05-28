@@ -1,7 +1,7 @@
 import { Temporal } from "temporal-polyfill";
 import { isBefore } from "./isBefore.impl";
 
-declare module "temporal-polyfill" {
+declare module "temporal-spec" {
   namespace Temporal {
     interface PlainDate {
       /**
