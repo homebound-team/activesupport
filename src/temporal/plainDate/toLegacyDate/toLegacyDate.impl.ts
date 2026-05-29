@@ -1,6 +1,4 @@
-import { Temporal } from "temporal-polyfill";
-
-type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
+type TimeZoneAndTime = Temporal.TimeZoneLike | Temporal.PlainDateToZonedDateTimeOptions;
 
 /**
  * Converts a PlainDate to a legacy JavaScript Date object in the specified timezone.
@@ -17,5 +15,9 @@ type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
  * //=> Date("2023-05-02T00:00:00.000Z")
  */
 export function toLegacyDate(date: Temporal.PlainDate, tzLike: TimeZoneAndTime): Date {
-  return new Date(date.toZonedDateTime(tzLike).epochMilliseconds);
+  const zdt =
+    typeof tzLike === "string" || tzLike instanceof Temporal.ZonedDateTime
+      ? date.toZonedDateTime(tzLike)
+      : date.toZonedDateTime(tzLike);
+  return new Date(zdt.epochMilliseconds);
 }

@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns true if a ZonedDateTime is Monday, false otherwise.
  * @param date - The ZonedDateTime to check

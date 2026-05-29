@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 const originalToString = Temporal.PlainDate.prototype.toString;
 
 function isDateTimeFormatOptions(options: unknown): options is globalThis.Intl.DateTimeFormatOptions {
@@ -21,11 +19,11 @@ function isDateTimeFormatOptions(options: unknown): options is globalThis.Intl.D
 
 /**
  * Returns a string representation of a PlainDate. When called with no arguments
- * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
+ * or with Temporal's PlainDateToStringOptions, returns the ISO 8601 string.
  * When called with globalThis.Intl.DateTimeFormatOptions, formats using toLocaleString
  * with "en-US" locale.
  * @param date - The PlainDate to format
- * @param options - Either ShowCalendarOption for ISO format or globalThis.Intl.DateTimeFormatOptions for locale formatting
+ * @param options - Either PlainDateToStringOptions for ISO format or globalThis.Intl.DateTimeFormatOptions for locale formatting
  * @returns The formatted date string
  * @example
  * // ISO format (default)
@@ -36,10 +34,10 @@ function isDateTimeFormatOptions(options: unknown): options is globalThis.Intl.D
  */
 export function toString(
   date: Temporal.PlainDate,
-  options?: Temporal.ShowCalendarOption | globalThis.Intl.DateTimeFormatOptions,
+  options?: Temporal.PlainDateToStringOptions | globalThis.Intl.DateTimeFormatOptions,
 ): string {
   if (options && isDateTimeFormatOptions(options)) {
     return date.toLocaleString("en-US", options);
   }
-  return originalToString.call(date, options as Temporal.ShowCalendarOption);
+  return originalToString.call(date, options as Temporal.PlainDateToStringOptions);
 }

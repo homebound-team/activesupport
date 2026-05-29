@@ -1,5 +1,4 @@
 import { DayOfWeek, assertValidBusinessDays } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a ZonedDateTime falls on a weekend.

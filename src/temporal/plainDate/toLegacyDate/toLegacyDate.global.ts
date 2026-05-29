@@ -1,6 +1,6 @@
 import { toLegacyDate } from "./toLegacyDate.impl";
 
-type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
+type TimeZoneAndTime = Temporal.TimeZoneLike | Temporal.PlainDateToZonedDateTimeOptions;
 
 declare global {
   namespace Temporal {

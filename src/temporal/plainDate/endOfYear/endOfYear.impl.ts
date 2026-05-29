@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns the end of a year for a PlainDate.
  * @param date - The PlainDate to get the end of year for

@@ -1,5 +1,4 @@
 import { Interval } from "src/temporal/interval/interval.impl";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a PlainDate is within the interval. (Including start and end.)

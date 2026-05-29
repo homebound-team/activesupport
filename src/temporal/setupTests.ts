@@ -1,6 +1,5 @@
 import { expect } from "@jest/globals";
 import { Interval } from "src/temporal/interval/interval.impl";
-import { Temporal } from "temporal-polyfill";
 
 export function newPD(date: string): Temporal.PlainDate {
   return Temporal.PlainDate.from(date);

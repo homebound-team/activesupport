@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Extracts keys from type T whose values extend type TProp.
  * Useful for getting only keys that point to a specific type.

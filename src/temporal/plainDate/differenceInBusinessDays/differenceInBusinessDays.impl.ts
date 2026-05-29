@@ -4,7 +4,6 @@ import { Interval } from "src/temporal/interval/interval.impl";
 import { isAfter } from "src/temporal/plainDate/isAfter/isAfter.impl";
 import { isWeekend } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
 import { BusinessDayOptions, assertValidBusinessDays } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 // Implementation converted from previous code located in businessDaysUtils.ts.  I'm not entirely sure it's
 // correct but the tests (also converted) all pass.

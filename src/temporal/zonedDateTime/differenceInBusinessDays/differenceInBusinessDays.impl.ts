@@ -1,6 +1,5 @@
 import { differenceInBusinessDays as differenceInBusinessDaysPD } from "src/temporal/plainDate/differenceInBusinessDays/differenceInBusinessDays.impl";
 import { BusinessDayOptions } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the number of business day periods between two ZonedDateTimes.

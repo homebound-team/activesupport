@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Converts a ZonedDateTime to a legacy JavaScript Date object.
  * The Date will represent the same instant in time by using the ZonedDateTime's epoch milliseconds.

@@ -722,7 +722,7 @@ function transformSingleExample(
  * Output structure:
  * 1. Imports (resolved by `resolveImports` from the generated content)
  * 2. Optional local type aliases (e.g. `TimeZoneAndTime` for plainDate)
- * 3. `declare global { ... }` or `declare module "temporal-polyfill" { ... }` block
+ * 3. `declare global { ... }` block (optionally wrapping `namespace Temporal { ... }`)
  * 4. Prototype assignment(s)
  *
  * Single-export impls emit a direct `Proto.method = function...` assignment.
@@ -847,7 +847,7 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
 
   // Emit type aliases that are defined locally in impl files
   if (allContent.includes("TimeZoneAndTime")) {
-    outputLines.push(`type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];`);
+    outputLines.push(`type TimeZoneAndTime = Temporal.TimeZoneLike | Temporal.PlainDateToZonedDateTimeOptions;`);
     outputLines.push("");
   }
 
@@ -1101,10 +1101,9 @@ const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?:
   // Named imports
   { pattern: "as Interval<", path: "src/temporal/interval/interval.impl", name: "Interval" },
   // `Temporal` itself is intentionally NOT auto-imported: the generated globals augment
-  // and reference the *global* `Temporal` namespace, so at the type level it's resolved
-  // by the `/// <reference types="temporal-polyfill/global" />` in src/temporal/types.global.ts,
-  // and at runtime it resolves to `globalThis.Temporal` (native or polyfill — see
-  // src/temporal/temporalRuntime.global.ts).
+  // and reference the *global* `Temporal` namespace, which is provided at the type level
+  // by TypeScript's built-in `lib.esnext.temporal.d.ts` and at runtime by the host (native
+  // Temporal in Node 26+, Chrome 137+, Firefox 140+).
   { pattern: "CallbackFn<", path: "src/array/utils", name: "CallbackFn" },
   { pattern: "CallbackFnRO<", path: "src/array/utils", name: "CallbackFnRO" },
   { pattern: "MaybePromise", path: "src/utils", name: "MaybePromise" },
@@ -1131,7 +1130,6 @@ const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?:
  * // Emits (pre-prettier):
  * //   import "src/temporal/types.global";
  * //   import { CallbackFn } from "src/array/utils";
- * //   import { Temporal } from "temporal-polyfill";
  * //   import { addBusinessDays } from "./addBusinessDays.impl";
  * @example
  * // Multi-export module (baseName = "toEntries", isMultiExport = true):

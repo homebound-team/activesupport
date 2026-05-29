@@ -1,5 +1,4 @@
 import { newPD } from "src/temporal/setupTests";
-import { Temporal } from "temporal-polyfill";
 import { differenceInBusinessDays } from "./differenceInBusinessDays.impl";
 
 describe("differenceInBusinessDays", () => {

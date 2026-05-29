@@ -1,6 +1,5 @@
 import { WeekOptions } from "src/temporal/utils";
 import { startOfDayOpts } from "src/temporal/zonedDateTime/startOfDay/startOfDay.impl";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the start of a week for a ZonedDateTime.

@@ -1,5 +1,3 @@
-import { Temporal, toTemporalInstant } from "temporal-polyfill";
-
 /**
  * Converts a legacy Date object to a Temporal.PlainDate in the specified timezone.
  * Extracts the calendar date portion after converting to the given timezone.
@@ -14,5 +12,5 @@ import { Temporal, toTemporalInstant } from "temporal-polyfill";
  * //=> PlainDate("2023-05-02")
  */
 export function toPlainDate(date: Date, tzLike: Temporal.TimeZoneLike): Temporal.PlainDate {
-  return toTemporalInstant.call(date).toZonedDateTimeISO(tzLike).toPlainDate();
+  return date.toTemporalInstant().toZonedDateTimeISO(tzLike).toPlainDate();
 }

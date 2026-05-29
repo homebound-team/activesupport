@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns the start of a month for a PlainDate.
  * @param date - The PlainDate to get the start of month for
