@@ -17,9 +17,8 @@ type TimeZoneAndTime =
  * //=> Date("2023-05-02T00:00:00.000Z")
  */
 export function toLegacyDate(date: Temporal.PlainDate, tzLike: TimeZoneAndTime): Date {
-  const zdt =
-    typeof tzLike === "string" || tzLike instanceof Temporal.ZonedDateTime
-      ? date.toZonedDateTime(tzLike)
-      : date.toZonedDateTime(tzLike);
-  return new Date(zdt.epochMilliseconds);
+  // TS 6 splits toZonedDateTime into two overloads (TimeZoneLike vs options object) and
+  // can't dispatch overload resolution on a union argument; the cast picks one but the
+  // call is structurally valid for either at runtime.
+  return new Date(date.toZonedDateTime(tzLike as Temporal.TimeZoneLike).epochMilliseconds);
 }
