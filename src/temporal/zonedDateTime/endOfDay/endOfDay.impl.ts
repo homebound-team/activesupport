@@ -12,7 +12,7 @@ export const endOfDayOpts = {
   minute: 59,
   second: 59,
   millisecond: 999,
-} satisfies Partial<Temporal.ZonedDateTimeLikeObject>;
+};
 
 export function endOfDay(date: Temporal.ZonedDateTime): Temporal.ZonedDateTime {
   return date.with(endOfDayOpts);

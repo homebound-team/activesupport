@@ -1,4 +1,6 @@
-type TimeZoneAndTime = Temporal.TimeZoneLike | Temporal.PlainDateToZonedDateTimeOptions;
+type TimeZoneAndTime =
+  | Temporal.TimeZoneLike
+  | { timeZone: Temporal.TimeZoneLike; plainTime?: Temporal.PlainTime | string };
 
 /**
  * Converts a PlainDate to a legacy JavaScript Date object in the specified timezone.

@@ -847,7 +847,9 @@ function generateGlobal(impl: ImplFile, sourceFile: SourceFile): string {
 
   // Emit type aliases that are defined locally in impl files
   if (allContent.includes("TimeZoneAndTime")) {
-    outputLines.push(`type TimeZoneAndTime = Temporal.TimeZoneLike | Temporal.PlainDateToZonedDateTimeOptions;`);
+    outputLines.push(
+      `type TimeZoneAndTime =\n  | Temporal.TimeZoneLike\n  | { timeZone: Temporal.TimeZoneLike; plainTime?: Temporal.PlainTime | string };`,
+    );
     outputLines.push("");
   }
 

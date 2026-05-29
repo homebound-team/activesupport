@@ -12,7 +12,7 @@ export const startOfDayOpts = {
   minute: 0,
   second: 0,
   millisecond: 0,
-} satisfies Partial<Temporal.ZonedDateTimeLikeObject>;
+};
 
 export function startOfDay(date: Temporal.ZonedDateTime): Temporal.ZonedDateTime {
   return date.with(startOfDayOpts);
