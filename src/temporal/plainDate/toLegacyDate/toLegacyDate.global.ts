@@ -1,9 +1,10 @@
-import { Temporal } from "temporal-polyfill";
 import { toLegacyDate } from "./toLegacyDate.impl";
 
-type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
+type TimeZoneAndTime =
+  | Temporal.TimeZoneLike
+  | { timeZone: Temporal.TimeZoneLike; plainTime?: Temporal.PlainTime | string };
 
-declare module "temporal-polyfill" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

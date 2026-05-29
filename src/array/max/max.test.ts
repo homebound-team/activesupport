@@ -1,5 +1,4 @@
 import { newPD, newZDT } from "src/temporal/setupTests";
-import { Temporal } from "temporal-polyfill";
 import { max } from "./max.impl";
 
 describe("max", () => {

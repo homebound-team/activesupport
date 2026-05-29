@@ -1,5 +1,4 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns a new array with duplicates removed based on the value returned by the callback.

@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns true if a PlainDate is Monday, false otherwise.
  * @param date - The PlainDate to check

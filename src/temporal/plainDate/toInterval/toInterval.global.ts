@@ -1,8 +1,7 @@
 import "src/temporal/interval/interval.global";
-import { Temporal } from "temporal-polyfill";
 import { toInterval } from "./toInterval.impl";
 
-declare module "temporal-polyfill" {
+declare global {
   namespace Temporal {
     interface PlainDate {
       /**

@@ -1,6 +1,6 @@
-import { Temporal } from "temporal-polyfill";
-
-type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
+type TimeZoneAndTime =
+  | Temporal.TimeZoneLike
+  | { timeZone: Temporal.TimeZoneLike; plainTime?: Temporal.PlainTime | string };
 
 /**
  * Converts a PlainDate to a legacy JavaScript Date object in the specified timezone.
@@ -17,5 +17,8 @@ type TimeZoneAndTime = Parameters<Temporal.PlainDate["toZonedDateTime"]>[0];
  * //=> Date("2023-05-02T00:00:00.000Z")
  */
 export function toLegacyDate(date: Temporal.PlainDate, tzLike: TimeZoneAndTime): Date {
-  return new Date(date.toZonedDateTime(tzLike).epochMilliseconds);
+  // TS 6 splits toZonedDateTime into two overloads (TimeZoneLike vs options object) and
+  // can't dispatch overload resolution on a union argument; the cast picks one but the
+  // call is structurally valid for either at runtime.
+  return new Date(date.toZonedDateTime(tzLike as Temporal.TimeZoneLike).epochMilliseconds);
 }

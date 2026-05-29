@@ -1,4 +1,3 @@
-import { Temporal } from "temporal-polyfill";
 import { toZonedDateTime } from "./toZonedDateTime.impl";
 
 declare global {

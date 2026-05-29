@@ -1,0 +1,5 @@
+src/array/*/*.global.ts linguist-generated=true
+src/map/*/*.global.ts linguist-generated=true
+src/temporal/plainDate/*/*.global.ts linguist-generated=true
+src/temporal/zonedDateTime/*/*.global.ts linguist-generated=true
+src/temporal/legacyDate/*/*.global.ts linguist-generated=true

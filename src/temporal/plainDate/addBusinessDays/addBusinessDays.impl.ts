@@ -1,7 +1,6 @@
 import { isWeekend } from "src/temporal/plainDate/isWeekend/isWeekend.impl";
 import { BusinessDayOptions } from "src/temporal/utils";
 import { isDefined } from "src/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Adds the specified number of business days (mon - fri) to a PlainDate, ignoring weekends.

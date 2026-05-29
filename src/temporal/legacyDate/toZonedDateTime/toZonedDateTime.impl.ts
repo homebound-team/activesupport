@@ -1,5 +1,3 @@
-import { Temporal, toTemporalInstant } from "temporal-polyfill";
-
 /**
  * Converts a legacy Date object to a Temporal.ZonedDateTime in the specified timezone.
  * First converts to an Instant, then to a ZonedDateTime in the given timezone.
@@ -14,5 +12,5 @@ import { Temporal, toTemporalInstant } from "temporal-polyfill";
  * //=> ZonedDateTime in UTC
  */
 export function toZonedDateTime(date: Date, tzLike: Temporal.TimeZoneLike): Temporal.ZonedDateTime {
-  return toTemporalInstant.call(date).toZonedDateTimeISO(tzLike);
+  return date.toTemporalInstant().toZonedDateTimeISO(tzLike);
 }

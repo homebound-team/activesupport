@@ -1,5 +1,4 @@
 import { WeekOptions } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns the start of a week for a PlainDate.

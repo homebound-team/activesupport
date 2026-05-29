@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.1
-  jest: blimmer/jest@1.1.1
 
 workflows:
   version: 2
@@ -10,15 +9,8 @@ workflows:
     jobs:
       - build:
           context: npm-readonly
-      - jest/test:
-          name: test
+      - test:
           context: npm-readonly
-          setup-steps:
-            - run:
-                name: Login in NPM
-                command: 'echo "npmAuthToken: $NPM_TOKEN" >> ${HOME}/.yarnrc.yml'
-          test-result-path: ./junit-reports
-          package-manager: yarn-berry
       - publish:
           requires:
             - build
@@ -34,7 +26,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/node:22.15.0
+      - image: cimg/node:26.2.0
     steps:
       - checkout
       - run:
@@ -46,9 +38,22 @@ jobs:
       - run: yarn build
       - run: yarn generate:globals --check
       - run: yarn generate:barrels --check
+  test:
+    docker:
+      - image: cimg/node:26.2.0
+    steps:
+      - checkout
+      - run:
+          name: Login in NPM
+          command: 'echo "npmAuthToken: $NPM_TOKEN" >> ${HOME}/.yarnrc.yml'
+      - node/install-packages:
+          pkg-manager: yarn-berry
+      - run: yarn test
+      - store_test_results:
+          path: ./junit-reports
   publish:
     docker:
-      - image: cimg/node:22.15.0
+      - image: cimg/node:26.2.0
     steps:
       - checkout
       - run:

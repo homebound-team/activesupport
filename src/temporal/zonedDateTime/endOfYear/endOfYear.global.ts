@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import { endOfYear } from "./endOfYear.impl";
 
-declare module "temporal-polyfill" {
+declare global {
   namespace Temporal {
     interface ZonedDateTime {
       /**

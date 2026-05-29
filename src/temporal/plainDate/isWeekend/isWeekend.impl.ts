@@ -1,5 +1,4 @@
 import { BusinessDayOptions, DayOfWeek, assertValidBusinessDays } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Returns true if a PlainDate falls on a weekend.

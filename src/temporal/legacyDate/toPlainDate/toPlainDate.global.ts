@@ -1,4 +1,3 @@
-import { Temporal } from "temporal-polyfill";
 import { toPlainDate } from "./toPlainDate.impl";
 
 declare global {

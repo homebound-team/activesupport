@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns true if the first ZonedDateTime is after the second one.
  * @param date - The ZonedDateTime to check

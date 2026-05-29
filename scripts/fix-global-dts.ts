@@ -40,6 +40,7 @@ import * as path from "path";
 const DIST_DIR = path.join(__dirname, "..", "dist");
 
 const BARRELS = ["array", "map", "object", "temporal"] as const;
+const TEMPORAL_AREAS = ["interval", "legacyDate", "plainDate", "zonedDateTime"] as const;
 
 const MODULE_MARKER_FILES = ["map/global.d.cts", "map/global.d.mts", "object/global.d.cts", "object/global.d.mts"];
 
@@ -48,13 +49,49 @@ function writeBarrel(file: string, ext: "cjs" | "mjs"): void {
   fs.writeFileSync(file, body);
 }
 
-function ensureModule(file: string): void {
-  const abs = path.join(DIST_DIR, file);
-  const content = fs.readFileSync(abs, "utf8");
+function writeTemporalBarrel(file: string, ext: "cjs" | "mjs"): void {
+  const body = TEMPORAL_AREAS.map((a) => `import "./${a}/global.${ext}";`).join("\n") + "\n";
+  fs.writeFileSync(file, body);
+}
+
+/**
+ * Each per-area `dist/temporal/<area>/global.d.{cts,mts}` is emitted as empty
+ * `export {};` because tsdown moved the actual `declare global { ... }` blocks
+ * into hashed sibling shards (e.g. `dist/plainDate.global-XXX.d.cts`). Rewire
+ * the per-area entry to side-effect-import its shard so the augmentations
+ * reach consumers.
+ */
+function writeAreaShardImport(area: (typeof TEMPORAL_AREAS)[number], ext: "cjs" | "mjs"): void {
+  const dts = ext === "cjs" ? "d.cts" : "d.mts";
+  const shards = fs.readdirSync(DIST_DIR).filter((n) => n.startsWith(`${area}.global-`) && n.endsWith(`.${dts}`));
+  if (shards.length !== 1) {
+    throw new Error(`Expected exactly one ${area}.global-* shard with extension ${dts}, found: ${shards.join(", ")}`);
+  }
+  const shardBase = shards[0].slice(0, -(dts.length + 1));
+  const out = path.join(DIST_DIR, "temporal", area, `global.${dts}`);
+  fs.writeFileSync(out, `import "../../${shardBase}.${ext}";\n`);
+}
+
+function ensureModule(absPath: string): void {
+  const content = fs.readFileSync(absPath, "utf8");
   if (/^\s*(import|export)\b/m.test(content)) return;
-  fs.writeFileSync(abs, content + "\nexport {};\n");
+  fs.writeFileSync(absPath, content + "\nexport {};\n");
 }
 
 writeBarrel(path.join(DIST_DIR, "global.d.cts"), "cjs");
 writeBarrel(path.join(DIST_DIR, "global.d.mts"), "mjs");
-MODULE_MARKER_FILES.forEach(ensureModule);
+writeTemporalBarrel(path.join(DIST_DIR, "temporal", "global.d.cts"), "cjs");
+writeTemporalBarrel(path.join(DIST_DIR, "temporal", "global.d.mts"), "mjs");
+TEMPORAL_AREAS.forEach((a) => {
+  writeAreaShardImport(a, "cjs");
+  writeAreaShardImport(a, "mjs");
+});
+MODULE_MARKER_FILES.forEach((file) => ensureModule(path.join(DIST_DIR, file)));
+
+// Shards are imported as side-effects only; without an `export {};` they're
+// treated as ambient scripts, which breaks `declare global` augmentation.
+for (const name of fs.readdirSync(DIST_DIR)) {
+  if (!/\.d\.[cm]ts$/.test(name)) continue;
+  if (!TEMPORAL_AREAS.some((a) => name.startsWith(`${a}.global-`))) continue;
+  ensureModule(path.join(DIST_DIR, name));
+}

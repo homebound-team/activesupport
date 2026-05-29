@@ -6,80 +6,80 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./array": {
-      "require": "./dist/array.cjs",
-      "import": "./dist/array.mjs"
+      "import": "./dist/array.mjs",
+      "require": "./dist/array.cjs"
     },
     "./array/global": {
-      "require": "./dist/array/global.cjs",
-      "import": "./dist/array/global.mjs"
+      "import": "./dist/array/global.mjs",
+      "require": "./dist/array/global.cjs"
     },
     "./global": {
-      "require": "./dist/global.cjs",
-      "import": "./dist/global.mjs"
+      "import": "./dist/global.mjs",
+      "require": "./dist/global.cjs"
     },
     "./map": {
-      "require": "./dist/map.cjs",
-      "import": "./dist/map.mjs"
+      "import": "./dist/map.mjs",
+      "require": "./dist/map.cjs"
     },
     "./map/global": {
-      "require": "./dist/map/global.cjs",
-      "import": "./dist/map/global.mjs"
+      "import": "./dist/map/global.mjs",
+      "require": "./dist/map/global.cjs"
     },
     "./object/global": {
-      "require": "./dist/object/global.cjs",
-      "import": "./dist/object/global.mjs"
+      "import": "./dist/object/global.mjs",
+      "require": "./dist/object/global.cjs"
     },
     "./temporal": {
-      "require": "./dist/temporal.cjs",
-      "import": "./dist/temporal.mjs"
+      "import": "./dist/temporal.mjs",
+      "require": "./dist/temporal.cjs"
     },
     "./temporal/global": {
-      "require": "./dist/temporal/global.cjs",
-      "import": "./dist/temporal/global.mjs"
+      "import": "./dist/temporal/global.mjs",
+      "require": "./dist/temporal/global.cjs"
     },
     "./temporal/interval": {
-      "require": "./dist/temporal/interval.cjs",
-      "import": "./dist/temporal/interval.mjs"
+      "import": "./dist/temporal/interval.mjs",
+      "require": "./dist/temporal/interval.cjs"
     },
     "./temporal/interval/global": {
-      "require": "./dist/temporal/interval/global.cjs",
-      "import": "./dist/temporal/interval/global.mjs"
+      "import": "./dist/temporal/interval/global.mjs",
+      "require": "./dist/temporal/interval/global.cjs"
     },
     "./temporal/legacyDate": {
-      "require": "./dist/temporal/legacyDate.cjs",
-      "import": "./dist/temporal/legacyDate.mjs"
+      "import": "./dist/temporal/legacyDate.mjs",
+      "require": "./dist/temporal/legacyDate.cjs"
     },
     "./temporal/legacyDate/global": {
-      "require": "./dist/temporal/legacyDate/global.cjs",
-      "import": "./dist/temporal/legacyDate/global.mjs"
+      "import": "./dist/temporal/legacyDate/global.mjs",
+      "require": "./dist/temporal/legacyDate/global.cjs"
     },
     "./temporal/plainDate": {
-      "require": "./dist/temporal/plainDate.cjs",
-      "import": "./dist/temporal/plainDate.mjs"
+      "import": "./dist/temporal/plainDate.mjs",
+      "require": "./dist/temporal/plainDate.cjs"
     },
     "./temporal/plainDate/global": {
-      "require": "./dist/temporal/plainDate/global.cjs",
-      "import": "./dist/temporal/plainDate/global.mjs"
+      "import": "./dist/temporal/plainDate/global.mjs",
+      "require": "./dist/temporal/plainDate/global.cjs"
     },
     "./temporal/utils": {
-      "require": "./dist/temporal/utils.cjs",
-      "import": "./dist/temporal/utils.mjs"
+      "import": "./dist/temporal/utils.mjs",
+      "require": "./dist/temporal/utils.cjs"
     },
     "./temporal/zonedDateTime": {
-      "require": "./dist/temporal/zonedDateTime.cjs",
-      "import": "./dist/temporal/zonedDateTime.mjs"
+      "import": "./dist/temporal/zonedDateTime.mjs",
+      "require": "./dist/temporal/zonedDateTime.cjs"
     },
     "./temporal/zonedDateTime/global": {
-      "require": "./dist/temporal/zonedDateTime/global.cjs",
-      "import": "./dist/temporal/zonedDateTime/global.mjs"
+      "import": "./dist/temporal/zonedDateTime/global.mjs",
+      "require": "./dist/temporal/zonedDateTime/global.cjs"
     },
     "./utils": {
-      "require": "./dist/utils.cjs",
-      "import": "./dist/utils.mjs"
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.cjs"
     }
   },
   "sideEffects": [
@@ -117,18 +117,15 @@
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "semantic-release": "^24.2.5",
-    "ts-jest": "^29.3.4",
+    "ts-jest": "^29.4.11",
     "ts-morph": "^27.0.2",
     "ts-node": "^10.9.2",
-    "tsdown": "0.20.1",
+    "tsdown": "^0.22.1",
     "tsx": "^4.21.0",
-    "typescript": "5.8.3"
+    "typescript": "^6.0.3"
   },
   "lint-staged": {
     "*.{js,ts,css,md}": "prettier --write",
     "*.{js,ts,tsx}": "eslint --fix"
-  },
-  "dependencies": {
-    "temporal-polyfill": "^0.3.0"
   }
 }

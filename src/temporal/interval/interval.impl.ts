@@ -6,7 +6,6 @@ import { isAfter as isAfterZDT } from "src/temporal/zonedDateTime/isAfter/isAfte
 import { isBefore as isBeforeZDT } from "src/temporal/zonedDateTime/isBefore/isBefore.impl";
 import { startOfMonth as startOfMonthZDT } from "src/temporal/zonedDateTime/startOfMonth/startOfMonth.impl";
 import { startOfWeek as startOfWeekZDT } from "src/temporal/zonedDateTime/startOfWeek/startOfWeek.impl";
-import { Temporal } from "temporal-polyfill";
 
 export class Interval<T extends Temporal.PlainDate | Temporal.ZonedDateTime> {
   static from<T extends Temporal.PlainDate | Temporal.ZonedDateTime>(start: T, end: T): Interval<T> {

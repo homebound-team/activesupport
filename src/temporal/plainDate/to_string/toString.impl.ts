@@ -1,8 +1,6 @@
-import { Temporal } from "temporal-polyfill";
-
 const originalToString = Temporal.PlainDate.prototype.toString;
 
-function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeFormatOptions {
+function isDateTimeFormatOptions(options: unknown): options is globalThis.Intl.DateTimeFormatOptions {
   if (!options || typeof options !== "object") return false;
   const o = options as Record<string, unknown>;
   return (
@@ -21,11 +19,10 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
 
 /**
  * Returns a string representation of a PlainDate. When called with no arguments
- * or with Temporal's ShowCalendarOption, returns the ISO 8601 string.
- * When called with Intl.DateTimeFormatOptions, formats using toLocaleString
- * with "en-US" locale.
+ * or with a calendar-name option, returns the ISO 8601 string. When called with
+ * globalThis.Intl.DateTimeFormatOptions, formats using toLocaleString with "en-US" locale.
  * @param date - The PlainDate to format
- * @param options - Either ShowCalendarOption for ISO format or Intl.DateTimeFormatOptions for locale formatting
+ * @param options - Either a calendar-name option for ISO format or globalThis.Intl.DateTimeFormatOptions for locale formatting
  * @returns The formatted date string
  * @example
  * // ISO format (default)
@@ -36,10 +33,10 @@ function isDateTimeFormatOptions(options: unknown): options is Intl.DateTimeForm
  */
 export function toString(
   date: Temporal.PlainDate,
-  options?: Temporal.ShowCalendarOption | Intl.DateTimeFormatOptions,
+  options?: { calendarName?: "auto" | "always" | "never" | "critical" } | globalThis.Intl.DateTimeFormatOptions,
 ): string {
   if (options && isDateTimeFormatOptions(options)) {
     return date.toLocaleString("en-US", options);
   }
-  return originalToString.call(date, options as Temporal.ShowCalendarOption);
+  return originalToString.call(date, options as { calendarName?: "auto" | "always" | "never" | "critical" });
 }

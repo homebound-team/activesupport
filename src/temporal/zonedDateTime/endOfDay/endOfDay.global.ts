@@ -1,7 +1,6 @@
-import { Temporal } from "temporal-polyfill";
 import { endOfDay } from "./endOfDay.impl";
 
-declare module "temporal-polyfill" {
+declare global {
   namespace Temporal {
     interface ZonedDateTime {
       endOfDay(): Temporal.ZonedDateTime;

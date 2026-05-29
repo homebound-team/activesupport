@@ -12,7 +12,7 @@ describe("toString", () => {
     expect(result).toBe("2024-01-15");
   });
 
-  it("accepts ShowCalendarOption and returns ISO format with calendar", () => {
+  it("accepts PlainDateToStringOptions and returns ISO format with calendar", () => {
     const result = toString(newPD("2024-01-15"), { calendarName: "always" });
     expect(result).toContain("[u-ca=iso8601]");
   });

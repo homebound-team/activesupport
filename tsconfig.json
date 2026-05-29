@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "target": "ESNext",
+    "types": ["jest", "node"],
     "moduleResolution": "node",
     "declaration": true,
     "skipLibCheck": true,
@@ -11,7 +12,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"]
-    }
+    },
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["dist", "node_modules"]
 }

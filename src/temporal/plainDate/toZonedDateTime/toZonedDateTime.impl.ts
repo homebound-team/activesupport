@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Converts a PlainDate to a ZonedDateTime in Eastern Time (America/New_York).
  * @param date - A PlainDate to convert

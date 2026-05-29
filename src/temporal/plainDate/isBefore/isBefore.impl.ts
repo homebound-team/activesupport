@@ -1,5 +1,3 @@
-import { Temporal } from "temporal-polyfill";
-
 /**
  * Returns true if the first PlainDate is before the second one.
  * @param date - The PlainDate to check

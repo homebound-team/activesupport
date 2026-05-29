@@ -1,6 +1,5 @@
 import { addBusinessDays as addBusinessDaysPD } from "src/temporal/plainDate/addBusinessDays/addBusinessDays.impl";
 import { BusinessDayOptions } from "src/temporal/utils";
-import { Temporal } from "temporal-polyfill";
 
 /**
  * Adds the specified number of business days (mon - fri) to a ZonedDateTime, ignoring weekends.
