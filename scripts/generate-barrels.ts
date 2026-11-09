@@ -22,8 +22,12 @@ import { Project } from "ts-morph";
 const SRC_DIR = path.join(__dirname, "..", "src");
 const CHECK_MODE = process.argv.includes("--check");
 
-const BARREL_ROOTS: { dir: string; barrelName: string }[] = [
-  { dir: "array", barrelName: "array" },
+/**
+ * `extraExports` are hand-written modules that live directly in the root (not in a `<sub>/<sub>.impl.ts`) and should
+ * still be part of the impl barrel.
+ */
+const BARREL_ROOTS: { dir: string; barrelName: string; extraExports?: string[] }[] = [
+  { dir: "array", barrelName: "array", extraExports: ['export { ArrayPromise } from "./ArrayPromise";'] },
   { dir: "map", barrelName: "map" },
   { dir: "temporal/plainDate", barrelName: "plainDate" },
   { dir: "temporal/zonedDateTime", barrelName: "zonedDateTime" },
@@ -74,13 +78,15 @@ function discoverGlobals(rootDir: string): GlobalEntry[] {
     .sort((a, b) => a.subdir.localeCompare(b.subdir));
 }
 
-function renderImplBarrel(entries: ImplEntry[]): string {
+function renderImplBarrel(entries: ImplEntry[], extraExports: string[]): string {
   return (
-    entries
-      .map((e) =>
-        e.primaryExport
-          ? `export { ${e.primaryExport} } from "./${e.subdir}/${e.base}.impl";`
-          : `export * from "./${e.subdir}/${e.base}.impl";`,
+    extraExports
+      .concat(
+        entries.map((e) =>
+          e.primaryExport
+            ? `export { ${e.primaryExport} } from "./${e.subdir}/${e.base}.impl";`
+            : `export * from "./${e.subdir}/${e.base}.impl";`,
+        ),
       )
       .join("\n") + "\n"
   );
@@ -90,12 +96,16 @@ function renderGlobalBarrel(entries: GlobalEntry[]): string {
   return entries.map((e) => `import "./${e.subdir}/${e.base}.global";`).join("\n") + "\n";
 }
 
-function processRoot(rootDir: string, barrelName: string): { path: string; content: string }[] {
+function processRoot(
+  rootDir: string,
+  barrelName: string,
+  extraExports: string[] = [],
+): { path: string; content: string }[] {
   const root = path.join(SRC_DIR, rootDir);
   const out: { path: string; content: string }[] = [];
   const impls = discoverImpls(rootDir);
   if (impls.length > 0) {
-    out.push({ path: path.join(root, `${barrelName}.impl.ts`), content: renderImplBarrel(impls) });
+    out.push({ path: path.join(root, `${barrelName}.impl.ts`), content: renderImplBarrel(impls, extraExports) });
   }
   const globals = discoverGlobals(rootDir);
   if (globals.length > 0) {
@@ -122,8 +132,8 @@ function processTemporalGlobal(generatedPaths: Set<string>): { path: string; con
 }
 
 function main(): void {
-  const outputs: { path: string; content: string }[] = BARREL_ROOTS.flatMap(({ dir, barrelName }) =>
-    processRoot(dir, barrelName),
+  const outputs: { path: string; content: string }[] = BARREL_ROOTS.flatMap(({ dir, barrelName, extraExports }) =>
+    processRoot(dir, barrelName, extraExports),
   );
   outputs.push(processTemporalGlobal(new Set(outputs.map((o) => o.path))));
 

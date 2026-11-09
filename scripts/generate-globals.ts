@@ -1106,6 +1106,7 @@ const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?:
   // and reference the *global* `Temporal` namespace, which is provided at the type level
   // by TypeScript's built-in `lib.esnext.temporal.d.ts` and at runtime by the host (native
   // Temporal in Node 26+, Chrome 137+, Firefox 140+).
+  { pattern: "ArrayPromise<", path: "src/array/ArrayPromise", name: "ArrayPromise" },
   { pattern: "CallbackFn<", path: "src/array/utils", name: "CallbackFn" },
   { pattern: "CallbackFnRO<", path: "src/array/utils", name: "CallbackFnRO" },
   { pattern: "MaybePromise", path: "src/utils", name: "MaybePromise" },

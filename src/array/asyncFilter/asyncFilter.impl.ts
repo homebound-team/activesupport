@@ -1,3 +1,4 @@
+import { ArrayPromise } from "src/array/ArrayPromise";
 import { asyncMap } from "src/array/asyncMap/asyncMap.impl";
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
@@ -13,7 +14,7 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
  * await asyncFilter([], async n => true)
  * //=> []
  */
-export async function asyncFilter<T>(arr: T[], fn: CallbackFn<T, Promise<boolean>>): Promise<T[]>;
+export function asyncFilter<T>(arr: T[], fn: CallbackFn<T, Promise<boolean>>): ArrayPromise<T>;
 /**
  * Filters an array using an async callback, waiting for all callbacks to resolve.
  * @param arr - The array to filter
@@ -26,8 +27,9 @@ export async function asyncFilter<T>(arr: T[], fn: CallbackFn<T, Promise<boolean
  * await asyncFilter([], async n => true)
  * //=> []
  */
-export async function asyncFilter<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<boolean>>): Promise<T[]>;
-export async function asyncFilter<T>(arr: readonly T[], fn: CallbackFnEither<T, Promise<boolean>>): Promise<T[]> {
-  const results = await asyncMap(arr, fn as CallbackFnRO<T, Promise<boolean>>);
-  return arr.filter((_v, index) => results[index]);
+export function asyncFilter<T>(arr: readonly T[], fn: CallbackFnRO<T, Promise<boolean>>): ArrayPromise<T>;
+export function asyncFilter<T>(arr: readonly T[], fn: CallbackFnEither<T, Promise<boolean>>): ArrayPromise<T> {
+  return ArrayPromise.from(
+    asyncMap(arr, fn as CallbackFnRO<T, Promise<boolean>>).then((results) => arr.filter((_v, index) => results[index])),
+  );
 }

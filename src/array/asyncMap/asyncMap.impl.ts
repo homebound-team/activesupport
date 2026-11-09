@@ -1,3 +1,4 @@
+import { ArrayPromise } from "src/array/ArrayPromise";
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
 /**
@@ -13,7 +14,7 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
  * await asyncMap([], async n => n)
  * //=> []
  */
-export async function asyncMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V>>): Promise<V[]>;
+export function asyncMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V>>): ArrayPromise<V>;
 /**
  * Maps each element of an array using an async callback, waiting for all promises to resolve.
  * Equivalent to `Promise.all(arr.map(fn))`.
@@ -27,7 +28,8 @@ export async function asyncMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V>>): P
  * await asyncMap([], async n => n)
  * //=> []
  */
-export async function asyncMap<T, V>(arr: readonly T[], fn: CallbackFnRO<T, Promise<V>>): Promise<V[]>;
-export async function asyncMap<T, V>(arr: readonly T[], fn: CallbackFnEither<T, Promise<V>>): Promise<V[]> {
-  return Promise.all(arr.map(fn as CallbackFnRO<T, Promise<V>>));
+export function asyncMap<T, V>(arr: readonly T[], fn: CallbackFnRO<T, Promise<V>>): ArrayPromise<V>;
+export function asyncMap<T, V>(arr: readonly T[], fn: CallbackFnEither<T, Promise<V>>): ArrayPromise<V> {
+  // Use the executor so a callback that throws synchronously still produces a rejected promise
+  return new ArrayPromise((resolve) => resolve(Promise.all(arr.map(fn as CallbackFnRO<T, Promise<V>>))));
 }

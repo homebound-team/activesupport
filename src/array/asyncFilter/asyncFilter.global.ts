@@ -1,3 +1,4 @@
+import { ArrayPromise } from "src/array/ArrayPromise";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { asyncFilter } from "./asyncFilter.impl";
 
@@ -10,7 +11,7 @@ declare global {
      * @example await [1, 2, 3, 4].asyncFilter(async n => n % 2 === 0) //=> [2, 4]
      * @example await [].asyncFilter(async n => true) //=> []
      */
-    asyncFilter(fn: CallbackFn<T, Promise<boolean>>): Promise<T[]>;
+    asyncFilter(fn: CallbackFn<T, Promise<boolean>>): ArrayPromise<T>;
   }
 
   interface ReadonlyArray<T> {
@@ -21,10 +22,10 @@ declare global {
      * @example await [1, 2, 3, 4].asyncFilter(async n => n % 2 === 0) //=> [2, 4]
      * @example await [].asyncFilter(async n => true) //=> []
      */
-    asyncFilter(fn: CallbackFnRO<T, Promise<boolean>>): Promise<T[]>;
+    asyncFilter(fn: CallbackFnRO<T, Promise<boolean>>): ArrayPromise<T>;
   }
 }
 
-Array.prototype.asyncFilter = function <T>(this: T[], fn: CallbackFn<T, Promise<boolean>>): Promise<T[]> {
+Array.prototype.asyncFilter = function <T>(this: T[], fn: CallbackFn<T, Promise<boolean>>): ArrayPromise<T> {
   return asyncFilter(this, fn);
 };
