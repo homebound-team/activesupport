@@ -15,6 +15,9 @@
  * Supports four output patterns: direct assignment, property getter (Object.defineProperty),
  * multi-export (Object.entries loop), and multi-overload (direct assignment with `as any` cast).
  *
+ * Array helpers are also turned into `ArrayPromise` methods; that logic lives in
+ * `generate-array-promise.ts`, called at the end of `main()`.
+ *
  * Usage:
  *   yarn tsx scripts/generate-globals.ts          # regenerate all
  *   yarn tsx scripts/generate-globals.ts --check  # exit non-zero if out of date (for CI)
@@ -24,6 +27,7 @@ import * as path from "path";
 import * as prettier from "prettier";
 import { getOrCreate } from "src/map/getOrCreate/getOrCreate.impl";
 import { FunctionDeclaration, Project, ScriptTarget, SourceFile, SyntaxKind } from "ts-morph";
+import { ARRAY_PROMISE_PATH, ArrayPromiseHelper, generateArrayPromise } from "./generate-array-promise";
 
 const SRC_DIR = path.join(__dirname, "..", "src");
 const CHECK_MODE = process.argv.includes("--check");
@@ -68,7 +72,7 @@ interface TargetInfo {
   namespaceWrap?: string;
 }
 
-interface ParsedParam {
+export interface ParsedParam {
   name: string;
   typeText: string;
   isRest: boolean;
@@ -77,7 +81,7 @@ interface ParsedParam {
   fullText: string;
 }
 
-interface ParsedOverload {
+export interface ParsedOverload {
   jsdoc: string[];
   typeParams: string[];
   params: ParsedParam[];
@@ -1094,7 +1098,7 @@ function generateMultiExportProto(
 // ─── Import resolution ──────────────────────────────────────────────────────
 
 /** Pattern → import mapping. Entries without `name` produce side-effect imports. */
-const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?: boolean }[] = [
+export const IMPORT_PATTERNS: { pattern: string; path: string; name?: string; declare?: boolean }[] = [
   // Side-effect imports
   { pattern: "BusinessDayOptions", path: "src/temporal/types.global" },
   { pattern: "WeekOptions", path: "src/temporal/types.global" },
@@ -1198,28 +1202,35 @@ async function main(): Promise<void> {
     skipFileDependencyResolution: true,
   });
 
-  for (const impl of implFiles) {
-    try {
-      const sourceFile = project.addSourceFileAtPath(impl.implPath);
-      const raw = generateGlobal(impl, sourceFile);
-      const generated = await prettier.format(raw, prettierOpts);
-
-      if (CHECK_MODE) {
-        if (fs.existsSync(impl.globalPath)) {
-          const existing = fs.readFileSync(impl.globalPath, "utf-8");
-          if (existing !== generated) {
-            console.error(`MISMATCH: ${path.relative(SRC_DIR, impl.globalPath)}`);
-            allMatch = false;
-          }
-        } else {
-          console.error(`MISSING: ${path.relative(SRC_DIR, impl.globalPath)}`);
+  /** Writes (or, in check mode, compares) one generated file. */
+  async function emit(outPath: string, raw: string): Promise<void> {
+    const generated = await prettier.format(raw, prettierOpts);
+    if (CHECK_MODE) {
+      if (fs.existsSync(outPath)) {
+        const existing = fs.readFileSync(outPath, "utf-8");
+        if (existing !== generated) {
+          console.error(`MISMATCH: ${path.relative(SRC_DIR, outPath)}`);
           allMatch = false;
         }
       } else {
-        fs.writeFileSync(impl.globalPath, generated);
-        console.log(`Generated: ${path.relative(SRC_DIR, impl.globalPath)}`);
-        count++;
+        console.error(`MISSING: ${path.relative(SRC_DIR, outPath)}`);
+        allMatch = false;
       }
+    } else {
+      fs.writeFileSync(outPath, generated);
+      console.log(`Generated: ${path.relative(SRC_DIR, outPath)}`);
+      count++;
+    }
+  }
+
+  // Array helpers also become ArrayPromise methods, generated once all impls have been parsed
+  const arrayFunctions: ParsedFunction[] = [];
+
+  for (const impl of implFiles) {
+    try {
+      const sourceFile = project.addSourceFileAtPath(impl.implPath);
+      await emit(impl.globalPath, generateGlobal(impl, sourceFile));
+      if (impl.target.kind === "array") arrayFunctions.push(...parseImplFile(sourceFile));
 
       // Remove source file to free memory
       project.removeSourceFile(sourceFile);
@@ -1228,6 +1239,29 @@ async function main(): Promise<void> {
       if (!CHECK_MODE) throw e;
       allMatch = false;
     }
+  }
+
+  // ─── ArrayPromise ────────────────────────────────────────────────────────────
+
+  try {
+    // Keep only the overloads that belong on `Array<T>` and convert their JSDoc to method form, the same way the
+    // `Array<T>` globals do.
+    const arrayTarget = classifyTarget(path.join(SRC_DIR, "array", "_"));
+    const helpers = arrayFunctions.map(
+      (func): ArrayPromiseHelper => ({
+        name: func.name,
+        isProperty: PROPERTY_NAMES.has(func.name),
+        overloads: getOverloadsForInterface(func, "Array<T>", arrayTarget).map((overload) => ({
+          ...overload,
+          jsdoc: transformJsdoc(overload.jsdoc, func.name, arrayTarget, new Set([func.name])),
+        })),
+      }),
+    );
+    await emit(ARRAY_PROMISE_PATH, generateArrayPromise(helpers));
+  } catch (e) {
+    console.error(`Error generating ${path.relative(SRC_DIR, ARRAY_PROMISE_PATH)}: ${e}`);
+    if (!CHECK_MODE) throw e;
+    allMatch = false;
   }
 
   if (CHECK_MODE) {

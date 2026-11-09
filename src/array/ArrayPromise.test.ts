@@ -147,6 +147,67 @@ describe("ArrayPromise", () => {
     void objects.max().catch(() => {});
   });
 
+  describe("generated helpers", () => {
+    const people = () =>
+      ArrayPromise.from([
+        { name: "b", age: 30 },
+        { name: "a", age: 20 },
+        { name: "c", age: 30 },
+      ]);
+
+    it("chains helpers that return arrays", async () => {
+      expect(
+        await people()
+          .sortByKey("name")
+          .map((p) => p.name),
+      ).toEqual(["a", "b", "c"]);
+      expect(await people().uniqueByKey("age").length).toBe(2);
+      expect(await ArrayPromise.from([1, 2, 3]).withoutAll([2]).xor([3, 4])).toEqual([1, 4]);
+      expect(await ArrayPromise.from([1, 2, 3]).intersection([2, 3, 4])).toEqual([2, 3]);
+      expect(
+        await people().groupByObject(
+          (p) => p.age,
+          (p) => p.name,
+        ),
+      ).toEqual([
+        [30, ["b", "c"]],
+        [20, ["a"]],
+      ]);
+    });
+
+    it("ends the chain for helpers that return non-arrays", async () => {
+      const byName = people().keyBy((p) => p.name);
+      expectType<Promise<Record<string, { name: string; age: number }>>>(byName);
+      expect((await byName).a).toEqual({ name: "a", age: 20 });
+      expect(await people().minBy((p) => p.age)).toEqual({ name: "a", age: 20 });
+      expect(await people().findFirst((p) => (p.age > 25 ? p.name : undefined))).toBe("b");
+      expect(await people().mapToObject(async (p) => [p.name, p.age] as const)).toEqual({ b: 30, a: 20, c: 30 });
+      expect(await people().everyHasSame((p) => p.age)).toBe(false);
+      expect(await people().maybeSum((p) => p.age)).toBe(80);
+      expect(await ArrayPromise.from(["a", "b", "c"]).sentenceJoin()).toBe("a, b and c");
+      expect(await ArrayPromise.from(["a", "b"]).sentenceJoin({ word: "or" })).toBe("a or b");
+    });
+
+    it("constrains helpers that need a specific element type", async () => {
+      const entries = ArrayPromise.from([["a", 1] as const, ["b", 2] as const]);
+      expect(await entries.toObject()).toEqual({ a: 1, b: 2 });
+      // @ts-expect-error toObject() requires an array of [key, value] tuples
+      void people()
+        .toObject()
+        .catch(() => {});
+    });
+
+    it("leaves off helpers that mutate the array", () => {
+      const p = ArrayPromise.from([1, 2, 3]);
+      // @ts-expect-error remove mutates its receiver, which is meaningless on an ArrayPromise
+      expect(p.remove).toBeUndefined();
+      // @ts-expect-error see above
+      expect(p.removeAll).toBeUndefined();
+      // @ts-expect-error see above
+      expect(p.findAndRemove).toBeUndefined();
+    });
+  });
+
   describe("from", () => {
     it("wraps arrays and promises of arrays", async () => {
       expect(await ArrayPromise.from([3, 1, 2]).toSorted()).toEqual([1, 2, 3]);
