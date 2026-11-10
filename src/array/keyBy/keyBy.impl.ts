@@ -1,4 +1,5 @@
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
+import { KeysOfType } from "src/utils";
 
 /**
  * Creates a record from an array, indexed by a field value from each element.
@@ -10,9 +11,9 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
  * keyBy([{name: "Alice", age: 25}], "name")
  * //=> {Alice: {name: "Alice", age: 25}}
  */
-export function keyBy<T, K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(
+export function keyBy<T, K extends KeysOfType<T, PropertyKey>, TK extends PropertyKey = T[K] & PropertyKey>(
   arr: readonly T[],
-  field: TK,
+  field: K,
 ): Record<TK, T>;
 /**
  * Creates a record from an array, indexed by a key extracted from each element.
@@ -58,16 +59,16 @@ export function keyBy<T, K extends PropertyKey, TK extends keyof T, R = T>(
   fn: CallbackFnRO<T, K>,
   valueFn?: CallbackFnRO<T, R>,
 ): Record<K, R>;
-export function keyBy<T, K extends PropertyKey, TK extends keyof T, TKK extends T[TK] extends K ? TK : never, R = T>(
+export function keyBy<T, K extends PropertyKey, R = T>(
   arr: readonly T[],
-  fnOrKey: CallbackFnEither<T, K> | TKK,
+  fnOrKey: CallbackFnEither<T, K> | keyof T,
   valueFn?: CallbackFnEither<T, R>,
 ): Record<K, R> {
   const result = {} as Record<K, R>;
   const fn = typeof fnOrKey === "function" ? fnOrKey : undefined;
   const key = typeof fnOrKey === "function" ? undefined : fnOrKey;
   arr.forEach((e, i, a) => {
-    const group = fn ? fn(e, i, a as T[]) : (e[key as TKK] as K);
+    const group = fn ? fn(e, i, a as T[]) : (e[key as keyof T] as K);
     const value = valueFn ? valueFn(e, i, a as T[]) : (e as any as R);
     if (group in result) {
       if (result[group] !== value) throw new Error(`${String(group)} already had a value assigned`);

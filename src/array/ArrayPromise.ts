@@ -433,7 +433,9 @@ export class ArrayPromise<T> extends Promise<T[]> {
    * @param field The field name to use as the key
    * @returns A record mapping field values to elements
    */
-  keyBy<K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(field: TK): Promise<Record<TK, T>>;
+  keyBy<K extends KeysOfType<T, PropertyKey>, TK extends PropertyKey = T[K] & PropertyKey>(
+    field: K,
+  ): Promise<Record<TK, T>>;
   /**
    * Creates a record from an array, indexed by a key extracted from each element.
    * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
