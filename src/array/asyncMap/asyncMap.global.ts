@@ -1,3 +1,4 @@
+import { ArrayPromise } from "src/array/ArrayPromise";
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
 import { asyncMap } from "./asyncMap.impl";
 
@@ -11,7 +12,7 @@ declare global {
      * @example await [1, 2, 3].asyncMap(async n => n * 2) //=> [2, 4, 6]
      * @example await [].asyncMap(async n => n) //=> []
      */
-    asyncMap<V>(fn: CallbackFn<T, Promise<V>>): Promise<V[]>;
+    asyncMap<V>(fn: CallbackFn<T, Promise<V>>): ArrayPromise<V>;
   }
 
   interface ReadonlyArray<T> {
@@ -23,10 +24,10 @@ declare global {
      * @example await [1, 2, 3].asyncMap(async n => n * 2) //=> [2, 4, 6]
      * @example await [].asyncMap(async n => n) //=> []
      */
-    asyncMap<V>(fn: CallbackFnRO<T, Promise<V>>): Promise<V[]>;
+    asyncMap<V>(fn: CallbackFnRO<T, Promise<V>>): ArrayPromise<V>;
   }
 }
 
-Array.prototype.asyncMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V>>): Promise<V[]> {
+Array.prototype.asyncMap = function <T, V>(this: T[], fn: CallbackFn<T, Promise<V>>): ArrayPromise<V> {
   return asyncMap(this, fn);
 };

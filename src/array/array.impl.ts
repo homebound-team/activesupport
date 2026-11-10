@@ -1,3 +1,4 @@
+export { ArrayPromise } from "./ArrayPromise";
 export { asyncFilter } from "./asyncFilter/asyncFilter.impl";
 export { asyncFlatMap } from "./asyncFlatMap/asyncFlatMap.impl";
 export { asyncForEach } from "./asyncForEach/asyncForEach.impl";

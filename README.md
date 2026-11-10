@@ -68,6 +68,33 @@ import { addBusinessDays } from "@homebound/activesupport/temporal/plainDate";
 const dueDates = records.compact().map((r) => addBusinessDays(r.start, 5));
 ```
 
+### Chaining async array helpers
+
+`asyncMap`, `asyncFilter` and `asyncFlatMap` return an `ArrayPromise<T>`, a `Promise<T[]>` that also has the built-in
+array methods and this library's array helpers. You can keep chaining without awaiting each step:
+
+```typescript
+import "@homebound/activesupport/array/global";
+
+await userIds
+  .asyncMap((id) => loadUser(id))
+  .compact()
+  .asyncFilter((user) => isActive(user))
+  .sortByKey("name")
+  .forEach((user) => console.log(user.name));
+```
+
+- Methods that return an array (`map`, `compact`, `asyncFilter`, `sortBy`, ...) return another `ArrayPromise`, so the
+  chain continues. Methods that return anything else (`sum`, `groupBy`, `first`, `forEach`, ...) return a plain
+  `Promise`.
+- Method names keep their usual meaning: `.map(fn)` behaves like `Array#map`, so an async `fn` gives you an array of
+  promises. Use `.asyncMap(fn)` to await each callback.
+- Each step waits for the whole previous step to finish (like `Promise.all`). Elements aren't streamed through the chain
+  one at a time.
+- Helpers that mutate their array (`remove`, `removeAll`, `findAndRemove`) aren't available on `ArrayPromise`.
+- `ArrayPromise.from(arrayOrPromise)` wraps any array or promise of an array. It's exported from
+  `@homebound/activesupport/array`, and `asyncMap` etc. return it from the plain-function API too.
+
 ## Documentation
 
 For now, check out [the source](/src/).

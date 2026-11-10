@@ -1,3 +1,5 @@
+import { ArrayPromise } from "src/array/ArrayPromise";
+import { asyncMap } from "src/array/asyncMap/asyncMap.impl";
 import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
 
 /**
@@ -13,7 +15,7 @@ import { CallbackFn, CallbackFnEither, CallbackFnRO } from "src/array/utils";
  * await asyncFlatMap([], async n => [n])
  * //=> []
  */
-export async function asyncFlatMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V | V[]>>): Promise<V[]>;
+export function asyncFlatMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V | V[]>>): ArrayPromise<V>;
 /**
  * Maps each element of an array using an async callback, then flattens the results by one level.
  * Similar to `Promise.all(arr.map(fn)).then(result => result.flat(1))`.
@@ -27,7 +29,9 @@ export async function asyncFlatMap<T, V>(arr: T[], fn: CallbackFn<T, Promise<V |
  * await asyncFlatMap([], async n => [n])
  * //=> []
  */
-export async function asyncFlatMap<T, V>(arr: readonly T[], fn: CallbackFnRO<T, Promise<V | V[]>>): Promise<V[]>;
-export async function asyncFlatMap<T, V>(arr: readonly T[], fn: CallbackFnEither<T, Promise<V | V[]>>): Promise<V[]> {
-  return Promise.all(arr.map(fn as CallbackFnRO<T, Promise<V | V[]>>)).then((result) => result.flat(1) as V[]);
+export function asyncFlatMap<T, V>(arr: readonly T[], fn: CallbackFnRO<T, Promise<V | V[]>>): ArrayPromise<V>;
+export function asyncFlatMap<T, V>(arr: readonly T[], fn: CallbackFnEither<T, Promise<V | V[]>>): ArrayPromise<V> {
+  return ArrayPromise.from(
+    asyncMap(arr, fn as CallbackFnRO<T, Promise<V | V[]>>).then((result) => result.flat(1) as V[]),
+  );
 }
