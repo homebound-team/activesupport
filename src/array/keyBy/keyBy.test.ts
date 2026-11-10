@@ -18,6 +18,29 @@ describe("keyBy", () => {
     });
   });
 
+  it("types the record by the field's value type", () => {
+    // Given a readonly array of structs with string and number fields
+    const a: readonly { foo: "a" | "b"; bar: number; baz: boolean; qux?: string }[] = [
+      { foo: "a", bar: 1, baz: true },
+      { foo: "b", bar: 2, baz: false },
+    ];
+    // When we key by a string field, then the keys are the field's value type
+    const byFoo: Record<"a" | "b", (typeof a)[number]> = keyBy(a, "foo");
+    expect(byFoo.b.bar).toBe(2);
+    // And when we key by a number field, then the keys are numbers
+    const byBar: Record<number, (typeof a)[number]> = keyBy(a, "bar");
+    expect(byBar[1].foo).toBe("a");
+    // And fields that can't be record keys are compile errors (checked by tsc, never run)
+    () => {
+      // @ts-expect-error a boolean field can't be a record key
+      keyBy(a, "baz");
+      // @ts-expect-error an optional field may be undefined, so it can't be a record key
+      keyBy(a, "qux");
+      // @ts-expect-error not a field
+      keyBy(a, "nope");
+    };
+  });
+
   it("throws when elements generate duplicate keys", () => {
     // Given an array of structs with colliding elements
     const a = [

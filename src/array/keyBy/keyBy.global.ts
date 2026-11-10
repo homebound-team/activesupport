@@ -1,4 +1,5 @@
 import { CallbackFn, CallbackFnRO } from "src/array/utils";
+import { KeysOfType } from "src/utils";
 import { keyBy } from "./keyBy.impl";
 
 declare global {
@@ -10,7 +11,7 @@ declare global {
      * @returns A record mapping field values to elements
      * @example [{name: "Alice", age: 25}].keyBy("name") //=> {Alice: {name: "Alice", age: 25}}
      */
-    keyBy<K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(field: TK): Record<TK, T>;
+    keyBy<K extends KeysOfType<T, PropertyKey>, TK extends PropertyKey = T[K] & PropertyKey>(field: K): Record<TK, T>;
     /**
      * Creates a record from an array, indexed by a key extracted from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
@@ -35,7 +36,7 @@ declare global {
      * @returns A record mapping field values to elements
      * @example [{name: "Alice", age: 25}].keyBy("name") //=> {Alice: {name: "Alice", age: 25}}
      */
-    keyBy<K extends keyof T, TK extends T[K] extends PropertyKey ? T[K] : never>(field: TK): Record<TK, T>;
+    keyBy<K extends KeysOfType<T, PropertyKey>, TK extends PropertyKey = T[K] & PropertyKey>(field: K): Record<TK, T>;
     /**
      * Creates a record from an array, indexed by a key extracted from each element.
      * Throws an error if duplicate keys are found for different elements. Use `groupBy` to allow duplicates.
@@ -53,12 +54,10 @@ declare global {
   }
 }
 
-Array.prototype.keyBy = function <
-  T,
-  K extends PropertyKey,
-  TK extends keyof T,
-  TKK extends T[TK] extends K ? TK : never,
-  R = T,
->(this: T[], fnOrKey: CallbackFn<T, K> | TKK, valueFn?: CallbackFn<T, R>) {
+Array.prototype.keyBy = function <T, K extends PropertyKey, R = T>(
+  this: T[],
+  fnOrKey: CallbackFn<T, K> | keyof T,
+  valueFn?: CallbackFn<T, R>,
+) {
   return keyBy(this, fnOrKey as any, valueFn as any);
 } as any;

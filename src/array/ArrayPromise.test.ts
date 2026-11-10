@@ -176,9 +176,10 @@ describe("ArrayPromise", () => {
     });
 
     it("ends the chain for helpers that return non-arrays", async () => {
-      const byName = people().keyBy((p) => p.name);
+      const byName = people().keyBy("name");
       expectType<Promise<Record<string, { name: string; age: number }>>>(byName);
       expect((await byName).a).toEqual({ name: "a", age: 20 });
+      expect((await people().keyBy((p) => `${p.name}${p.age}`)).a20).toEqual({ name: "a", age: 20 });
       expect(await people().minBy((p) => p.age)).toEqual({ name: "a", age: 20 });
       expect(await people().findFirst((p) => (p.age > 25 ? p.name : undefined))).toBe("b");
       expect(await people().mapToObject(async (p) => [p.name, p.age] as const)).toEqual({ b: 30, a: 20, c: 30 });
